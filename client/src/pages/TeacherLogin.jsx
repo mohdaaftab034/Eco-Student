@@ -1,0 +1,135 @@
+import React, { useContext, useState } from 'react'
+import { userDataContext } from '../Context/UserContext';
+import { authDataContext } from '../Context/UseAuthContext';
+import toast from 'react-hot-toast';
+import { setSelectedRole } from '../App'; // 👈 import role setter
+import { useNavigate } from 'react-router-dom';
+
+const TeacherLogin = () => {
+    const navigate = useNavigate();
+    const { setUser, axios, setIsAuthenticated, isLoading, setIsLoading, setToken } = useContext(userDataContext);
+    const { serverUrl } = useContext(authDataContext);
+
+    const [state, setState] = useState("login");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        const url = state === 'login' ? '/api/auth/teacher/login' : '/api/auth/teacher/register';
+
+        try {
+            let result = await axios.post(
+                serverUrl + url,
+                { name, email, password },
+                { withCredentials: true, headers: { "Content-Type": "application/json" } }
+            );
+
+            const { data } = result;
+            console.log(data);
+
+            if (data.success) {
+                // ✅ 1. Save everything in context first
+                setUser(data.user);
+                setToken(data.token);
+                localStorage.setItem('token', data.token);
+                setSelectedRole("teacher");
+                setIsAuthenticated(true);
+
+                toast.success(data.message);
+
+                // ✅ 2. Navigate only after context is updated
+                setTimeout(() => {
+                    navigate('/');
+                }, 100);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error(error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+
+    return (
+        <div className='flex justify-center w-screen h-screen items-center'>
+            <form
+                onSubmit={handleSubmit}
+                className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] text-gray-500 rounded-2xl border border-green-300 bg-white"
+            >
+                <p className="text-2xl font-medium m-auto">
+                    <span className="text-green-500">Teacher</span> {state === "login" ? "Login" : "Sign Up"}
+                </p>
+
+                {state === "register" && (
+                    <div className="w-full">
+                        <p>Name</p>
+                        <input
+                            onChange={(e) => setName(e.target.value)}
+                            value={name}
+                            placeholder="type here"
+                            className="border border-green-300 rounded-full w-full p-2 mt-1 outline-green-600"
+                            type="text"
+                            required
+                        />
+                    </div>
+                )}
+
+                <div className="w-full">
+                    <p>Email</p>
+                    <input
+                        onChange={(e) => setEmail(e.target.value)}
+                        value={email}
+                        placeholder="type here"
+                        className="border border-green-300 rounded-full w-full p-2 mt-1 outline-green-600"
+                        type="email"
+                        required
+                    />
+                </div>
+
+                <div className="w-full">
+                    <p>Password</p>
+                    <input
+                        onChange={(e) => setPassword(e.target.value)}
+                        value={password}
+                        placeholder="type here"
+                        className="border border-green-300 rounded-full w-full p-2 mt-1 outline-green-600"
+                        type="password"
+                        required
+                    />
+                </div>
+
+                {state === "register" ? (
+                    <p>
+                        Already have account?{" "}
+                        <span onClick={() => setState("login")} className="text-green-500 cursor-pointer">
+                            click here
+                        </span>
+                    </p>
+                ) : (
+                    <p>
+                        Create an account?{" "}
+                        <span onClick={() => setState("register")} className="text-green-500 cursor-pointer">
+                            click here
+                        </span>
+                    </p>
+                )}
+
+                <button
+                    type="submit"
+                    className="bg-green-500 hover:bg-green-600 transition-all text-white w-full py-2 rounded-full cursor-pointer"
+                >
+                    {state === "register" ? "Create Account" : "Login"}
+                </button>
+            </form>
+        </div>
+    );
+};
+
+export default TeacherLogin;
