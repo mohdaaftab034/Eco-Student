@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useContext } from 'react'
 import { motion } from 'framer-motion'
-import { BookOpen, Brain, Trophy, Star, Users, User, LogOut, Award, Zap, Target, Heart, Share2, RefreshCw, User2, Settings, LogOutIcon } from 'lucide-react'
+import { BookOpen, Brain, Trophy, Star, Users, User, LogOut, Award, Zap, Target, Heart, Share2, RefreshCw, User2, Settings, LogOutIcon, CrossIcon, LucideCross, X, ChartAreaIcon } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { userDataContext } from '../Context/UserContext'
 import { useRealtimeEvents, useRealtimeUpdates } from '../hooks/useRealtimeUpdates'
@@ -11,6 +11,7 @@ import BadgesPage from './Student/BadgesPage'
 // import StudentProfile from './Student/StudentProfile'
 import NGOsPage from './Student/NgoPage'
 import { useNavigate } from 'react-router-dom'
+import ChatBot from './Student/ChatBot'
 // import { userDataContext } from '../Context/UserContext'
 
 
@@ -74,6 +75,7 @@ const StudentDashboard = () => {
   const { user, axios, userSignOut, token } = useContext(userDataContext);
   const { student, refreshStudent, updateStudentPoints, updateStudentBadges } = useRealtimeUpdates(user?._id)
   const { lastUpdate, triggerRefresh } = useRealtimeEvents()
+  const [video, setVideo] = useState(true);
 
   const [activeTab, setActiveTab] = useState('dashboard')
   const [lessons, setLessons] = useState([])
@@ -237,7 +239,7 @@ const StudentDashboard = () => {
       const currentLessonCount = lessonsRes.data.total || 0;
       const currentCampaignCount = campaignsRes.data.total || 0;
 
-      // ✅ New lesson check
+      //  New lesson check
       if (currentLessonCount > lastLessonCount && lastLessonCount > 0) {
         toast.success("🎉 New lesson available! Check it out!", {
           duration: 4000,
@@ -246,7 +248,7 @@ const StudentDashboard = () => {
         fetchLessons();
       }
 
-      // ✅ New campaign check
+      //  New campaign check
       if (currentCampaignCount > lastCampaignCount && lastCampaignCount > 0) {
         toast.success("🌍 New NGO campaign available! Join the impact!", {
           duration: 4000,
@@ -520,7 +522,8 @@ const StudentDashboard = () => {
     { id: 'badges', label: 'Badges', icon: Award },
     { id: 'ngos', label: 'NGOs', icon: Heart },
     { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
-    { id: 'profile', label: 'Profile', icon: User }
+    { id: 'profile', label: 'Profile', icon: User },
+    { id: 'chatbot', label: 'Chat with AI', icon: ChartAreaIcon}
   ]
 
   // Render feature pages with newly earned badges prop
@@ -536,6 +539,10 @@ const StudentDashboard = () => {
         onClearNewBadges={() => setNewlyEarnedBadges([])}
       />
     )
+  }
+
+  if (activeTab === 'chatbot') {
+    return <ChatBot onBack={() => setActiveTab('dashboard')} />
   }
 
   if (activeTab === 'quizzes') {
@@ -561,8 +568,14 @@ const StudentDashboard = () => {
     )
   }
 
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-green-100 to-green-200">
+    <div className="min-h-screen relative bg-gradient-to-br from-green-50 via-green-100 to-green-200">
+
+      {video && <div className='fixed bottom-10 w-70 h-35 z-100 right-10 bg-blue-500 text-white rounded-lg overflow-hidden shadow-lg'>
+            <video src="/public/video.mp4" autoPlay loop muted playsInline className='w-full h-full object-cover'></video>
+            <X onClick={()=> setVideo(prev => !prev)} className='absolute right-3 top-3 cursor-pointer hover:bg-white hover:text-green-700 rounded-full text-white'/>
+      </div>}
       {/* Header */}
       <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-green-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -641,7 +654,7 @@ const StudentDashboard = () => {
         </motion.div>
 
         {/* Navigation Tabs */}
-        <div className="bg-white sticky top-[70px] rounded-xl shadow-lg mb-8 overflow-hidden">
+        <div className="bg-white sticky top-[70px] z-50 rounded-xl shadow-lg mb-8 overflow-hidden">
           <div className="flex overflow-x-auto">
             {tabs.map((tab) => {
               const Icon = tab.icon
@@ -694,57 +707,57 @@ const StudentDashboard = () => {
               >
                 <h3 className="text-xl font-bold text-gray-800 mb-4 font-fredoka">Your Progress 📊</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center p-4 bg-green-50 hover:bg-green-100 hover:scale-105
+                  <div className="text-center p-4 text-green-800 bg-green-50 hover:bg-green-600 hover:text-white hover:scale-105
                    transition-all duration-300 ease-in-out rounded-lg">
                     <motion.div
                       key={student?.completed_lessons?.length}
                       initial={{ scale: 1 }}
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{ duration: 0.5 }}
-                      className="text-2xl font-bold text-green-600"
+                      className="text-2xl font-bold"
                     >
                       {student?.completed_lessons?.length || 0}
                     </motion.div>
-                    <div className="text-sm text-green-800">Lessons</div>
+                    <div className="text-sm">Lessons</div>
                   </div>
-                  <div className="text-center p-4 bg-blue-50 hover:bg-blue-100 hover:scale-105
+                  <div className="text-center p-4 bg-blue-50 hover:bg-blue-600 text-blue-800 hover:text-white hover:scale-105
                    transition-all duration-300 ease-in-out rounded-lg">
                     <motion.div
                       key={student?.quiz_scores?.length}
                       initial={{ scale: 1 }}
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{ duration: 0.5 }}
-                      className="text-2xl font-bold text-blue-600"
+                      className="text-2xl font-bold"
                     >
                       {student?.quiz_scores?.length || 0}
                     </motion.div>
-                    <div className="text-sm text-blue-800">Quizzes</div>
+                    <div className="text-sm">Quizzes</div>
                   </div>
-                  <div className="text-center p-4 bg-purple-50 hover:bg-purple-100 hover:scale-105
+                  <div className="text-center p-4 bg-purple-50 text-purple-800 hover:text-white hover:bg-purple-600 hover:scale-105
                    transition-all duration-300 ease-in-out rounded-lg">
                     <motion.div
                       key={student?.badges?.length}
                       initial={{ scale: 1 }}
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{ duration: 0.5 }}
-                      className="text-2xl font-bold text-purple-600"
+                      className="text-2xl font-bold"
                     >
                       {student?.badges?.length || 0}
                     </motion.div>
-                    <div className="text-sm text-purple-800">Badges</div>
+                    <div className="text-sm ">Badges</div>
                   </div>
-                  <div className="text-center p-4 bg-orange-50 hover:bg-orange-100 hover:scale-105
+                  <div className="text-center p-4 bg-orange-50 text-orange-800 hover:text-white hover:bg-orange-600 hover:scale-105
                    transition-all duration-300 ease-in-out rounded-lg">
                     <motion.div
                       key={student?.level}
                       initial={{ scale: 1 }}
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{ duration: 0.5 }}
-                      className="text-2xl font-bold text-orange-600"
+                      className="text-2xl font-bold"
                     >
                       {student?.level || 1}
                     </motion.div>
-                    <div className="text-sm text-orange-800">Level</div>
+                    <div className="text-sm">Level</div>
                   </div>
                 </div>
               </motion.div>
@@ -910,7 +923,7 @@ const StudentDashboard = () => {
                   <h3 className="text-lg font-bold text-gray-800 font-fredoka">Recent Lessons</h3>
                   <button
                     onClick={() => setActiveTab('lessons')}
-                    className="text-green-600 hover:text-green-700 text-sm font-medium"
+                    className="text-green-600 hover:text-green-700 cursor-pointer text-sm font-medium"
                   >
                     View All →
                   </button>
@@ -919,7 +932,7 @@ const StudentDashboard = () => {
                   {lessons.slice(0, 3).map((lesson) => {
                     const isCompleted = student?.completed_lessons?.includes(lesson._id)
                     return (
-                      <div key={lesson._id} className="flex items-center p-3 bg-gray-50 rounded-lg">
+                      <div key={lesson._id} className="flex items-center p-3 transform transition hover:bg-green-200 duration-300 hover:scale-110 bg-gray-50 rounded-lg">
                         <span className="text-xl mr-3">{getCategoryEmoji(lesson.category)}</span>
                         <div className="flex-1">
                           <h4 className="font-medium text-gray-800 text-sm">{lesson.title}</h4>
@@ -960,7 +973,7 @@ const StudentDashboard = () => {
                 </div>
                 <div className="space-y-3">
                   {quizzes.slice(0, 3).map((quiz) => (
-                    <div key={quiz._id} className="flex items-center p-3 bg-gray-50 rounded-lg">
+                    <div key={quiz._id} className="flex items-center transform transition hover:bg-green-200 duration-300 hover:scale-110 p-3 bg-gray-50 rounded-lg">
                       <span className="text-xl mr-3">{getCategoryEmoji(quiz.category)}</span>
                       <div className="flex-1">
                         <h4 className="font-medium text-gray-800 text-sm">{quiz.title}</h4>
@@ -996,7 +1009,7 @@ const StudentDashboard = () => {
                 </div>
                 <div className="space-y-3">
                   {campaigns.slice(0, 3).map((campaign) => (
-                    <div key={campaign._id} className="flex items-center p-3 bg-gray-50 rounded-lg">
+                    <div key={campaign._id} className="flex transform transition hover:bg-green-200 duration-300 hover:scale-110 items-center p-3 bg-gray-50 rounded-lg">
                       <span className="text-xl mr-3">{getCategoryEmoji(campaign.category)}</span>
                       <div className="flex-1">
                         <h4 className="font-medium text-gray-800 text-sm">{campaign.title}</h4>

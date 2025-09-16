@@ -12,6 +12,7 @@ import teacherRouter from './routes/teacher.routes.js';
 import seedRouter from './routes/seed.routes.js';
 import challengeRouter from './routes/challenge.routes.js';
 import compaignRouter from './routes/compaign.routes.js';
+import chatRouter from './routes/chat.routes.js';
 
 const app = express();
 connectDB();
@@ -38,6 +39,7 @@ app.use('/api/teachers', teacherRouter);
 app.use('/api', seedRouter);
 app.use('/api/challenges', challengeRouter);
 app.use('/api/campaigns', compaignRouter);
+app.use('/api/chat', chatRouter);
 
 
 const PORT = process.env.PORT || 3000;
