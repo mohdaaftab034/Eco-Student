@@ -1,18 +1,17 @@
 
 import React, { useState, useEffect, useContext } from 'react'
 import { motion } from 'framer-motion'
-import { BookOpen, Brain, Trophy, Star, Users, User, LogOut, Award, Zap, Target, Heart, Share2, RefreshCw } from 'lucide-react'
-import { useRealtimeUpdates, useRealtimeEvents } from '../hooks/useRealtimeUpdates'
-import { lumi } from '../lib/lumi'
+import { BookOpen, Brain, Trophy, Star, Users, User, LogOut, Award, Zap, Target, Heart, Share2, RefreshCw, User2, Settings, LogOutIcon } from 'lucide-react'
 import toast from 'react-hot-toast'
-
-// Import feature pages
-import StudentProfile from './student/StudentProfile'
-import BadgesPage from './student/BadgesPage'
-import QuizzesPage from './student/QuizzesPage'
-import LessonPage from './student/LessonPage'
-import NGOsPage from './student/NGOsPage'
 import { userDataContext } from '../Context/UserContext'
+import { useRealtimeEvents, useRealtimeUpdates } from '../hooks/useRealtimeUpdates'
+import LessonPage from './Student/LessonPage'
+import QuizzesPage from './Student/QuizzesPage'
+import BadgesPage from './Student/BadgesPage'
+// import StudentProfile from './Student/StudentProfile'
+import NGOsPage from './Student/NgoPage'
+import { useNavigate } from 'react-router-dom'
+// import { userDataContext } from '../Context/UserContext'
 
 
 export const Lesson = {
@@ -21,10 +20,11 @@ export const Lesson = {
   description: "",
   difficulty: "",
   category: "",
-  eco_points_reward: PropTypes.number.isRequired,
-  estimated_duration: PropTypes.number.isRequired,
-  media_url: PropTypes.string.isRequired
+  eco_points_reward: 0,
+  estimated_duration: 0,
+  media_url: ""
 }
+
 
 export const Quiz = {
   _id: "",
@@ -71,7 +71,7 @@ export const Campaign = {
 
 
 const StudentDashboard = () => {
-  const { user, signOut } = useContext(userDataContext);
+  const { user, axios, userSignOut, token } = useContext(userDataContext);
   const { student, refreshStudent, updateStudentPoints, updateStudentBadges } = useRealtimeUpdates(user?._id)
   const { lastUpdate, triggerRefresh } = useRealtimeEvents()
 
@@ -84,10 +84,13 @@ const StudentDashboard = () => {
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const [newlyEarnedBadges, setNewlyEarnedBadges] = useState([])
+  const [open, setOpen] = useState(false);
 
   // Real-time update tracking
   const [lastLessonCount, setLastLessonCount] = useState(0)
   const [lastCampaignCount, setLastCampaignCount] = useState(0)
+
+  const navigate = useNavigate();
 
   // Badge system configuration
   const availableBadges = [
@@ -227,101 +230,111 @@ const StudentDashboard = () => {
   const checkForNewContent = async () => {
     try {
       const [lessonsRes, campaignsRes] = await Promise.all([
-        lumi.entities.lessons.list({ sort: { createdAt: -1 }, limit: 1 }),
-        lumi.entities.campaigns.list({ sort: { createdAt: -1 }, limit: 1 })
-      ])
+        axios.get("/api/content/lessons?limit=1"),   // backend se latest lesson
+        axios.get("/api/content/campaigns?limit=1")  // backend se latest campaign
+      ]);
 
-      const currentLessonCount = lessonsRes.total || 0
-      const currentCampaignCount = campaignsRes.total || 0
+      const currentLessonCount = lessonsRes.data.total || 0;
+      const currentCampaignCount = campaignsRes.data.total || 0;
 
-      // Check for new lessons
+      // ✅ New lesson check
       if (currentLessonCount > lastLessonCount && lastLessonCount > 0) {
-        toast.success('🎉 New lesson available! Check it out!', {
+        toast.success("🎉 New lesson available! Check it out!", {
           duration: 4000,
-          onClick: () => setActiveTab('lessons')
-        })
-        fetchLessons()
+          onClick: () => setActiveTab("lessons"),
+        });
+        fetchLessons();
       }
 
-      // Check for new campaigns/NGOs
+      // ✅ New campaign check
       if (currentCampaignCount > lastCampaignCount && lastCampaignCount > 0) {
-        toast.success('🌍 New NGO campaign available! Join the impact!', {
+        toast.success("🌍 New NGO campaign available! Join the impact!", {
           duration: 4000,
-          onClick: () => setActiveTab('ngos')
-        })
-        fetchCampaigns()
+          onClick: () => setActiveTab("ngos"),
+        });
+        fetchCampaigns();
       }
 
-      setLastLessonCount(currentLessonCount)
-      setLastCampaignCount(currentCampaignCount)
+      setLastLessonCount(currentLessonCount);
+      setLastCampaignCount(currentCampaignCount);
     } catch (error) {
-      console.error('Failed to check for new content:', error)
+      console.error("Failed to check for new content:", error);
     }
-  }
+  };
+
 
   const fetchLessons = async () => {
     try {
-      const { list, total } = await lumi.entities.lessons.list({
-        sort: { createdAt: -1 }
-      })
-      setLessons(list || [])
+      const res = await axios.get("/api/content/lessons?sort=-createdAt");
+      const { list, total } = res.data;
+
+      setLessons(list || []);
       if (lastLessonCount === 0) {
-        setLastLessonCount(total || 0)
+        setLastLessonCount(total || 0);
       }
     } catch (error) {
-      console.error('Failed to fetch lessons:', error)
+      console.error("Failed to fetch lessons:", error);
     }
-  }
+  };
+
 
   const fetchQuizzes = async () => {
     try {
-      const { list } = await lumi.entities.quizzes.list({
-        sort: { createdAt: -1 }
-      })
-      setQuizzes(list || [])
+      const res = await axios.get("/api/content/quizzes?sort=-createdAt");
+      const { list } = res.data;
+
+      setQuizzes(list || []);
     } catch (error) {
-      console.error('Failed to fetch quizzes:', error)
+      console.error("Failed to fetch quizzes:", error);
     }
-  }
+  };
+
 
   const fetchChallenges = async () => {
     try {
-      const { list } = await lumi.entities.challenges.list({
-        sort: { createdAt: -1 }
-      })
-      setChallenges(list || [])
+      const res = await axios.get("/api/content/challenges?sort=-createdAt");
+      const { list } = res.data;
+
+      setChallenges(list || []);
     } catch (error) {
-      console.error('Failed to fetch challenges:', error)
+      console.error("Failed to fetch challenges:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
 
   const fetchCampaigns = async () => {
     try {
-      const { list, total } = await lumi.entities.campaigns.list({
-        sort: { createdAt: -1 }
-      })
-      setCampaigns(list || [])
+      const res = await axios.get("/api/content/campaigns?sort=-createdAt");
+      const { list, total } = res.data;
+
+      setCampaigns(list || []);
+
+      // First time jab campaigns fetch ho rahe hain
       if (lastCampaignCount === 0) {
-        setLastCampaignCount(total || 0)
+        setLastCampaignCount(total || 0);
       }
     } catch (error) {
-      console.error('Failed to fetch campaigns:', error)
+      console.error("Failed to fetch campaigns:", error);
     }
-  }
+  };
 
   const fetchLeaderboard = async () => {
     try {
-      const { list } = await lumi.entities.students.list({
-        sort: { eco_points: -1 },
-        limit: 10
-      })
-      setLeaderboard(list || [])
+      const res = await axios.get("/api/students/leaderboard", {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
+      });
+
+
+      setLeaderboard(res.data.list || []);
     } catch (error) {
-      console.error('Failed to fetch leaderboard:', error)
+      console.error("Failed to fetch leaderboard:", error);
     }
-  }
+  };
+
+
 
   const manualRefresh = async () => {
     setRefreshing(true)
@@ -345,39 +358,37 @@ const StudentDashboard = () => {
     if (!student) return
 
     try {
-      const updatedLessons = [...(student.completed_lessons || []), lessonId]
+      const updateLessons = [...(student.completed_lessons || []), lessonId];
 
-      // Update lesson completion in database
-      await lumi.entities.students.update(student._id, {
-        completed_lessons: updatedLessons
-      })
+      await axios.put(`/api/students/${student._id}/lessons`, {
+        lessonId,
+        completeLesson: updateLessons,
+        points
+      });
 
-      // Check for new badges BEFORE updating points
       const newBadges = checkForNewBadges(
         student.eco_points + points,
-        updatedLessons.length,
+        updateLessons.length,
         student.badges || []
-      )
+      );
 
-      // Update points using real-time system
-      await updateStudentPoints(points, 'Lesson completed!')
+      await updateStudentPoints(points, "Lesson completed")
 
-      // Update badges if any new ones earned
       if (newBadges.length > 0) {
-        await updateStudentBadges(newBadges)
-        setNewlyEarnedBadges(newBadges)
+        await updateStudentBadges(newBadges);
+        setNewlyEarnedBadges(newBadges);
 
-        // Auto-open badges page after notifications
         setTimeout(() => {
-          setActiveTab('badges')
-          toast.success(`🏆 Check out your new badge${newBadges.length > 1 ? 's' : ''} in the Badges section!`, {
-            duration: 4000
-          })
-        }, 3000)
+          setActiveTab("badges");
+
+          toast.success(
+            `🏆 Check out your new badge${newBadges.length > 1 ? "s" : ""} in the Badges section!`,
+            { duration: 4000 }
+          )
+        }, 3000);
       }
 
-      // Refresh leaderboard
-      fetchLeaderboard()
+      fetchLeaderboard();
     } catch (error) {
       toast.error('Failed to complete lesson')
     }
@@ -419,43 +430,59 @@ const StudentDashboard = () => {
     return newBadges
   }
 
+
   const joinChallenge = async (challengeId) => {
-    if (!student) return
+    if (!student) return;
 
     try {
-      const challenge = challenges.find(c => c._id === challengeId)
-      if (!challenge) return
+      const challenge = challenges.find(c => c._id === challengeId);
+      if (!challenge) return;
 
-      const isAlreadyJoined = challenge.participants.some(p => p.student_id === student._id)
+      const isAlreadyJoined = challenge.participants.some(
+        p => p.student_id === student._id
+      );
       if (isAlreadyJoined) {
-        toast.error('You have already joined this challenge!')
-        return
+        toast.error('You have already joined this challenge!');
+        return;
       }
 
-      const updatedParticipants = [
-        ...challenge.participants,
+      const newParticipant = {
+        student_id: student._id,
+        joined_at: new Date().toISOString(),
+        completed: false
+      };
+
+      // Backend API call (axios)
+      const res = await axios.post(
+        `/api/challenges/${challengeId}/join`,
+        newParticipant,
         {
-          student_id: student._id,
-          joined_at: new Date().toISOString(),
-          completed: false
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
         }
-      ]
+      );
 
-      await lumi.entities.challenges.update(challengeId, {
-        participants: updatedParticipants
-      })
+      if (!res.data.success) {
+        return toast.error(res.data.message || "Something went wrong");
+      }
 
+      const updatedChallenge = res.data.challenge; // backend se challenge return karao
+
+      // Update local state with backend response
       setChallenges(challenges.map(c =>
-        c._id === challengeId
-          ? { ...c, participants: updatedParticipants }
-          : c
-      ))
+        c._id === challengeId ? updatedChallenge : c
+      ));
 
-      toast.success('🌟 Challenge joined! Good luck!')
+      toast.success('🌟 Challenge joined! Good luck!');
     } catch (error) {
-      toast.error('Failed to join challenge')
+      console.error(error);
+      toast.error('Failed to join challenge');
     }
-  }
+  };
+
+
 
   const getDifficultyColor = (difficulty) => {
     switch (difficulty) {
@@ -526,7 +553,7 @@ const StudentDashboard = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
-        <div className="text-center">
+        <div className="text-center flex flex-col justify-center items-center gap-5">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-500 mb-4"></div>
           <p className="text-lg text-gray-600">Loading your eco-adventure...</p>
         </div>
@@ -535,52 +562,52 @@ const StudentDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-green-100 to-green-200">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-green-100">
+      <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-green-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <div className="bg-gradient-to-r from-green-400 to-blue-500 p-2 rounded-lg mr-3">
-                <Star className="text-white" size={24} />
+            <div className="flex items-center cursor-pointer">
+              <div className="bg-gradient-to-r hidden sm:flex from-green-400 to-blue-500 p-2 rounded-lg mr-3">
+                <Star className="text-white " size={24} />
               </div>
-              <h1 className="text-2xl font-bold text-gray-800 font-fredoka">EcoLearn Student</h1>
+              <h1 className="text-2xl flex flex-col md:flex-row font-bold text-gray-800 font-fredoka">EcoLearn <span className='text-green-500 hover:text-green-700 '>Student</span></h1>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex gap-3 items-center space-x-4">
               {student && (
                 <motion.div
                   key={student.eco_points} // Re-animate when points change
                   initial={{ scale: 1 }}
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 0.3 }}
-                  className="flex items-center bg-gradient-to-r from-green-100 to-blue-100 px-4 py-2 rounded-full"
+                  className="flex items-center gap-2 justify-center bg-gradient-to-r py-2 from-green-100 to-blue-100 px-2 md:px-4  rounded-full"
                 >
-                  <Zap className="text-green-600 mr-2" size={20} />
-                  <span className="font-bold text-green-800">{student.eco_points} points</span>
-                  <div className="ml-3 bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
-                    Level {student.level}
-                  </div>
+                  <Zap className="text-green-600 " size={20} />
+                  <span className="font-bold text-green-800">{student.eco_points}</span>
                 </motion.div>
               )}
 
               <button
                 onClick={manualRefresh}
                 disabled={refreshing}
-                className="flex items-center text-gray-600 hover:text-blue-600 transition-colors disabled:opacity-50"
+                className="hidden sm:flex items-center text-gray-600 hover:text-blue-600 transition-colors disabled:opacity-50"
                 title="Refresh content"
               >
                 <RefreshCw size={20} className={`mr-1 ${refreshing ? 'animate-spin' : ''}`} />
                 Refresh
               </button>
 
-              <button
-                onClick={signOut}
-                className="flex items-center text-gray-600 hover:text-red-600 transition-colors"
-              >
-                <LogOut size={20} className="mr-1" />
-                Sign Out
-              </button>
+              <div>
+                <div onClick={() => setOpen(prev => !prev)} className='w-10 h-10 rounded-full overflow-hidden bg-gray-300'>
+                  <img src="./public/bg.jpg" className=' h-full w-full ' alt="" />
+                </div>
+                {open && <div className='absolute flex flex-col items-start justify-center gap-2 top-[70px] right-45 bg-white shadow-lg rounded-lg w-35 h-25'>
+                  <p onClick={() => navigate('/create-profile')} className='flex pl-3 items-center  gap-2 h-8 cursor-pointer hover:bg-green-500 w-full text-gray-600 font-medium'><User2 className='w-4 h-4' /> Profile</p>
+                  <p className='flex pl-3 items-center  gap-2 h-8 cursor-pointer hover:bg-green-500 w-full text-gray-600 font-medium'><Settings className='w-4 h-4' /> Account</p>
+                  <p onClick={userSignOut} className='flex pl-3 items-center  gap-2 h-8 cursor-pointer hover:bg-green-600 w-full text-red-600 font-medium'><LogOutIcon className='w-4 h-4' /> Logout</p>
+                </div>}
+              </div>
             </div>
           </div>
         </div>
@@ -591,12 +618,12 @@ const StudentDashboard = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-500 rounded-2xl p-6 mb-8 text-white"
+          className="bg-emerald-600 transition duration-500 ease-in-out hover:shadow-[0_0_15px_#22c55e,0_0_30px_#3b82f6] rounded-2xl p-6 mb-8 text-white"
         >
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-3xl font-bold mb-2 font-fredoka">
-                Welcome back, {student?.name || user?.userName}! 🌟
+                Welcome back, <span className='text-gray-800'>{student?.name || user?.userName}!</span> 🌟
               </h2>
               <p className="text-lg opacity-90">
                 Ready to continue your eco-adventure? Let's save the planet together!
@@ -614,7 +641,7 @@ const StudentDashboard = () => {
         </motion.div>
 
         {/* Navigation Tabs */}
-        <div className="bg-white rounded-xl shadow-sm mb-8 overflow-hidden">
+        <div className="bg-white sticky top-[70px] rounded-xl shadow-lg mb-8 overflow-hidden">
           <div className="flex overflow-x-auto">
             {tabs.map((tab) => {
               const Icon = tab.icon
@@ -623,7 +650,7 @@ const StudentDashboard = () => {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center px-6 py-4 whitespace-nowrap transition-colors relative ${activeTab === tab.id
-                    ? 'bg-gradient-to-r from-green-500 to-blue-500 text-white'
+                    ? 'bg-emerald-600 text-white'
                     : 'text-gray-600 hover:bg-gray-50'
                     }`}
                 >
@@ -663,11 +690,12 @@ const StudentDashboard = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-xl shadow-sm p-6 md:col-span-2 lg:col-span-3"
+                className="bg-white rounded-xl transition duration-500 ease-in-out hover:shadow-[0_0_15px_#22c55e,0_0_30px_#3b82f6] shadow-sm p-6 md:col-span-2 lg:col-span-3"
               >
                 <h3 className="text-xl font-bold text-gray-800 mb-4 font-fredoka">Your Progress 📊</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center p-4 bg-green-50 rounded-lg">
+                  <div className="text-center p-4 bg-green-50 hover:bg-green-100 hover:scale-105
+                   transition-all duration-300 ease-in-out rounded-lg">
                     <motion.div
                       key={student?.completed_lessons?.length}
                       initial={{ scale: 1 }}
@@ -679,7 +707,8 @@ const StudentDashboard = () => {
                     </motion.div>
                     <div className="text-sm text-green-800">Lessons</div>
                   </div>
-                  <div className="text-center p-4 bg-blue-50 rounded-lg">
+                  <div className="text-center p-4 bg-blue-50 hover:bg-blue-100 hover:scale-105
+                   transition-all duration-300 ease-in-out rounded-lg">
                     <motion.div
                       key={student?.quiz_scores?.length}
                       initial={{ scale: 1 }}
@@ -691,7 +720,8 @@ const StudentDashboard = () => {
                     </motion.div>
                     <div className="text-sm text-blue-800">Quizzes</div>
                   </div>
-                  <div className="text-center p-4 bg-purple-50 rounded-lg">
+                  <div className="text-center p-4 bg-purple-50 hover:bg-purple-100 hover:scale-105
+                   transition-all duration-300 ease-in-out rounded-lg">
                     <motion.div
                       key={student?.badges?.length}
                       initial={{ scale: 1 }}
@@ -703,7 +733,8 @@ const StudentDashboard = () => {
                     </motion.div>
                     <div className="text-sm text-purple-800">Badges</div>
                   </div>
-                  <div className="text-center p-4 bg-orange-50 rounded-lg">
+                  <div className="text-center p-4 bg-orange-50 hover:bg-orange-100 hover:scale-105
+                   transition-all duration-300 ease-in-out rounded-lg">
                     <motion.div
                       key={student?.level}
                       initial={{ scale: 1 }}
@@ -724,7 +755,8 @@ const StudentDashboard = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
-                  className="bg-white rounded-xl shadow-sm p-6 relative"
+                  className="bg-white rounded-xl hover:shadow-2xl hover:-translate-y-2
+                transition-all duration-500 ease-in-out shadow-sm p-6 relative"
                 >
                   {newlyEarnedBadges.length > 0 && (
                     <motion.div
@@ -803,7 +835,8 @@ const StudentDashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-white rounded-xl shadow-sm p-6"
+                className="bg-white rounded-xl transition duration-500  hover:shadow-[0_0_15px_#22c55e,0_0_30px_#3b82f6] hover:-translate-y-2
+                 ease-in-out shadow-sm p-6"
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-gray-800 font-fredoka">Next Achievement</h3>
@@ -845,7 +878,8 @@ const StudentDashboard = () => {
                           <span>{currentPoints} points</span>
                           <span>{nextBadge.points_required} points</span>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="w-full bg-gray-200 hover:shadow-2xl hover:-translate-y-2
+                transition-all duration-500 ease-in-out rounded-full h-2">
                           <motion.div
                             key={currentPoints} // Re-animate when points change
                             initial={{ width: 0 }}
@@ -869,7 +903,8 @@ const StudentDashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: student?.badges?.length ? 0.3 : 0.2 }}
-                className="bg-white rounded-xl shadow-sm p-6"
+                className="bg-white rounded-xl hover:-translate-y-2
+                transition duration-500 ease-in-out hover:shadow-[0_0_15px_#22c55e,0_0_30px_#3b82f6] shadow-sm p-6"
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-gray-800 font-fredoka">Recent Lessons</h3>
@@ -911,7 +946,8 @@ const StudentDashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: student?.badges?.length ? 0.4 : 0.3 }}
-                className="bg-white rounded-xl shadow-sm p-6"
+                className="bg-white hover:-translate-y-2
+                transition duration-500 ease-in-out hover:shadow-[0_0_15px_#22c55e,0_0_30px_#3b82f6] rounded-xl shadow-sm p-6"
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-gray-800 font-fredoka">Available Quizzes</h3>
@@ -946,7 +982,8 @@ const StudentDashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: student?.badges?.length ? 0.5 : 0.4 }}
-                className="bg-white rounded-xl shadow-sm p-6"
+                className="bg-white hover:-translate-y-2
+                transition duration-500 ease-in-out hover:shadow-[0_0_15px_#22c55e,0_0_30px_#3b82f6] rounded-xl shadow-sm p-6"
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-gray-800 font-fredoka">NGO Campaigns</h3>
@@ -999,7 +1036,8 @@ const StudentDashboard = () => {
                   <motion.div
                     key={lesson._id}
                     whileHover={{ scale: 1.02 }}
-                    className={`bg-white rounded-xl shadow-sm overflow-hidden border-2 transition-all ${isCompleted ? 'border-green-200 bg-green-50' : 'border-gray-100 hover:border-green-200'
+                    className={`bg-white rounded-xl hover:shadow-2xl hover:-translate-y-2
+                transition-all duration-500 ease-in-out shadow-sm overflow-hidden border-2 ${isCompleted ? 'border-green-200 bg-green-50' : 'border-gray-100 hover:border-green-200'
                       }`}
                   >
                     <img

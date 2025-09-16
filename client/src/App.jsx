@@ -10,6 +10,8 @@ import StudentLogin from "./pages/StudentLogin";
 import StudentDashboard from "./pages/StudentDashboard";
 import NGODashboard from "./pages/NGODashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
+import StudentProfile from "./pages/Student/StudentProfile";
+import CreateStudentProfile from "./pages/Student/CreateProfile";
 
 // ✅ Role detection
 const getUserRole = (user) => {
@@ -95,6 +97,8 @@ function App() {
         <Route path="/student" element={<StudentDashboard />} />
         <Route path="/teacher" element={<TeacherDashboard />} />
         <Route path="/ngo" element={<NGODashboard />} />
+        <Route path="/create-profile" element={<CreateStudentProfile/>} />
+        <Route path="/profile" element={<StudentProfile/>} />
 
         {/* Default redirect based on role */}
         <Route path="/" element={<Navigate to={`/${userRole}`} replace />} />

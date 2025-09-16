@@ -6,10 +6,11 @@ import jwt from 'jsonwebtoken'
 import ngoModel from "../models/ngoModel.js";
 import teacherModel from "../models/teacherModel.js";
 import userModel from "../models/user.model.js";
+import Student from '../models/student.js';
 
 export const registerUser = async (req, res) => {
     try {
-        const { fullName, email, password } = req.body;
+        const { fullName, email, password, grade, school, avatar, eco_points, level, badges, completed_lessons, quiz_scores } = req.body;
 
         const isUserAlreadyExists = await userModel.findOne({ email });
         if (isUserAlreadyExists) {
@@ -24,8 +25,22 @@ export const registerUser = async (req, res) => {
         const user = await userModel.create({
             fullName,
             email,
-            password: hashedPassword
+            password: hashedPassword, 
+            role: "student"
         });
+
+        await Student.create({
+            user_id: user._id,
+            name: fullName,
+            grade: grade || "",
+            school: school || "",
+            avatar: avatar || "",
+            eco_points: eco_points || 0,
+            level: level || 1,
+            badges: badges || [],
+            completed_lessons: completed_lessons || [],
+            quiz_scores: quiz_scores || []
+        })
 
         const token = jwt.sign(
             { id: user._id, role: "student" },
@@ -106,10 +121,14 @@ export const loginUser = async (req, res) => {
 
 
 export const logoutUser = (req, res) => {
-    res.clearCookie("token");
-    res.status(200).json({
-        message: "User logged out successfully"
-    });
+    try {
+        res.clearCookie("token");
+        res.status(200).json({success: true,
+            message: "User logged out successfully"
+        });
+    } catch (error) {
+        res.json({success: false, message: error.message});
+    }
 }
 
 export const teacherRegister = async (req, res) => {

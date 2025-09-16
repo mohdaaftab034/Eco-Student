@@ -87,7 +87,13 @@ const LandingPage = () => {
     ]
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center p-4" style={{
+            backgroundImage: "url('/public/bg3.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            width: "100%",
+            height: "100%"
+        }}>
             <div className="max-w-4xl w-full">
                 {/* Header */}
                 <motion.div
@@ -108,8 +114,8 @@ const LandingPage = () => {
                             EcoLearn
                         </h1>
                     </div>
-                    <p className="text-2xl text-gray-600 font-medium mb-2">Environmental Education Platform</p>
-                    <p className="text-lg text-gray-500">Choose your role to start your eco-journey! 🌍</p>
+                    <p className="text-3xl text-gray-900 font-bold mb-2">Environmental Education Platform</p>
+                    <p className="text-xl rounded-full py-1 bg-green-500 hover:bg-green-700 text-white drop-shadow-2xl font-bold">Choose your role to start your eco-journey! 🌍</p>
                 </motion.div>
 
                 {/* Role Selection */}

@@ -44,18 +44,16 @@ const UserContext = ({ children }) => {
     }
   };
 
-  const signOut = async () => {
-    try {
-      const {data} = await axios.get('/api/auth/user/logout', {withCredentials: true});
-      if(data.success) {
-        setUser(null);
-        setIsAuthenticated(false);
-        toast.success(data.message);
-      }
-    } catch (error) {
-      toast.error(error.message)
-    }
+  const userSignOut = async () => {
+    localStorage.removeItem("token");
+    
+    setToken(null);
+    
+    setIsAuthenticated(false);
+    navigate("/");
   }
+
+
 
   useEffect(() => {
     if (token) {
@@ -72,7 +70,7 @@ const UserContext = ({ children }) => {
     user, setUser, navigate, isLoading, setIsLoading,
     axios, token, setToken, fetchUser,
     isAuthenticated, setIsAuthenticated,
-    isCheckingAuth, signOut
+    isCheckingAuth, userSignOut
   };
 
   return (

@@ -13,7 +13,8 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-    }
+    },
+    role: { type: String, enum: ["student", "teacher", "ngo"], default: "student" }
 },
     {
         timestamps: true

@@ -25,23 +25,23 @@ const NGOLogin = () => {
             let result = await axios.post(
                 serverUrl + url,
                 { ngoName: name, email, password },
-                { withCredentials: true, headers: { "Content-Type": "application/json" } }
+                { withCredentials: true }
             );
 
             const { data } = result;
             console.log(data);
 
             if (data.success) {
-                // ✅ 1. Save everything in context first
+                //1. Save everything in context first
                 setUser(data.user);
                 setToken(data.token);
                 localStorage.setItem('token', data.token);
-                setSelectedRole("teacher");
+                setSelectedRole("ngo");
                 setIsAuthenticated(true);
 
                 toast.success(data.message);
 
-                // ✅ 2. Navigate only after context is updated
+                // 2. Navigate only after context is updated
                 setTimeout(() => {
                     navigate('/');
                 }, 100);
