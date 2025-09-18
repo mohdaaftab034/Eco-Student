@@ -209,7 +209,7 @@ const AboutPage = () => {
                                     <Lightbulb className="w-16 h-16" />
                                 </div>
                                 <img
-                                    src="https://images.pexels.com/photos/8471822/pexels-photo-8471822.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop"
+                                    src="https://static.vecteezy.com/system/resources/thumbnails/054/880/166/small_2x/thriving-tree-in-lush-green-environment-nature-conservation-and-protection-concept-free-photo.jpeg"
                                     alt="Students learning about environment"
                                     className="w-full h-64 object-cover transition-transform ease-in-out duration-300 hover:scale-105 rounded-xl mb-6"
                                 />
