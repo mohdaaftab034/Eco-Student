@@ -131,7 +131,7 @@ const AddQuizPage = ({ onBack }) => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6">
+        <div className="min-h-screen bg-[#fafaff] p-6">
             <div className="max-w-4xl mx-auto">
                 {/* Header */}
                 <motion.div
@@ -139,20 +139,20 @@ const AddQuizPage = ({ onBack }) => {
                     animate={{ opacity: 1, y: 0 }}
                     className="flex items-center justify-between mb-8"
                 >
-                    <div className="flex items-center">
+                    <div className="flex gap-2 items-center">
                         <button
                             onClick={onBack}
-                            className="mr-4 p-2 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow"
+                            className="mr-4 p-2 rounded-lg bg-[#fafaff] shadow-sm hover:shadow-md transition-shadow"
                         >
                             <ArrowLeft size={20} className="text-gray-600" />
                         </button>
                         <div>
                             <h1 className="text-3xl font-bold text-gray-800 font-fredoka">Create New Quiz</h1>
-                            <p className="text-gray-600">Design engaging quizzes for your students</p>
+                            <p className="text-black font-light">Design engaging quizzes for your students</p>
                         </div>
                     </div>
 
-                    <div className="flex space-x-3">
+                    <div className="flex gap-2 space-x-3">
                         <button
                             onClick={() => setShowPreview(!showPreview)}
                             className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
@@ -162,7 +162,7 @@ const AddQuizPage = ({ onBack }) => {
                         <button
                             onClick={saveQuiz}
                             disabled={isCreating}
-                            className="flex items-center px-6 py-2 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg hover:from-green-600 hover:to-blue-600 transition-colors disabled:opacity-50"
+                            className="flex items-center px-6 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-600 transition-colors disabled:opacity-50"
                         >
                             <Save size={20} className="mr-2" />
                             {isCreating ? 'Creating...' : 'Save Quiz'}
@@ -171,12 +171,12 @@ const AddQuizPage = ({ onBack }) => {
                 </motion.div>
 
                 {!showPreview ? (
-                    <div className="space-y-8">
+                    <div className="space-y-8 flex flex-col gap-2">
                         {/* Quiz Basic Information */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-white rounded-xl shadow-sm p-6"
+                            className="bg-[#fafaff] rounded-md shadow-lg p-6"
                         >
                             <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
                                 <div className="bg-blue-100 p-2 rounded-lg mr-3">
@@ -192,7 +192,7 @@ const AddQuizPage = ({ onBack }) => {
                                         type="text"
                                         value={quizData.title}
                                         onChange={(e) => setQuizData({ ...quizData, title: e.target.value })}
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="Enter quiz title"
                                     />
                                 </div>
@@ -281,19 +281,19 @@ const AddQuizPage = ({ onBack }) => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
-                            className="bg-white rounded-xl shadow-sm p-6"
+                            className="bg-[#fafaff] rounded-md shadow-lg p-6"
                         >
                             <div className="flex items-center justify-between mb-6">
                                 <h2 className="text-xl font-bold text-gray-800 flex items-center">
-                                    <div className="bg-purple-100 p-2 rounded-lg mr-3">
-                                        <Users size={20} className="text-purple-600" />
+                                    <div className="bg-green-100 p-2 rounded-lg mr-3">
+                                        <Users size={20} className="text-green-600" />
                                     </div>
                                     Questions ({questions.length})
                                 </h2>
 
                                 <button
                                     onClick={addQuestion}
-                                    className="flex items-center px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-lg hover:from-purple-600 hover:to-indigo-600 transition-colors"
+                                    className="flex items-center px-4 py-2 cursor-pointer bg-emerald-700 text-white rounded-lg hover:bg-emerald-600 transition-colors"
                                 >
                                     <Plus size={20} className="mr-2" />
                                     Add Question
@@ -319,7 +319,7 @@ const AddQuizPage = ({ onBack }) => {
                                                 <h3 className="text-lg font-bold text-gray-800">Question {index + 1}</h3>
                                                 <button
                                                     onClick={() => removeQuestion(question.id)}
-                                                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                                    className="p-2 text-red-500 cursor-pointer hover:bg-red-50 rounded-lg transition-colors"
                                                 >
                                                     <X size={16} />
                                                 </button>
@@ -406,7 +406,7 @@ const AddQuizPage = ({ onBack }) => {
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="bg-white rounded-xl shadow-sm p-6"
+                        className="bg-[#fafaff] rounded-md shadow-lg p-6"
                     >
                         <div className="text-center mb-8">
                             <div className="text-4xl mb-4">{getCategoryEmoji(quizData.category)}</div>
@@ -432,7 +432,7 @@ const AddQuizPage = ({ onBack }) => {
 
                         <div className="space-y-6">
                             {questions.map((question, index) => (
-                                <div key={question.id} className="border border-gray-200 rounded-lg p-6">
+                                <div key={question.id} className="border border-gray-200 rounded-md p-6">
                                     <h3 className="text-lg font-bold text-gray-800 mb-4">
                                         {index + 1}. {question.question || 'Question text'}
                                     </h3>
@@ -458,7 +458,7 @@ const AddQuizPage = ({ onBack }) => {
                                     </div>
 
                                     {question.explanation && (
-                                        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
                                             <p className="text-sm text-blue-800">
                                                 <strong>Explanation:</strong> {question.explanation}
                                             </p>
@@ -475,7 +475,7 @@ const AddQuizPage = ({ onBack }) => {
                         {questions.length === 0 && (
                             <div className="text-center py-12">
                                 <div className="text-6xl mb-4">📝</div>
-                                <p className="text-gray-500">No questions to preview</p>
+                                <p className="text-black">No questions to preview</p>
                             </div>
                         )}
                     </motion.div>

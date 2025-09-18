@@ -13,6 +13,7 @@ import AddQuizPage from './Teacher/AddQuizPage'
 import AddLessonsPage from './Teacher/AddLessonsPage'
 import StudentGrowthPage from './Teacher/StudentGrowthPage'
 import TeacherProfile from './Teacher/TeacherProfile'
+import Footer from '../components/Footer'
 
 const Lesson = {
   _id: "",
@@ -186,9 +187,9 @@ const TeacherDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#fafaff] flex items-center justify-center">
         <div className="text-center flex flex-col justify-center items-center gap-5">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mb-4"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-black mb-4"></div>
           <p className="text-lg text-gray-600">Loading teacher dashboard...</p>
         </div>
       </div>
@@ -196,32 +197,32 @@ const TeacherDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+    <div className="min-h-screen bg-[#fafaff]">
       {/* Header */}
-      <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-blue-100">
+      <header className="bg-[#fafaff] sticky top-0 z-50 shadow-lg ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center cursor-pointer">
-              <div className="bg-gradient-to-r hidden sm:flex from-blue-500 to-purple-500 p-2 rounded-lg mr-3">
+              <div className="bg-black hidden sm:flex p-2 rounded-md shadow-lg mr-3">
                 <Settings className="text-white" size={24} />
               </div>
-              <h1 className="text-2xl font-bold text-gray-800 font-fredoka">EcoLearn <span className='text-green-500 hover:text-green-700'>Teacher</span></h1>
+              <h1 className="text-2xl gap-2 font-bold text-gray-800 font-fredoka">EcoLearn <span className='text-green-800'>Teacher</span></h1>
             </div>
 
-            <div className="flex items-center gap-2 space-x-4">
-              <div className="text-sm font-medium text-gray-600">
+            <div className="flex items-center gap-3 space-x-4">
+              <div className="text-sm font-medium text-black">
                 Welcome, {user?.name}
               </div>
               <button
                 onClick={() => setActiveTab('profile')}
-                className="hidden sm:flex cursor-pointer items-center text-gray-600 hover:text-blue-600 transition-colors"
+                className="hidden sm:flex cursor-pointer items-center text-black hover:text-blue-600 transition-colors"
               >
                 <User size={20} className="mr-1" />
                 Profile
               </button>
               <button
                 onClick={userSignOut}
-                className="flex items-center cursor-pointe text-red-500 hover:text-red-600 transition-colors"
+                className="flex items-center cursor-pointer text-red-500 hover:text-red-600 transition-colors"
               >
                 <LogOut size={20} className="mr-1 hidden sm:flex" />
                 Logout
@@ -236,17 +237,17 @@ const TeacherDashboard = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 transition-shadow duration-300 hover:shadow-[0_0_20px_#22c55e,0_0_40px_#3b82f6] rounded-2xl p-6 mb-8 text-white"
+          className="bg-[#fafaff] transition-transform duration-300 hover:scale-105 ease-in-out rounded-md p-6 mb-8 text-black shadow-lg"
         >
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-3xl font-bold mb-2 font-fredoka">
-                Teacher Dashboard 👩‍🏫
+                <span className='text-green-800'>Teacher</span> Dashboard 👩‍🏫
               </h2>
-              <p className="text-lg opacity-90">
+              <p className="text-lg font-light opacity-90">
                 Create engaging content and track student progress in environmental education
               </p>
-              <p className="text-sm opacity-75 mt-2">
+              <p className="text-sm  opacity-75 mt-2">
                 💡 Your lessons appear instantly on student dashboards!
               </p>
             </div>
@@ -265,13 +266,13 @@ const TeacherDashboard = () => {
         >
           <button
             onClick={() => setActiveTab('add-quiz')}
-            className="bg-white rounded-xl shadow-sm p-6 text-left transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer group"
+            className="bg-[#fafaff] rounded-md shadow-lg p-6 text-left transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer group"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="bg-purple-100 p-3 rounded-lg group-hover:bg-purple-200 transition-colors">
-                <Plus className="text-purple-600" size={24} />
+              <div className="bg-green-100 p-3 rounded-lg group-hover:bg-green-200 transition-colors">
+                <Plus className="text-green-600" size={24} />
               </div>
-              <PlusCircle className="text-purple-400 group-hover:text-purple-600 transition-colors" size={20} />
+              <PlusCircle className="text-green-400 group-hover:text-green-600 transition-colors" size={20} />
             </div>
             <h3 className="text-lg font-bold text-gray-800 mb-2">Create Quiz</h3>
             <p className="text-gray-600 text-sm">Design interactive quizzes for students</p>
@@ -279,7 +280,7 @@ const TeacherDashboard = () => {
 
           <button
             onClick={() => setActiveTab('add-lessons')}
-            className="bg-white rounded-xl shadow-sm p-6 text-left transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer group"
+            className="bg-[#fafaff] rounded-md shadow-lg p-6 text-left transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer group"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="bg-green-100 p-3 rounded-lg group-hover:bg-green-200 transition-colors">
@@ -293,13 +294,13 @@ const TeacherDashboard = () => {
 
           <button
             onClick={() => setActiveTab('student-growth')}
-            className="bg-white rounded-xl shadow-sm p-6 text-left transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer group"
+            className="bg-[#fafaff] rounded-md shadow-lg p-6 text-left transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer group"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="bg-blue-100 p-3 rounded-lg group-hover:bg-blue-200 transition-colors">
-                <BarChart3 className="text-blue-600" size={24} />
+              <div className="bg-green-100 p-3 rounded-lg group-hover:bg-green-200 transition-colors">
+                <BarChart3 className="text-green-600" size={24} />
               </div>
-              <Users className="text-blue-400 group-hover:text-blue-600 transition-colors" size={20} />
+              <Users className="text-green-400 group-hover:text-green-600 transition-colors" size={20} />
             </div>
             <h3 className="text-lg font-bold text-gray-800 mb-2">Student Analytics</h3>
             <p className="text-gray-600 text-sm">Track individual student progress</p>
@@ -307,13 +308,13 @@ const TeacherDashboard = () => {
 
           <button
             onClick={() => setActiveTab('profile')}
-            className="bg-white rounded-xl shadow-sm p-6 text-left transition-transform duration-300  hover:-translate-y-2 hover:shadow-xl cursor-pointer group"
+            className="bg-[#fafaff] rounded-md shadow-lg p-6 text-left transition-transform duration-300  hover:-translate-y-2 hover:shadow-xl cursor-pointer group"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="bg-orange-100 p-3 rounded-lg group-hover:bg-orange-200 transition-colors">
-                <User className="text-orange-600" size={24} />
+              <div className="bg-green-100 p-3 rounded-lg group-hover:bg-green-200 transition-colors">
+                <User className="text-green-600" size={24} />
               </div>
-              <Settings className="text-orange-400 group-hover:text-orange-600 transition-colors" size={20} />
+              <Settings className="text-green-400 group-hover:text-green-600 transition-colors" size={20} />
             </div>
             <h3 className="text-lg font-bold text-gray-800 mb-2">My Profile</h3>
             <p className="text-gray-600 text-sm">Manage your account settings</p>
@@ -326,7 +327,7 @@ const TeacherDashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#22c55e,0_0_40px_#3b82f6] shadow-sm p-6 border border-gray-100"
+            className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6 border border-gray-100"
           >
             <div className="flex items-center justify-between">
               <div>
@@ -349,7 +350,7 @@ const TeacherDashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#22c55e,0_0_40px_#3b82f6] shadow-sm p-6 border border-gray-100"
+            className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6 border border-gray-100"
           >
             <div className="flex items-center justify-between">
               <div>
@@ -372,7 +373,7 @@ const TeacherDashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#22c55e,0_0_40px_#3b82f6] shadow-sm p-6 border border-gray-100"
+            className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6 border border-gray-100"
           >
             <div className="flex items-center justify-between">
               <div>
@@ -395,7 +396,7 @@ const TeacherDashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#22c55e,0_0_40px_#3b82f6] shadow-sm p-6 border border-gray-100"
+            className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6 border border-gray-100"
           >
             <div className="flex items-center justify-between">
               <div>
@@ -414,13 +415,13 @@ const TeacherDashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#22c55e,0_0_40px_#3b82f6] shadow-sm p-6"
+            className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6"
           >
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-gray-800">Recent Lessons</h3>
+              <h3 className="text-xl font-bold text-black">Recent Lessons</h3>
               <button
                 onClick={() => setActiveTab('add-lessons')}
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                className="text-green-600 hover:text-green-800 cursor-pointer text-sm font-medium"
               >
                 View All
               </button>
@@ -428,7 +429,7 @@ const TeacherDashboard = () => {
 
             <div className="space-y-4 transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
               {Array.isArray(lessons) && lessons.slice(0, 3).map((lesson) => (
-                <div key={lesson._id} className="flex items-center justify-between p-4 transition-colors duration-300 hover:bg-green-300 bg-gray-50 rounded-lg">
+                <div key={lesson._id} className="flex items-center justify-between p-4 transition-colors duration-300 hover:bg-gray-300 rounded-md">
                   <div className="flex items-center">
                     <span className="text-2xl mr-3">{getCategoryEmoji(lesson.category)}</span>
                     <div>
@@ -437,12 +438,12 @@ const TeacherDashboard = () => {
                     </div>
                   </div>
                   <div className="flex space-x-2">
-                    <button className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors">
+                    <button className="p-2 text-blue-600 cursor-pointer hover:bg-blue-100 rounded-lg transition-colors">
                       <Eye size={16} />
                     </button>
                     <button
                       onClick={() => deleteLesson(lesson._id)}
-                      className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                      className="p-2 text-red-600 cursor-pointer hover:bg-red-100 rounded-lg transition-colors"
                     >
                       <Trash2 size={16} />
                     </button>
@@ -453,11 +454,11 @@ const TeacherDashboard = () => {
 
               {lessons.length === 0 && (
                 <div className="text-center py-8">
-                  <BookOpen className="mx-auto text-gray-400 mb-4" size={48} />
-                  <p className="text-gray-500">No lessons created yet</p>
+                  <BookOpen className="mx-auto text-black mb-4" size={48} />
+                  <p className="text-black">No lessons created yet</p>
                   <button
                     onClick={() => setActiveTab('add-lessons')}
-                    className="mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium"
+                    className="mt-2 text-emerald-600 hover:text-emerald-800 text-sm font-medium"
                   >
                     Create your first lesson
                   </button>
@@ -471,13 +472,13 @@ const TeacherDashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
-            className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#22c55e,0_0_40px_#3b82f6] shadow-sm p-6"
+            className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6"
           >
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-gray-800">Recent Quizzes</h3>
+              <h3 className="text-xl font-bold text-black">Recent Quizzes</h3>
               <button
                 onClick={() => setActiveTab('add-quiz')}
-                className="text-purple-600 hover:text-purple-800 text-sm font-medium"
+                className="text-emerald-600 hover:text-emerald-800 cursor-pointer text-sm font-medium"
               >
                 View All
               </button>
@@ -485,7 +486,7 @@ const TeacherDashboard = () => {
 
             <div className="space-y-4 transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
               {quizzes.slice(0, 3).map((quiz) => (
-                <div key={quiz._id} className="flex items-center justify-between p-4 bg-gray-50 transition-colors duration-300 hover:bg-green-300 rounded-lg">
+                <div key={quiz._id} className="flex items-center justify-between p-4 transition-colors duration-300 hover:bg-gray-300 rounded-md">
                   <div className="flex items-center">
                     <span className="text-2xl mr-3">{getCategoryEmoji(quiz.category)}</span>
                     <div>
@@ -494,12 +495,12 @@ const TeacherDashboard = () => {
                     </div>
                   </div>
                   <div className="flex space-x-2">
-                    <button className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors">
+                    <button className="p-2 text-blue-600 cursor-pointer hover:bg-blue-100 rounded-lg transition-colors">
                       <Eye size={16} />
                     </button>
                     <button
                       onClick={() => deleteQuiz(quiz._id)}
-                      className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                      className="p-2 text-red-600 cursor-pointer hover:bg-red-100 rounded-lg transition-colors"
                     >
                       <Trash2 size={16} />
                     </button>
@@ -509,11 +510,11 @@ const TeacherDashboard = () => {
 
               {quizzes.length === 0 && (
                 <div className="text-center py-8">
-                  <Edit className="mx-auto text-gray-400 mb-4" size={48} />
-                  <p className="text-gray-500">No quizzes created yet</p>
+                  <Edit className="mx-auto text-black mb-4" size={48} />
+                  <p className="text-black">No quizzes created yet</p>
                   <button
                     onClick={() => setActiveTab('add-quiz')}
-                    className="mt-2 text-purple-600 hover:text-purple-800 text-sm font-medium"
+                    className="mt-2 text-emerald-600 hover:text-emerald-800 text-sm font-medium"
                   >
                     Create your first quiz
                   </button>
@@ -528,7 +529,7 @@ const TeacherDashboard = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="bg-white rounded-xl shadow-sm p-6"
+          className="bg-[#fafaff] rounded-md shadow-lg p-6"
         >
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-bold text-gray-800">Top Performing Students</h3>
@@ -551,9 +552,9 @@ const TeacherDashboard = () => {
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Level</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-[#fafaff] divide-y divide-gray-200">
                 {Array.isArray(students) && students.slice(0, 5).map((student, index) => (
-                  <tr key={student._id} className="hover:bg-green-200 rounded-lg">
+                  <tr key={student._id} className="hover:bg-gray-200 rounded-md">
                     <td className="px-4 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${index === 0 ? 'bg-yellow-100 text-yellow-800' :
@@ -594,11 +595,14 @@ const TeacherDashboard = () => {
           {students.length === 0 && (
             <div className="text-center py-8">
               <Users className="mx-auto text-gray-400 mb-4" size={48} />
-              <p className="text-gray-500">No student data available</p>
+              <p className="text-black">No student data available</p>
             </div>
           )}
         </motion.div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   )
 }

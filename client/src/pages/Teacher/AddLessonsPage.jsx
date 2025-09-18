@@ -159,9 +159,9 @@ const AddLessonsPage = ({ onBack }) => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mb-4"></div>
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-black mb-4"></div>
                     <p className="text-lg text-gray-600">Loading lessons...</p>
                 </div>
             </div>
@@ -169,9 +169,9 @@ const AddLessonsPage = ({ onBack }) => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="min-h-screen bg-[#fafaff]">
             {/* Header */}
-            <header className="bg-white shadow-sm border-b border-blue-100">
+            <header className="bg-[#fafaff] shadow-lg">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <div className="flex items-center">
@@ -186,7 +186,7 @@ const AddLessonsPage = ({ onBack }) => {
                         </div>
                         <button
                             onClick={() => setShowCreateForm(true)}
-                            className="flex items-center bg-gradient-to-r from-green-500 to-blue-500 text-white px-4 py-2 rounded-lg hover:from-green-600 hover:to-blue-600 transition-colors"
+                            className="flex items-center bg-emerald-700 text-white px-4 py-2 rounded-md cursor-pointer hover:from-green-600 hover:to-blue-600 transition-colors"
                         >
                             <Plus size={20} className="mr-2" />
                             Create New Lesson
@@ -201,13 +201,13 @@ const AddLessonsPage = ({ onBack }) => {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-white rounded-xl shadow-sm p-6 mb-8"
+                        className="bg-[#fafaff] rounded-md shadow-lg p-6 mb-8"
                     >
                         <div className="flex items-center justify-between mb-6">
                             <h2 className="text-xl font-bold text-gray-800">
                                 {editingLesson ? 'Edit Lesson' : 'Create New Lesson'}
                             </h2>
-                            <button onClick={cancelForm} className="text-gray-500 hover:text-gray-700">
+                            <button onClick={cancelForm} className="text-black hover:text-black">
                                 <X size={20} />
                             </button>
                         </div>
@@ -215,7 +215,7 @@ const AddLessonsPage = ({ onBack }) => {
                             <div className="grid md:grid-cols-2 gap-6">
                                 {/* Title */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-sm font-medium text-black mb-2">
                                         Lesson Title *
                                     </label>
                                     <input
@@ -230,13 +230,13 @@ const AddLessonsPage = ({ onBack }) => {
 
                                 {/* Category */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-sm font-medium text-black mb-2">
                                         Category
                                     </label>
                                     <select
                                         value={formData.category}
                                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     >
                                         {categories.map((category) => (
                                             <option key={category.id} value={category.id}>
@@ -248,7 +248,7 @@ const AddLessonsPage = ({ onBack }) => {
 
                                 {/* Difficulty */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-sm font-medium text-black mb-2">
                                         Difficulty Level
                                     </label>
                                     <select
@@ -266,7 +266,7 @@ const AddLessonsPage = ({ onBack }) => {
 
                                 {/* Duration */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-sm font-medium text-black mb-2">
                                         Estimated Duration (minutes)
                                     </label>
                                     <input
@@ -283,7 +283,7 @@ const AddLessonsPage = ({ onBack }) => {
 
                                 {/* Eco Points */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-sm font-medium text-black mb-2">
                                         Eco Points Reward
                                     </label>
                                     <input
@@ -300,7 +300,7 @@ const AddLessonsPage = ({ onBack }) => {
 
                                 {/* Media URL */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-sm font-medium text-black mb-2">
                                         Media URL (optional)
                                     </label>
                                     <input
@@ -310,7 +310,7 @@ const AddLessonsPage = ({ onBack }) => {
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="https://example.com/image.jpg"
                                     />
-                                    <p className="text-sm text-gray-500 mt-1">
+                                    <p className="text-sm text-black mt-1">
                                         Leave empty to use a random environmental image
                                     </p>
                                 </div>
@@ -318,7 +318,7 @@ const AddLessonsPage = ({ onBack }) => {
 
                             {/* Description */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-medium text-black mb-2">
                                     Short Description
                                 </label>
                                 <textarea
@@ -332,7 +332,7 @@ const AddLessonsPage = ({ onBack }) => {
 
                             {/* Content */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-medium text-black mb-2">
                                     Lesson Content *
                                 </label>
                                 <textarea
@@ -346,17 +346,17 @@ const AddLessonsPage = ({ onBack }) => {
                             </div>
 
                             {/* Buttons */}
-                            <div className="flex justify-end space-x-4">
+                            <div className="flex gap-2 justify-end space-x-4">
                                 <button
                                     type="button"
                                     onClick={cancelForm}
-                                    className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                    className="px-6 py-2 border border-gray-300 text-black rounded-lg hover:bg-gray-50 transition-colors"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex items-center px-6 py-2 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg hover:from-green-600 hover:to-blue-600 transition-colors"
+                                    className="flex items-center px-6 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-600 transition-colors"
                                 >
                                     <Save size={16} className="mr-2" />
                                     {editingLesson ? 'Update Lesson' : 'Create Lesson'}
@@ -367,11 +367,11 @@ const AddLessonsPage = ({ onBack }) => {
                 )}
 
                 {/* Lessons List */}
-                <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div className="bg-[#fafaff] rounded-md shadow-lg overflow-hidden">
                     <div className="p-6 border-b border-gray-200">
                         <div className="flex items-center justify-between">
                             <h2 className="text-xl font-bold text-gray-800">Your Lessons ({lessons.length})</h2>
-                            <div className="text-sm text-gray-600">
+                            <div className="text-sm text-black font-light">
                                 💡 Students see new lessons instantly on their dashboards
                             </div>
                         </div>
@@ -381,12 +381,12 @@ const AddLessonsPage = ({ onBack }) => {
                         <div className="text-center py-12">
                             <BookOpen size={64} className="mx-auto mb-4 text-gray-300" />
                             <h3 className="text-xl font-bold text-gray-600 mb-2">No lessons created yet</h3>
-                            <p className="text-gray-500 mb-4">
+                            <p className="text-black mb-4">
                                 Create your first environmental lesson to get started!
                             </p>
                             <button
                                 onClick={() => setShowCreateForm(true)}
-                                className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg hover:from-green-600 hover:to-blue-600 transition-colors"
+                                className="inline-flex items-center px-4 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-600 transition-colors"
                             >
                                 <Plus size={16} className="mr-2" />
                                 Create First Lesson
@@ -417,7 +417,7 @@ const AddLessonsPage = ({ onBack }) => {
                                                 </span>
                                             </div>
                                             <p className="text-gray-600 mb-3 line-clamp-2">{lesson.description}</p>
-                                            <div className="flex items-center space-x-4 text-sm text-gray-500">
+                                            <div className="flex items-center space-x-4 text-sm text-black">
                                                 <span>⏱️ {lesson.estimated_duration} min</span>
                                                 <span>⭐ {lesson.eco_points_reward} points</span>
                                                 <span>📅 {new Date(lesson.createdAt).toLocaleDateString()}</span>
@@ -426,14 +426,14 @@ const AddLessonsPage = ({ onBack }) => {
                                         <div className="flex items-center space-x-2 ml-4">
                                             <button
                                                 onClick={() => handleEdit(lesson)}
-                                                className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors"
+                                                className="p-2 text-blue-600 cursor-pointer hover:bg-blue-100 rounded-lg transition-colors"
                                                 title="Edit lesson"
                                             >
                                                 <Edit size={16} />
                                             </button>
                                             <button
                                                 onClick={() => handleDelete(lesson._id)}
-                                                className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                                                className="p-2 text-red-600 cursor-pointer hover:bg-red-100 rounded-lg transition-colors"
                                                 title="Delete lesson"
                                             >
                                                 <Trash2 size={16} />

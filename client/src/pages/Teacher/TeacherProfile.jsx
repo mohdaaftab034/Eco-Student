@@ -73,7 +73,7 @@ const TeacherProfile = ({ onBack }) => {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6">
+        <div className="min-h-screen bg-[#fafaff] p-6">
             <div className="max-w-4xl mx-auto">
                 {/* Header */}
                 <motion.div
@@ -84,19 +84,19 @@ const TeacherProfile = ({ onBack }) => {
                     <div className="flex items-center">
                         <button
                             onClick={onBack}
-                            className="mr-4 p-2 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow"
+                            className="mr-4 p-2 rounded-md bg-white shadow-lg transition-transform"
                         >
                             <ArrowLeft size={20} className="text-gray-600" />
                         </button>
                         <div>
                             <h1 className="text-3xl font-bold text-gray-800 font-fredoka">Teacher Profile</h1>
-                            <p className="text-gray-600">Manage your professional information</p>
+                            <p className="text-black font-light">Manage your professional information</p>
                         </div>
                     </div>
 
                     <button
                         onClick={handleSignOut}
-                        className="flex items-center px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                        className="flex items-center px-4 py-2 bg-red-700 text-white rounded-md hover:bg-red-600 transition-colors"
                     >
                         <LogOut size={20} className="mr-2" />
                         Sign Out
@@ -105,12 +105,12 @@ const TeacherProfile = ({ onBack }) => {
 
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* Profile Information */}
-                    <div className="lg:col-span-2 space-y-6">
+                    <div className="lg:col-span-2 flex flex-col gap-3 space-y-6">
                         {/* Basic Info Card */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-white rounded-xl shadow-sm p-6"
+                            className="bg-white rounded-md shadow-lg p-6"
                         >
                             <div className="flex items-center justify-between mb-6">
                                 <h2 className="text-xl font-bold text-gray-800 flex items-center">
@@ -122,7 +122,7 @@ const TeacherProfile = ({ onBack }) => {
 
                                 <button
                                     onClick={() => (isEditing ? handleSaveProfile() : setIsEditing(true))}
-                                    className="flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transition-colors"
+                                    className="flex items-center px-4 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-600 transition-colors"
                                 >
                                     {isEditing ? <Save size={16} className="mr-2" /> : <Edit size={16} className="mr-2" />}
                                     {isEditing ? 'Save Changes' : 'Edit Profile'}
@@ -149,7 +149,7 @@ const TeacherProfile = ({ onBack }) => {
                                                         setProfileData({ ...profileData, [field.key]: e.target.value })
                                                     }
                                                     rows={3}
-                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                    className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                                 />
                                             ) : (
                                                 <input
@@ -158,7 +158,7 @@ const TeacherProfile = ({ onBack }) => {
                                                     onChange={(e) =>
                                                         setProfileData({ ...profileData, [field.key]: e.target.value })
                                                     }
-                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                    className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                                 />
                                             )
                                         ) : (
@@ -176,7 +176,7 @@ const TeacherProfile = ({ onBack }) => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
-                            className="bg-white rounded-xl shadow-sm p-6"
+                            className="bg-white rounded-md shadow-lg p-6"
                         >
                             <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
                                 <div className="bg-green-100 p-2 rounded-lg mr-3">
@@ -187,14 +187,14 @@ const TeacherProfile = ({ onBack }) => {
 
                             <div className="grid md:grid-cols-3 gap-6">
                                 <div className="text-center p-4 bg-blue-50 rounded-lg">
-                                    <BookOpen className="mx-auto text-blue-600 mb-2" size={32} />
-                                    <div className="text-2xl font-bold text-blue-600">{teachingStats.totalLessons}</div>
+                                    <BookOpen className="mx-auto text-green-600 mb-2" size={32} />
+                                    <div className="text-2xl font-bold text-green-600">{teachingStats.totalLessons}</div>
                                     <div className="text-sm text-gray-600">Total Lessons</div>
                                 </div>
 
                                 <div className="text-center p-4 bg-purple-50 rounded-lg">
-                                    <Award className="mx-auto text-purple-600 mb-2" size={32} />
-                                    <div className="text-2xl font-bold text-purple-600">{teachingStats.totalQuizzes}</div>
+                                    <Award className="mx-auto text-green-600 mb-2" size={32} />
+                                    <div className="text-2xl font-bold text-green-600">{teachingStats.totalQuizzes}</div>
                                     <div className="text-sm text-gray-600">Total Quizzes</div>
                                 </div>
 
@@ -205,20 +205,20 @@ const TeacherProfile = ({ onBack }) => {
                                 </div>
 
                                 <div className="text-center p-4 bg-orange-50 rounded-lg">
-                                    <BarChart3 className="mx-auto text-orange-600 mb-2" size={32} />
-                                    <div className="text-2xl font-bold text-orange-600">{teachingStats.averageScore}%</div>
+                                    <BarChart3 className="mx-auto text-green-600 mb-2" size={32} />
+                                    <div className="text-2xl font-bold text-green-600">{teachingStats.averageScore}%</div>
                                     <div className="text-sm text-gray-600">Avg. Score</div>
                                 </div>
 
                                 <div className="text-center p-4 bg-indigo-50 rounded-lg">
-                                    <Calendar className="mx-auto text-indigo-600 mb-2" size={32} />
-                                    <div className="text-2xl font-bold text-indigo-600">{teachingStats.lessonsThisMonth}</div>
+                                    <Calendar className="mx-auto text-green-600 mb-2" size={32} />
+                                    <div className="text-2xl font-bold text-green-600">{teachingStats.lessonsThisMonth}</div>
                                     <div className="text-sm text-gray-600">This Month</div>
                                 </div>
 
                                 <div className="text-center p-4 bg-pink-50 rounded-lg">
-                                    <Users className="mx-auto text-pink-600 mb-2" size={32} />
-                                    <div className="text-2xl font-bold text-pink-600">{teachingStats.activeStudents}</div>
+                                    <Users className="mx-auto text-green-600 mb-2" size={32} />
+                                    <div className="text-2xl font-bold text-green-600">{teachingStats.activeStudents}</div>
                                     <div className="text-sm text-gray-600">Active Students</div>
                                 </div>
                             </div>
@@ -226,12 +226,12 @@ const TeacherProfile = ({ onBack }) => {
                     </div>
 
                     {/* Sidebar */}
-                    <div className="space-y-6">
+                    <div className="space-y-6 flex flex-col gap-3">
                         {/* Profile Avatar */}
                         <motion.div
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="bg-white rounded-xl shadow-sm p-6 text-center"
+                            className="bg-white rounded-md shadow-lg p-6 text-center"
                         >
                             <div className="w-24 h-24 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto mb-4 flex items-center justify-center">
                                 <span className="text-white text-3xl font-bold">{profileData.name.charAt(0)}</span>
@@ -246,7 +246,7 @@ const TeacherProfile = ({ onBack }) => {
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.1 }}
-                            className="bg-white rounded-xl shadow-sm p-6"
+                            className="bg-white rounded-md shadow-lg p-6"
                         >
                             <h3 className="text-lg font-bold text-gray-800 mb-4">Recent Achievements</h3>
                             <div className="space-y-3">
@@ -267,7 +267,7 @@ const TeacherProfile = ({ onBack }) => {
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.2 }}
-                            className="bg-white rounded-xl shadow-sm p-6"
+                            className="bg-white rounded-md shadow-lg p-6"
                         >
                             <h3 className="text-lg font-bold text-gray-800 mb-4">Quick Actions</h3>
                             <div className="space-y-3">

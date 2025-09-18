@@ -1,28 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-    User,
-    School,
-    GraduationCap,
-    Camera,
-    Target,
-    Heart,
-    ArrowRight,
-    ArrowLeft,
-    CheckCircle,
-    Star,
-    Sparkles,
-    Globe,
-    Leaf,
-    Save
+    User, School, GraduationCap, Camera, Target, Heart,
+    ArrowRight, ArrowLeft, CheckCircle, Star, Sparkles,
+    Globe, Leaf, Save
 } from 'lucide-react'
+// import { useAuth } from '../../hooks/useAuth'
+// import { lumi } from '../../lib/lumi'
 import toast from 'react-hot-toast'
 import { userDataContext } from '../../Context/UserContext'
+import { useNavigate } from 'react-router-dom'
 
 const CreateStudentProfile = ({ onProfileCreated, onCancel }) => {
-    const { user, axios, token } = useContext(userDataContext);
+    const { user, axios, token } = useContext(userDataContext)
     const [currentStep, setCurrentStep] = useState(1)
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [student, setStudent] = useState(null)
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         name: '',
@@ -34,7 +28,7 @@ const CreateStudentProfile = ({ onProfileCreated, onCancel }) => {
         environmental_goal: ''
     })
 
-    // Available avatar options
+    // Avatar options
     const avatarOptions = [
         'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
         'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
@@ -58,14 +52,13 @@ const CreateStudentProfile = ({ onProfileCreated, onCancel }) => {
         { value: 'oceans', label: 'Ocean Conservation', icon: '🌊' }
     ]
 
-    // Grade options
     const gradeOptions = [
         '1st Grade', '2nd Grade', '3rd Grade', '4th Grade', '5th Grade',
         '6th Grade', '7th Grade', '8th Grade', '9th Grade', '10th Grade',
         '11th Grade', '12th Grade'
     ]
 
-    // Set default avatar if none selected
+    // Default avatar
     useEffect(() => {
         if (!formData.avatar) {
             setFormData(prev => ({ ...prev, avatar: avatarOptions[0] }))
@@ -76,7 +69,7 @@ const CreateStudentProfile = ({ onProfileCreated, onCancel }) => {
         setFormData(prev => ({ ...prev, [field]: value }))
     }
 
-    const validateStep = step => {
+    const validateStep = (step) => {
         switch (step) {
             case 1:
                 return formData.name.trim().length >= 2
@@ -85,7 +78,7 @@ const CreateStudentProfile = ({ onProfileCreated, onCancel }) => {
             case 3:
                 return formData.avatar.length > 0
             case 4:
-                return true // Optional fields
+                return true
             default:
                 return true
         }
@@ -120,7 +113,7 @@ const CreateStudentProfile = ({ onProfileCreated, onCancel }) => {
                 bio: formData.bio.trim(),
                 favorite_subject: formData.favorite_subject,
                 environmental_goal: formData.environmental_goal.trim(),
-                user_id: user._id || studend._id,
+                user_id: user._id,
                 eco_points: 100, // Welcome bonus
                 level: 1,
                 badges: [
@@ -138,16 +131,19 @@ const CreateStudentProfile = ({ onProfileCreated, onCancel }) => {
                 updated_at: new Date().toISOString()
             }
 
+            //  API call using axios
+            const res = await axios.post(
+                `/api/students`,
+                studentData,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}` // <- token ko context/localStorage se lena
+                    }
+                }
+            )
 
-            const res = await axios.put(`/api/students/${user._id}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify(studentData)
-            })
-
-            const data = await res.json();
+            const data = res.data
 
             // Show success message
             toast.success('🎉 Welcome to EcoLearn! Your profile has been created!', {
@@ -160,7 +156,10 @@ const CreateStudentProfile = ({ onProfileCreated, onCancel }) => {
                 }
             })
 
-            onProfileCreated(data.item);
+            // Call the callback to update parent component
+            setStudent(data.student)
+            navigate('/profile')
+
         } catch (error) {
             console.error('Failed to create student profile:', error)
             toast.error('Failed to create profile. Please try again.')
@@ -168,6 +167,9 @@ const CreateStudentProfile = ({ onProfileCreated, onCancel }) => {
             setIsSubmitting(false)
         }
     }
+
+
+
 
     const renderStepContent = () => {
         switch (currentStep) {

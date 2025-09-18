@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Calendar, Users, BarChart3, School, Target, LogOut, Plus, MapPin, TrendingUp } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { userDataContext } from '../Context/UserContext'
+import Footer from '../components/Footer'
 
 const NGODashboard = () => {
   const { user, axios, userSignOut } = useContext(userDataContext)
@@ -186,30 +187,30 @@ const NGODashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#fafaff] flex items-center justify-center">
         <div className="text-center flex flex-col justify-center items-center gap-5">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-purple-500 mb-4"></div>
-          <p className="text-lg text-gray-600">Loading NGO dashboard...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-black mb-4"></div>
+          <p className="text-lg text-black">Loading NGO dashboard...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
+    <div className="min-h-screen bg-[#fafaff]">
       {/* Header */}
-      <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-purple-100">
+      <header className="bg-[#fafaff] sticky top-0 z-50 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center cursor-pointer">
-              <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-2 rounded-lg mr-3">
+              <div className="bg-black p-2 rounded-lg mr-3">
                 <Target className="text-white" size={24} />
               </div>
-              <h1 className="text-2xl font-bold text-gray-800 font-fredoka">EcoLearn <span className='text-green-500 hover:text-green-700'>NGO</span></h1>
+              <h1 className="text-2xl font-bold text-gray-800 font-fredoka">EcoLearn <span className='text-green-800 '>NGO</span></h1>
             </div>
 
-            <div className="flex items-center space-x-4">
-              <div className="text-sm text-gray-600">
+            <div className="flex gap-3 items-center space-x-4">
+              <div className="text-sm text-black">
                 Welcome, {user?.ngoName}
               </div>
               <button
@@ -229,14 +230,14 @@ const NGODashboard = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r transition-shadow duration-300 hover:shadow-[0_0_20px_#ec4899,0_0_40px_#3b82f6] from-purple-500 via-pink-500 to-red-500 rounded-2xl p-6 mb-8 text-white"
+          className="bg-[#fafaff] rounded-md transition-transform duration-300 ease-in-out hover:scale-105 p-6 mb-8 text-black shadow-lg"
         >
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-3xl font-bold mb-2 font-fredoka">
                 NGO Impact Dashboard 🌍
               </h2>
-              <p className="text-lg opacity-90">
+              <p className="text-lg font-light opacity-90">
                 Create campaigns, organize events, and make a real difference in environmental education
               </p>
             </div>
@@ -252,16 +253,16 @@ const NGODashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#ec4899,0_0_40px_#3b82f6] shadow-sm p-6 border border-gray-100"
+            className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 ease-in-out shadow-lg p-6"
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Active Campaigns</p>
-                <p className="text-3xl font-bold text-purple-600">
+                <p className="text-sm font-medium text-black">Active Campaigns</p>
+                <p className="text-3xl font-bold text-green-800">
                   {campaigns.filter(c => c?.status === 'active').length}
                 </p>
               </div>
-              <Calendar className="text-purple-500" size={32} />
+              <Calendar className="text-emerald-700" size={32} />
             </div>
           </motion.div>
 
@@ -269,14 +270,14 @@ const NGODashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#ec4899,0_0_40px_#3b82f6] shadow-sm p-6 border border-gray-100"
+            className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 ease-in-out shadow-lg p-6"
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Challenges</p>
-                <p className="text-3xl font-bold text-pink-600">{challenges.length}</p>
+                <p className="text-sm font-medium text-black">Total Challenges</p>
+                <p className="text-3xl font-bold text-emerald-700">{challenges.length}</p>
               </div>
-              <Target className="text-pink-500" size={32} />
+              <Target className="text-emerald-700" size={32} />
             </div>
           </motion.div>
 
@@ -284,16 +285,16 @@ const NGODashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#ec4899,0_0_40px_#3b82f6] shadow-sm p-6 border border-gray-100"
+            className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 ease-in-out shadow-lg p-6"
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Participants</p>
-                <p className="text-3xl font-bold text-green-600">
+                <p className="text-sm font-medium text-black">Total Participants</p>
+                <p className="text-3xl font-bold text-emerald-700">
                   {campaigns.reduce((sum, c) => sum + c?.current_participants, 0)}
                 </p>
               </div>
-              <Users className="text-green-500" size={32} />
+              <Users className="text-emerald-700" size={32} />
             </div>
           </motion.div>
 
@@ -301,22 +302,22 @@ const NGODashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#ec4899,0_0_40px_#3b82f6] shadow-sm p-6 border border-gray-100"
+            className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 ease-in-out shadow-lg p-6"
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Partner Schools</p>
-                <p className="text-3xl font-bold text-orange-600">
+                <p className="text-sm font-medium text-black">Partner Schools</p>
+                <p className="text-3xl font-bold text-emerald-700">
                   {new Set(campaigns.flatMap(c => c?.participating_schools)).size}
                 </p>
               </div>
-              <School className="text-orange-500" size={32} />
+              <School className="text-emerald-700" size={32} />
             </div>
           </motion.div>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="bg-white rounded-xl sticky z-50 top-[70px] shadow-sm mb-8 overflow-hidden">
+        <div className="bg-[#fafaff] rounded-md sticky z-50 top-[70px] shadow-lg mb-8 overflow-hidden">
           <div className="flex overflow-x-auto">
             {tabs.map((tab) => {
               const Icon = tab.icon
@@ -325,8 +326,8 @@ const NGODashboard = () => {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center cursor-pointer px-6 py-4 whitespace-nowrap transition-colors ${activeTab === tab.id
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? 'bg-black text-white'
+                    : 'text-black hover:bg-gray-100'
                     }`}
                 >
                   <Icon size={20} className="mr-2" />
@@ -343,10 +344,10 @@ const NGODashboard = () => {
           {activeTab === 'campaigns' && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-gray-800 font-fredoka">Manage Campaigns</h3>
+                <h3 className="text-2xl font-bold text-black font-fredoka">Manage Campaigns</h3>
                 <button
                   onClick={() => setShowCreateCampaign(true)}
-                  className="flex items-center bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-colors"
+                  className="flex items-center bg-emerald-700 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-colors"
                 >
                   <Plus size={20} className="mr-2" />
                   Create Campaign
@@ -358,7 +359,7 @@ const NGODashboard = () => {
                   <motion.div
                     key={campaign?._id}
                     whileHover={{ scale: 1.02 }}
-                    className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#ec4899,0_0_40px_#3b82f6] shadow-sm border border-gray-100 p-6"
+                    className="bg-[#fafaff] rounded-md shadow-lg border-gray-300 border-[1px] p-6"
                   >
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-3xl">{getCategoryEmoji(campaign?.category)}</span>
@@ -368,7 +369,7 @@ const NGODashboard = () => {
                     </div>
 
                     <h4 className="text-xl font-bold text-gray-800 mb-2">{campaign?.title}</h4>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">{campaign?.description}</p>
+                    <p className="text-black text-sm mb-4 line-clamp-3">{campaign?.description}</p>
 
                     <div className="space-y-2 mb-4">
                       <div className="flex items-center text-sm text-gray-500">
@@ -386,13 +387,13 @@ const NGODashboard = () => {
                     </div>
 
                     <div className="mb-4">
-                      <div className="flex justify-between text-sm text-gray-600 mb-1">
+                      <div className="flex justify-between text-sm text-black mb-1">
                         <span>Progress</span>
                         <span>{Math.round((campaign?.current_participants / campaign?.target_participants) * 100)}%</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
                         <div
-                          className="bg-gradient-to-r from-purple-400 to-pink-500 h-2 rounded-full"
+                          className="bg-emerald-700 h-2 rounded-full"
                           style={{ width: `${Math.min((campaign?.current_participants / campaign?.target_participants) * 100, 100)}%` }}
                         ></div>
                       </div>
@@ -432,7 +433,7 @@ const NGODashboard = () => {
                 <h3 className="text-2xl font-bold text-gray-800 font-fredoka">Events & Challenges</h3>
                 <button
                   onClick={() => setShowCreateEvent(true)}
-                  className="flex items-center bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-lg hover:from-orange-600 hover:to-red-600 transition-colors"
+                  className="flex items-center bg-[#fafaff] text-white px-4 py-2 rounded-md shadow-lg transition-colors"
                 >
                   <Plus size={20} className="mr-2" />
                   Create Challenge
@@ -444,7 +445,7 @@ const NGODashboard = () => {
                   <motion.div
                     key={challenge?._id}
                     whileHover={{ scale: 1.02 }}
-                    className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#ec4899,0_0_40px_#3b82f6] shadow-sm border border-gray-100 p-6"
+                    className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 shadow-lg border border-gray-100 p-6"
                   >
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-2xl">{getCategoryEmoji(challenge?.category)}</span>
@@ -452,7 +453,7 @@ const NGODashboard = () => {
                     </div>
 
                     <h4 className="text-lg font-bold text-gray-800 mb-2">{challenge?.title}</h4>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">{challenge?.description}</p>
+                    <p className="text-black text-sm mb-4 line-clamp-3">{challenge?.description}</p>
 
                     <div className="space-y-2 mb-4">
                       <div className="flex justify-between text-sm">
@@ -470,16 +471,16 @@ const NGODashboard = () => {
                     </div>
 
                     <div className="mb-4">
-                      <div className="text-sm text-gray-600 mb-1">Participation Rate</div>
+                      <div className="text-sm text-black mb-1">Participation Rate</div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
                         <div
-                          className="bg-gradient-to-r from-orange-400 to-red-500 h-2 rounded-full"
+                          className="bg-gradient-to-r from-emerald-400 to-emerald-500 h-2 rounded-full"
                           style={{ width: `${Math.min((challenge?.participants.length / 50) * 100, 100)}%` }}
                         ></div>
                       </div>
                     </div>
 
-                    <button className="w-full bg-gradient-to-r from-orange-100 to-red-100 text-orange-700 py-2 rounded-lg text-sm hover:from-orange-200 hover:to-red-200 transition-colors">
+                    <button className="w-full bg-emerald-200 py-2 rounded-lg text-sm hover:from-orange-200 hover:to-red-200 transition-colors">
                       View Participants
                     </button>
                   </motion.div>
@@ -494,11 +495,11 @@ const NGODashboard = () => {
               <h3 className="text-2xl font-bold text-gray-800 mb-6 font-fredoka">Participation Tracking</h3>
 
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#ec4899,0_0_40px_#3b82f6] shadow-sm p-6">
+                <div className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6">
                   <h4 className="text-lg font-bold text-gray-800 mb-4">Campaign Participation</h4>
                   <div className="space-y-4">
                     {campaigns.slice(0, 5).map((campaign) => (
-                      <div key={campaign?._id} className="flex items-center hover:bg-pink-50 justify-between p-3 bg-gray-50 rounded-lg">
+                      <div key={campaign?._id} className="flex items-center hover:bg-gray-100 justify-between p-3 bg-[#fafaff] rounded-lg">
                         <div>
                           <h5 className="font-medium text-gray-800">{campaign?.title}</h5>
                           <p className="text-sm text-gray-500">{campaign?.participating_schools.length} schools</p>
@@ -512,7 +513,7 @@ const NGODashboard = () => {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#ec4899,0_0_40px_#3b82f6] shadow-sm p-6">
+                <div className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6">
                   <h4 className="text-lg font-bold text-gray-800 mb-4">Challenge Completion</h4>
                   <div className="space-y-4">
                     {challenges?.slice(0, 5).map((challenge) => {
@@ -551,7 +552,7 @@ const NGODashboard = () => {
               <h3 className="text-2xl font-bold text-gray-800 mb-6 font-fredoka">Impact Reports</h3>
 
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#ec4899,0_0_40px_#3b82f6] shadow-sm p-6">
+                <div className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h4 className="text-lg font-bold text-gray-800">Environmental Impact</h4>
                     <TrendingUp className="text-green-500" size={24} />
@@ -560,22 +561,22 @@ const NGODashboard = () => {
                   <div className="space-y-4">
                     <div className="text-center p-4 bg-green-50 rounded-lg">
                       <div className="text-3xl font-bold text-green-600">2,450</div>
-                      <div className="text-sm text-gray-600">Trees Planted</div>
+                      <div className="text-sm text-black">Trees Planted</div>
                     </div>
 
                     <div className="text-center p-4 bg-blue-50 rounded-lg">
                       <div className="text-3xl font-bold text-blue-600">5.2 tons</div>
-                      <div className="text-sm text-gray-600">Waste Collected</div>
+                      <div className="text-sm text-black">Waste Collected</div>
                     </div>
 
                     <div className="text-center p-4 bg-purple-50 rounded-lg">
                       <div className="text-3xl font-bold text-purple-600">12,800</div>
-                      <div className="text-sm text-gray-600">Students Educated</div>
+                      <div className="text-sm text-black">Students Educated</div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#ec4899,0_0_40px_#3b82f6] shadow-sm p-6">
+                <div className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6">
                   <h4 className="text-lg font-bold text-gray-800 mb-4">Campaign Performance</h4>
                   <div className="space-y-4">
                     {campaigns?.slice(0, 4).map((campaign) => {
@@ -599,7 +600,7 @@ const NGODashboard = () => {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-xl transition-shadow duration-300 hover:shadow-[0_0_20px_#ec4899,0_0_40px_#3b82f6] shadow-sm p-6">
+                <div className="bg-[#fafaff] rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6">
                   <h4 className="text-lg font-bold text-gray-800 mb-4">Monthly Growth</h4>
                   <div className="space-y-4">
                     <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
@@ -632,10 +633,10 @@ const NGODashboard = () => {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <h3 className="text-2xl font-bold text-gray-800 mb-6 font-fredoka">School Partnerships</h3>
 
-              <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+              <div className="bg-[#fafaff] rounded-xl shadow-sm overflow-hidden">
                 <div className="p-6 bg-gradient-to-r from-indigo-50 to-purple-50">
                   <h4 className="text-lg font-bold text-gray-800 mb-2">Partner Schools</h4>
-                  <p className="text-gray-600">Collaborate with schools to maximize environmental education impact</p>
+                  <p className="text-black">Collaborate with schools to maximize environmental education impact</p>
                 </div>
 
                 <div className="p-6">
@@ -653,17 +654,17 @@ const NGODashboard = () => {
 
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
-                              <span className="text-gray-600">Active Campaigns:</span>
+                              <span className="text-black">Active Campaigns:</span>
                               <span className="font-medium">{schoolCampaigns.length}</span>
                             </div>
 
                             <div className="flex justify-between">
-                              <span className="text-gray-600">Total Participants:</span>
+                              <span className="text-black">Total Participants:</span>
                               <span className="font-medium text-green-600">{totalParticipants}</span>
                             </div>
 
                             <div className="flex justify-between">
-                              <span className="text-gray-600">Partnership Since:</span>
+                              <span className="text-black">Partnership Since:</span>
                               <span className="font-medium">2024</span>
                             </div>
                           </div>
@@ -685,7 +686,7 @@ const NGODashboard = () => {
       {/* Create Campaign Modal */}
       {showCreateCampaign && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-[#fafaff] rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <h3 className="text-xl font-bold text-gray-800 mb-6">Create New Campaign</h3>
 
@@ -864,7 +865,7 @@ const NGODashboard = () => {
                   <button
                     type="button"
                     onClick={() => setShowCreateCampaign(false)}
-                    className="flex-1 bg-gray-500 text-white py-3 rounded-lg font-medium hover:bg-gray-600 transition-colors"
+                    className="flex-1 bg-gray-500 text-white py-3 rounded-lg font-medium hover:bg-black transition-colors"
                   >
                     Cancel
                   </button>
@@ -878,7 +879,7 @@ const NGODashboard = () => {
       {/* Create Event/Challenge Modal */}
       {showCreateEvent && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-[#fafaff] rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <h3 className="text-xl font-bold text-gray-800 mb-6">Create New Challenge</h3>
 
@@ -1005,7 +1006,7 @@ const NGODashboard = () => {
                   <button
                     type="button"
                     onClick={() => setShowCreateEvent(false)}
-                    className="flex-1 bg-gray-500 text-white py-3 rounded-lg font-medium hover:bg-gray-600 transition-colors"
+                    className="flex-1 bg-gray-500 text-white py-3 rounded-lg font-medium hover:bg-black transition-colors"
                   >
                     Cancel
                   </button>
@@ -1015,6 +1016,9 @@ const NGODashboard = () => {
           </div>
         </div>
       )}
+
+      {/* Footer */}
+      <Footer />
     </div>
   )
 

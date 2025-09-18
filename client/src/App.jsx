@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { userDataContext } from "./Context/UserContext";
+// import SmoothScroll from "./components/SmoothScroll";
 
 import LandingPage from "./pages/LandingPage";
 import TeacherLogin from "./pages/TeacherLogin";
@@ -10,10 +11,12 @@ import StudentLogin from "./pages/StudentLogin";
 import StudentDashboard from "./pages/StudentDashboard";
 import NGODashboard from "./pages/NGODashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
-import StudentProfile from "./pages/Student/StudentProfile";
 import CreateStudentProfile from "./pages/Student/CreateProfile";
+import AdminDashboard from "./pages/AdminDashboard";
+import AboutPage from "./components/AboutPage";
+import StudentProfile from "./pages/Student/StudentProfile.jsx";
 
-// ✅ Role detection
+//  Role detection
 const getUserRole = (user) => {
   if (!user) return null;
 
@@ -73,14 +76,17 @@ function App() {
   if (!isAuthenticated) {
     return (
       <>
-        <Toaster position="top-right" />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/teacher-login" element={<TeacherLogin />} />
-          <Route path="/ngo-login" element={<NGOLogin />} />
-          <Route path="/student-login" element={<StudentLogin />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        
+          <Toaster position="top-right" />
+          <Routes>
+            <Route path="/" element={<AboutPage />} />
+            <Route path="/page" element={<LandingPage />} />
+            <Route path="/teacher-login" element={<TeacherLogin />} />
+            <Route path="/ngo-login" element={<NGOLogin />} />
+            <Route path="/student-login" element={<StudentLogin />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+       
       </>
     );
   }
@@ -91,19 +97,23 @@ function App() {
 
   return (
     <>
-      <Toaster position="top-right" />
-      <Routes>
-        {/* All role dashboards */}
-        <Route path="/student" element={<StudentDashboard />} />
-        <Route path="/teacher" element={<TeacherDashboard />} />
-        <Route path="/ngo" element={<NGODashboard />} />
-        <Route path="/create-profile" element={<CreateStudentProfile/>} />
-        <Route path="/profile" element={<StudentProfile/>} />
 
-        {/* Default redirect based on role */}
-        <Route path="/" element={<Navigate to={`/${userRole}`} replace />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <Toaster position="top-right" />
+      
+        <Routes>
+          {/* All role dashboards */}
+          <Route path="/student" element={<StudentDashboard />} />
+          <Route path="/teacher" element={<TeacherDashboard />} />
+          <Route path="/ngo" element={<NGODashboard />} />
+          <Route path="/create-profile" element={<CreateStudentProfile />} />
+          <Route path="/profile" element={<StudentProfile />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+
+          {/* Default redirect based on role */}
+          <Route path="/" element={<Navigate to={`/${userRole}`} replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      
     </>
   );
 }

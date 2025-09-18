@@ -4,6 +4,7 @@ import { ArrowLeft, Users, MapPin, Calendar, Globe, Heart, Star, Target } from '
 import toast from 'react-hot-toast'
 import { useContext } from 'react'
 import { userDataContext } from '../../Context/UserContext'
+import Footer from '../../components/Footer'
 
 const NGOsPage = ({ onBack }) => {
     const { user, axios } = useContext(userDataContext);
@@ -104,8 +105,8 @@ const NGOsPage = ({ onBack }) => {
 
     const fetchCampaigns = async () => {
         try {
-            const res = await axios.get('/api/campaigns')
-            setCampaigns(res.data.list || [])
+            const res = await axios.get('/api/content/campaigns')
+            setCampaigns(res.data || [])
         } catch (error) {
             console.error('Failed to fetch campaigns:', error)
         } finally {
@@ -163,7 +164,7 @@ const NGOsPage = ({ onBack }) => {
             case 'planning':
                 return 'bg-blue-100 text-blue-800'
             case 'completed':
-                return 'bg-gray-100 text-gray-800'
+                return 'bg-gray-100 text-black'
             default:
                 return 'bg-yellow-100 text-yellow-800'
         }
@@ -190,9 +191,9 @@ const NGOsPage = ({ onBack }) => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
+            <div className="min-h-screen bg-[#fafaff] flex items-center justify-center">
                 <div className="text-center flex flex-col items-center justify-center gap-5">
-                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-500 mb-4"></div>
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-black mb-4"></div>
                     <p className="text-lg text-gray-600">Loading NGOs...</p>
                 </div>
             </div>
@@ -203,9 +204,9 @@ const NGOsPage = ({ onBack }) => {
         const ngoCampaigns = campaigns.filter(c => c.ngo_id === selectedNGO.id)
 
         return (
-            <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+            <div className="min-h-screen bg-[#fafaff]">
                 {/* Header */}
-                <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-green-100">
+                <header className="bg-[#fafaff] sticky top-0 z-50 shadow-sm border-b border-green-100">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex items-center h-16">
                             <button
@@ -215,7 +216,7 @@ const NGOsPage = ({ onBack }) => {
                                 <ArrowLeft size={20} className="mr-2" />
                                 Back to NGOs
                             </button>
-                            <h1 className="text-2xl font-bold text-gray-800 font-fredoka">{selectedNGO.name}</h1>
+                            <h1 className="text-2xl font-bold text-black font-fredoka">{selectedNGO.name}</h1>
                         </div>
                     </div>
                 </header>
@@ -225,9 +226,9 @@ const NGOsPage = ({ onBack }) => {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-white rounded-2xl shadow-lg overflow-hidden mb-8"
+                        className="bg-[#fafaff] rounded-md shadow-lg overflow-hidden mb-8"
                     >
-                        <div className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-500 p-6 text-white">
+                        <div className="bg-[#fafaff] border rounded-md border-gray-300  p-6 text-black">
                             <div className="flex items-center">
                                 <img
                                     src={selectedNGO.logo}
@@ -258,26 +259,26 @@ const NGOsPage = ({ onBack }) => {
                         </div>
 
                         <div className="p-6">
-                            <h3 className="text-xl font-bold text-gray-800 mb-3 font-fredoka">Mission</h3>
+                            <h3 className="text-xl font-bold text-black mb-3 font-fredoka">Mission</h3>
                             <p className="text-gray-600 mb-6">{selectedNGO.mission}</p>
 
                             <div className="grid md:grid-cols-3 gap-6 mb-6">
-                                <div className="text-center p-4 bg-green-50 rounded-lg">
+                                <div className="text-center p-4 bg-[#fafaff] rounded-md shadow-lg transition-transform duration-300 hover:scale-105 ease-in-out">
                                     <div className="text-2xl font-bold text-green-600">{selectedNGO.campaigns_count}</div>
                                     <div className="text-sm text-green-800">Active Campaigns</div>
                                 </div>
-                                <div className="text-center p-4 bg-blue-50 rounded-lg">
+                                <div className="text-center p-4 bg-[#fafaff] rounded-md shadow-lg transition-transform duration-300 hover:scale-105 ease-in-out">
                                     <div className="text-2xl font-bold text-blue-600">{selectedNGO.total_participants.toLocaleString()}</div>
                                     <div className="text-sm text-blue-800">Total Participants</div>
                                 </div>
-                                <div className="text-center p-4 bg-purple-50 rounded-lg">
+                                <div className="text-center p-4 bg-[#fafaff] rounded-md shadow-lg transition-transform duration-300 hover:scale-105 ease-in-out">
                                     <div className="text-2xl font-bold text-purple-600">{selectedNGO.impact_stats.students_educated.toLocaleString()}</div>
                                     <div className="text-sm text-purple-800">Students Educated</div>
                                 </div>
                             </div>
 
                             <div>
-                                <h4 className="font-bold text-gray-800 mb-3">Focus Areas</h4>
+                                <h4 className="font-bold text-black mb-3">Focus Areas</h4>
                                 <div className="flex flex-wrap gap-2">
                                     {selectedNGO.focus_areas.map((area, index) => (
                                         <span
@@ -297,9 +298,9 @@ const NGOsPage = ({ onBack }) => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="bg-white rounded-xl shadow-sm p-6 mb-8"
+                        className="bg-[#fafaff] rounded-md shadow-lg p-6 mb-8"
                     >
-                        <h3 className="text-xl font-bold text-gray-800 mb-6 font-fredoka">Environmental Impact 🌍</h3>
+                        <h3 className="text-xl font-bold text-black mb-6 font-fredoka">Environmental Impact 🌍</h3>
                         <div className="grid md:grid-cols-3 gap-6">
                             <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg">
                                 <div className="text-4xl mb-2">🌳</div>
@@ -324,9 +325,9 @@ const NGOsPage = ({ onBack }) => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="bg-white rounded-xl shadow-sm p-6"
+                        className="bg-[#fafaff] rounded-md shadow-lg p-6"
                     >
-                        <h3 className="text-xl font-bold text-gray-800 mb-6 font-fredoka">Available Campaigns 🎯</h3>
+                        <h3 className="text-xl font-bold text-black mb-6 font-fredoka">Available Campaigns 🎯</h3>
 
                         {ngoCampaigns.length > 0 ? (
                             <div className="grid md:grid-cols-2 gap-6">
@@ -345,7 +346,7 @@ const NGOsPage = ({ onBack }) => {
                                             </span>
                                         </div>
 
-                                        <h4 className="text-lg font-bold text-gray-800 mb-2">{campaign.title}</h4>
+                                        <h4 className="text-lg font-bold text-black mb-2">{campaign.title}</h4>
                                         <p className="text-gray-600 text-sm mb-4 line-clamp-3">{campaign.description}</p>
 
                                         <div className="space-y-2 mb-4">
@@ -406,19 +407,19 @@ const NGOsPage = ({ onBack }) => {
 
     // NGO List View
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+        <div className="min-h-screen bg-[#fafaff]">
             {/* Header */}
-            <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-green-100">
+            <header className="bg-[#fafaff] sticky top-0 z-50 shadow-lg ">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center h-16">
                         <button
                             onClick={onBack}
-                            className="flex items-center text-green-500 hover:text-green-700 transition-colors mr-4"
+                            className="flex items-center text-green-800 hover:text-green-700 transition-colors mr-4"
                         >
                             <ArrowLeft size={20} className="mr-2" />
                             Back to Dashboard
                         </button>
-                        <h1 className="text-2xl font-bold text-gray-800 font-fredoka">Environmental NGOs</h1>
+                        <h1 className="text-2xl font-bold text-black font-fredoka">Environmental NGOs</h1>
                     </div>
                 </div>
             </header>
@@ -428,12 +429,12 @@ const NGOsPage = ({ onBack }) => {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 rounded-2xl p-6 mb-8 text-white"
+                    className="bg-[#fafaff] rounded-md shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 p-6 mb-8 text-black"
                 >
                     <div className="flex items-center justify-between">
                         <div>
                             <h2 className="text-3xl font-bold mb-2 font-fredoka">Join Environmental Heroes! 🦸‍♀️</h2>
-                            <p className="text-lg opacity-90">
+                            <p className="text-lg font-light opacity-90">
                                 Connect with NGOs and participate in campaigns to make a real difference!
                             </p>
                         </div>
@@ -444,15 +445,15 @@ const NGOsPage = ({ onBack }) => {
                 </motion.div>
 
                 {/* Category Filter */}
-                <div className="bg-white rounded-xl sticky top-[65px] z-50 shadow-sm mb-8 overflow-hidden">
+                <div className="bg-[#fafaff] rounded-md sticky top-[65px] z-50 shadow-lg mb-8 overflow-hidden">
                     <div className="flex overflow-x-auto">
                         {categories.map((category) => (
                             <button
                                 key={category.id}
                                 onClick={() => setSelectedCategory(category.id)}
-                                className={`flex items-center px-6 py-4 whitespace-nowrap transition-colors ${selectedCategory === category.id
-                                        ? 'bg-gradient-to-r from-green-500 to-blue-500 text-white'
-                                        : 'text-gray-600 hover:bg-gray-50'
+                                className={`flex items-center px-6 cursor-pointer py-4 whitespace-nowrap transition-colors ${selectedCategory === category.id
+                                        ? 'bg-black text-white'
+                                        : 'text-gray-600 hover:bg-gray-100'
                                     }`}
                             >
                                 <span className="mr-2 text-lg">{category.icon}</span>
@@ -472,16 +473,16 @@ const NGOsPage = ({ onBack }) => {
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ scale: 1.02 }}
                             onClick={() => setSelectedNGO(ngo)}
-                            className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-green-200 transition-all cursor-pointer"
+                            className="bg-[#fafaff] rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-green-200 transition-all cursor-pointer"
                         >
                             <img
                                 src={ngo.logo}
                                 alt={ngo.name}
-                                className="w-full h-48 object-cover"
+                                className="w-full h-48 hover:scale-105 duration-300 transition-transform ease-in-out object-cover"
                             />
 
                             <div className="p-6">
-                                <h3 className="text-lg font-bold text-gray-800 mb-2">{ngo.name}</h3>
+                                <h3 className="text-lg font-bold text-black mb-2">{ngo.name}</h3>
                                 <p className="text-gray-600 text-sm mb-4 line-clamp-3">{ngo.description}</p>
 
                                 <div className="space-y-2 mb-4">
@@ -543,12 +544,15 @@ const NGOsPage = ({ onBack }) => {
 
                 {filteredNGOs.length === 0 && (
                     <div className="text-center py-12">
-                        <Heart size={64} className="mx-auto mb-4 text-gray-300" />
-                        <h3 className="text-xl font-bold text-gray-600 mb-2">No NGOs found</h3>
-                        <p className="text-gray-500">Try selecting a different category to see more organizations.</p>
+                        <Heart size={64} className="mx-auto mb-4 text-black" />
+                        <h3 className="text-xl font-bold text-black mb-2">No NGOs found</h3>
+                        <p className="text-black font-light">Try selecting a different category to see more organizations.</p>
                     </div>
                 )}
             </div>
+
+            {/* Footer  */}
+            <Footer/>
         </div>
     )
 }

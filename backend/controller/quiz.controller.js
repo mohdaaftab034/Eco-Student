@@ -1,4 +1,5 @@
 import Quiz from "../models/quiz.js";
+import Student from "../models/student.js";
 
 
 
@@ -43,6 +44,36 @@ export const deleteQuiz = async (req, res) => {
         }
 
         res.json({success: true, message: "Quiz deleted successfully"})
+    } catch (error) {
+        res.json({success: false, message: error.message});
+    }
+}
+
+
+
+export const submitQuiz = async (req, res) => {
+    try {
+        const {quiz_id, score, total_questions, correct_answers, time_taken, completed_at, answers} = req.body;
+
+        const student = await Student.findById(req.params.id);
+
+        if(!student) {
+            return res.json({success: false, message: "Student not found"});
+        }
+
+        student.quiz_scores.push({
+            quiz_id,
+            score,
+            total_questions,
+            correct_answers,
+            time_taken,
+            completed_at,
+            answers
+        })
+
+        await student.save();
+
+        res.json({success: true, student});
     } catch (error) {
         res.json({success: false, message: error.message});
     }

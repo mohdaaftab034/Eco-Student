@@ -5,6 +5,7 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import AuthContext from './Context/UseAuthContext.jsx'
 import UserContext from './Context/UserContext.jsx'
+// import "locomotive-scroll/dist/locomotive-scroll.css"; 
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>

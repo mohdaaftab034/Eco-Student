@@ -40,23 +40,24 @@ export const updateStudentPoints = async (req, res) => {
 
 export const updateStudentBadges = async (req, res) => {
     try {
-
         const { badges } = req.body;
 
-        const student = await Student.findById(req.params.id, { badges }, { new: true });
+        const student = await Student.findByIdAndUpdate(
+            req.params.id,
+            { badges },
+            { new: true }
+        );
 
         if (!student) {
-            return res.json({ success: false, message: "Student not found" });
+            return res.status(404).json({ success: false, message: "Student not found" });
         }
-
-
-        await student.save();
 
         res.json({ success: true, student });
     } catch (error) {
-        res.json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: error.message });
     }
-}
+};
+
 
 export const fetchStudent = async (req, res) => {
     try {
@@ -121,23 +122,22 @@ export const updateStudent = async (req, res) => {
 
 export const completeLesson = async (req, res) => {
     try {
-        const { id } = req.params;
-        const { lessonId, completed_lessons, points } = req.body;
-        const student = await Student.findById(id);
+        const { id } = req.params
+        const { completed_lessons, eco_points_reward } = req.body
 
-        if (!student) {
-            return res.json({ success: false, message: "Student not found" })
-        }
+        let student = await Student.findById(id)
 
-        if (student.completed_lessons.includes(lessonId)) {
-            return res.json({ success: false, message: "Lesson already completed" })
-        }
+        if (!student) return res.status(404).json({ message: "Student not found" })
 
-        student.completed_lessons = completed_lessons;
-        student.eco_points = (student.eco_points || 0) + Number(points);
+        // Update completed lessons
+        student.completed_lessons = completed_lessons
 
-        await student.save();
-        res.json({ success: true, message: "Lessons completed successfully", student });
+        // Update eco points
+        student.eco_points += eco_points_reward
+
+        await student.save()
+
+        res.json(student)
     } catch (error) {
         res.json({ success: false, message: error.message });
     }

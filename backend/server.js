@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import Router from './routes/auth.routes.js';
 import cors from 'cors'
+import bodyParser from "body-parser";
 import cookieParser from 'cookie-parser';
 import { connectDB } from './configs/db.js';
 import router from './routes/student.routes.js';
@@ -25,6 +26,7 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
     res.send("Hello World");

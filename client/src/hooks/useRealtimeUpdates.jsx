@@ -123,10 +123,14 @@ export function useRealtimeUpdates(userId) {
                 const updatedBadges = [...(student.badges || []), ...newBadges];
 
                 const res = await axios.put(
-                    `/api/students/${student._id}/badges`, { headers: { Authorization: `Bearer ${token}` } },
-                    { badges: updatedBadges },
-                    { withCredentials: true }
+                    `/api/students/${student._id}/badges`,
+                    { badges: updatedBadges }, // request body
+                    {
+                        headers: { Authorization: `Bearer ${token}` }, // config
+                        withCredentials: true,
+                    }
                 );
+
 
                 if (res.data.success) {
                     const updatedStudent = res.data.student;

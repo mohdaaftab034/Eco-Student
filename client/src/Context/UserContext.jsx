@@ -15,8 +15,29 @@ const UserContext = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [student, setStudent] = useState(null)
 
   const navigate = useNavigate();
+
+  // const fetchStudentData = async () => {
+  //   try {
+  //     const res = await axios.get(`/api/students/${user?.user_id}`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //       withCredentials: true
+  //     });
+
+
+  //     console.log(res.data);
+  //     if (res.data?.success && res.data.student) {
+  //       setStudent(res.data.student || res.data);
+  //     }
+  //   } catch (error) {
+  //     console.error('Failed to fetch student data:', error)
+  //   } finally {
+  //     setIsLoading(false)
+  //   }
+  // }
+
 
   const fetchUser = async () => {
     try {
@@ -46,9 +67,9 @@ const UserContext = ({ children }) => {
 
   const userSignOut = async () => {
     localStorage.removeItem("token");
-    
+
     setToken(null);
-    
+
     setIsAuthenticated(false);
     navigate("/");
   }
@@ -70,7 +91,7 @@ const UserContext = ({ children }) => {
     user, setUser, navigate, isLoading, setIsLoading,
     axios, token, setToken, fetchUser,
     isAuthenticated, setIsAuthenticated,
-    isCheckingAuth, userSignOut
+    isCheckingAuth, userSignOut, student, setStudent
   };
 
   return (

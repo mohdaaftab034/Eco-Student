@@ -6,6 +6,7 @@ import { setSelectedRole } from '../App'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import AboutPage from '../components/AboutPage'
 
 
 const LandingPage = () => {
@@ -87,8 +88,8 @@ const LandingPage = () => {
     ]
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center p-4" style={{
-            backgroundImage: "url('/public/bg3.jpg')",
+        <div className="min-h-screen bg-[#fafaff] gap-10 flex-col flex items-center justify-center p-4" style={{
+            backgroundImage: "url('')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             width: "100%",
@@ -106,16 +107,16 @@ const LandingPage = () => {
                         <motion.div
                             animate={{ rotate: 360 }}
                             transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                            className="bg-gradient-to-r from-green-400 to-blue-500 p-4 rounded-full mr-4"
+                            className="bg-emerald-400 p-4 rounded-full mr-4"
                         >
                             <Leaf className="text-white" size={48} />
                         </motion.div>
-                        <h1 className="text-6xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent font-fredoka">
+                        <h1 className="text-6xl font-bold bg-emerald-800 bg-clip-text text-transparent font-fredoka">
                             EcoLearn
                         </h1>
                     </div>
                     <p className="text-3xl text-gray-900 font-bold mb-2">Environmental Education Platform</p>
-                    <p className="text-xl rounded-full py-1 bg-green-500 hover:bg-green-700 text-white drop-shadow-2xl font-bold">Choose your role to start your eco-journey! 🌍</p>
+                    <p className="text-xl rounded-full py-1 bg-green-800 hover:bg-green-700 text-white drop-shadow-2xl font-bold">Choose your role to start your eco-journey! 🌍</p>
                 </motion.div>
 
                 {/* Role Selection */}
@@ -168,7 +169,7 @@ const LandingPage = () => {
                                             animate={{ opacity: 1, scale: 1 }}
                                             className="mt-4 flex items-center justify-center"
                                         >
-                                            <div className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-medium">
+                                            <div className="bg-green-800 text-white px-4 py-2 rounded-full text-sm font-medium">
                                                 ✓ Selected
                                             </div>
                                         </motion.div>
@@ -194,7 +195,7 @@ const LandingPage = () => {
                         className={`
               px-12 py-4 rounded-full text-xl font-bold transition-all duration-300
               ${selectedRole
-                                ? 'bg-gradient-to-r from-green-500 to-blue-500 text-white shadow-lg hover:shadow-xl'
+                                ? 'bg-emerald-700 text-white shadow-lg hover:shadow-xl'
                                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                             }
               ${isLoading ? 'opacity-75 cursor-not-allowed' : ''}
@@ -237,6 +238,7 @@ const LandingPage = () => {
                     </div>
                 </motion.div>
             </div>
+
         </div>
     )
 }

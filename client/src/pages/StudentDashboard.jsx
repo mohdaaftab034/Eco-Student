@@ -1,17 +1,18 @@
 
 import React, { useState, useEffect, useContext } from 'react'
-import { motion } from 'framer-motion'
-import { BookOpen, Brain, Trophy, Star, Users, User, LogOut, Award, Zap, Target, Heart, Share2, RefreshCw, User2, Settings, LogOutIcon, CrossIcon, LucideCross, X, ChartAreaIcon } from 'lucide-react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { BookOpen, Brain, Trophy, Star, Users, User, LogOut, Award, Zap, Target, Heart, Share2, RefreshCw, User2, Settings, LogOutIcon, CrossIcon, LucideCross, X, ChartAreaIcon, Book, BookMinus, UserCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { userDataContext } from '../Context/UserContext'
 import { useRealtimeEvents, useRealtimeUpdates } from '../hooks/useRealtimeUpdates'
 import LessonPage from './Student/LessonPage'
 import QuizzesPage from './Student/QuizzesPage'
 import BadgesPage from './Student/BadgesPage'
-// import StudentProfile from './Student/StudentProfile'
 import NGOsPage from './Student/NgoPage'
 import { useNavigate } from 'react-router-dom'
 import ChatBot from './Student/ChatBot'
+import Footer from '../components/Footer'
+import StudentProfile from './Student/StudentProfile'
 // import { userDataContext } from '../Context/UserContext'
 
 
@@ -523,7 +524,7 @@ const StudentDashboard = () => {
     { id: 'ngos', label: 'NGOs', icon: Heart },
     { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
     { id: 'profile', label: 'Profile', icon: User },
-    { id: 'chatbot', label: 'Chat with AI', icon: ChartAreaIcon}
+    { id: 'chatbot', label: 'Chat with AI', icon: ChartAreaIcon }
   ]
 
   // Render feature pages with newly earned badges prop
@@ -561,7 +562,7 @@ const StudentDashboard = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
         <div className="text-center flex flex-col justify-center items-center gap-5">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-500 mb-4"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-black mb-4"></div>
           <p className="text-lg text-gray-600">Loading your eco-adventure...</p>
         </div>
       </div>
@@ -570,21 +571,21 @@ const StudentDashboard = () => {
 
 
   return (
-    <div className="min-h-screen relative bg-gradient-to-br from-green-50 via-green-100 to-green-200">
+    <div className="min-h-screen relative bg-[#fafaff] ">
 
       {video && <div className='fixed bottom-10 w-70 h-35 z-100 right-10 bg-blue-500 text-white rounded-lg overflow-hidden shadow-lg'>
-            <video src="/public/video.mp4" autoPlay loop muted playsInline className='w-full h-full object-cover'></video>
-            <X onClick={()=> setVideo(prev => !prev)} className='absolute right-3 top-3 cursor-pointer hover:bg-white hover:text-green-700 rounded-full text-white'/>
+        <video src="/public/video.mp4" autoPlay loop muted playsInline className='w-full h-full object-cover'></video>
+        <X onClick={() => setVideo(prev => !prev)} className='absolute right-3 top-3 cursor-pointer hover:bg-white hover:text-green-700 rounded-full text-white' />
       </div>}
       {/* Header */}
-      <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-green-100">
+      <header className="bg-[#fafaff] sticky top-0 z-50 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center cursor-pointer">
-              <div className="bg-gradient-to-r hidden sm:flex from-green-400 to-blue-500 p-2 rounded-lg mr-3">
-                <Star className="text-white " size={24} />
+              <div className="bg-gradient-to-r hidden sm:flex text-black p-2 rounded-lg mr-3">
+                <Book className="text-black " size={24} />
               </div>
-              <h1 className="text-2xl flex flex-col md:flex-row font-bold text-gray-800 font-fredoka">EcoLearn <span className='text-green-500 hover:text-green-700 '>Student</span></h1>
+              <h1 className="text-2xl flex flex-col md:flex-row gap-2 font-bold text-gray-800 font-fredoka">EcoLearn <span className='text-green-800'>Student</span></h1>
             </div>
 
             <div className="flex gap-3 items-center space-x-4">
@@ -612,15 +613,38 @@ const StudentDashboard = () => {
               </button>
 
               <div>
-                <div onClick={() => setOpen(prev => !prev)} className='w-10 h-10 rounded-full overflow-hidden bg-gray-300'>
+                <div onClick={() => setOpen(prev => !prev)} className='w-10 h-10 rounded-full cursor-pointer overflow-hidden bg-gray-300'>
                   <img src="./public/bg.jpg" className=' h-full w-full ' alt="" />
                 </div>
-                {open && <div className='absolute flex flex-col items-start justify-center gap-2 top-[70px] right-45 bg-white shadow-lg rounded-lg w-35 h-25'>
-                  <p onClick={() => navigate('/create-profile')} className='flex pl-3 items-center  gap-2 h-8 cursor-pointer hover:bg-green-500 w-full text-gray-600 font-medium'><User2 className='w-4 h-4' /> Profile</p>
-                  <p className='flex pl-3 items-center  gap-2 h-8 cursor-pointer hover:bg-green-500 w-full text-gray-600 font-medium'><Settings className='w-4 h-4' /> Account</p>
-                  <p onClick={userSignOut} className='flex pl-3 items-center  gap-2 h-8 cursor-pointer hover:bg-green-600 w-full text-red-600 font-medium'><LogOutIcon className='w-4 h-4' /> Logout</p>
-                </div>}
+                {open && (
+                  <AnimatePresence>
+                    <motion.div
+                      initial={{ opacity: 0, y: -20 }}   // ऊपर से छुपा हुआ
+                      animate={{ opacity: 1, y: 0 }}      // नीचे आकर दिखे
+                      exit={{ opacity: 0, y: -20 }}       // बंद होते समय ऊपर जाए
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                      className="absolute flex flex-col items-start justify-center gap-2 top-[70px] right-5 md:right-25 bg-white shadow-lg rounded-lg w-60 h-30"
+                    >
+                      <p
+                        onClick={() => navigate('/profile')}
+                        className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-gray-600 font-medium"
+                      >
+                        <User2 className="w-4 h-4" /> Profile
+                      </p>
+                      <p className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-gray-600 font-medium">
+                        <UserCircle className="w-4 h-4" /> Community
+                      </p>
+                      <p
+                        onClick={userSignOut}
+                        className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-red-600 font-medium"
+                      >
+                        <LogOutIcon className="w-4 h-4" /> Logout
+                      </p>
+                    </motion.div>
+                  </AnimatePresence>
+                )}
               </div>
+              <p className='text-black font-medium hidden sm:flex'>{user.name}</p>
             </div>
           </div>
         </div>
@@ -631,18 +655,18 @@ const StudentDashboard = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-emerald-600 transition duration-500 ease-in-out hover:shadow-[0_0_15px_#22c55e,0_0_30px_#3b82f6] rounded-2xl p-6 mb-8 text-white"
+          className="bg-white shadow-lg hover:scale-105 transition-transform duration-300 rounded-md p-6 mb-8 text-white"
         >
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-3xl font-bold mb-2 font-fredoka">
-                Welcome back, <span className='text-gray-800'>{student?.name || user?.userName}!</span> 🌟
+              <h2 className="text-3xl text-black font-bold mb-2 font-fredoka">
+                Welcome back, <span className='text-green-800'>{student?.name || user?.userName}!</span> 🌟
               </h2>
-              <p className="text-lg opacity-90">
+              <p className="text-lg text-black font-light opacity-90">
                 Ready to continue your eco-adventure? Let's save the planet together!
               </p>
               {student?.badges && student.badges.length > 0 && (
-                <p className="text-sm opacity-75 mt-2">
+                <p className="text-sm text-black opacity-75 mt-2">
                   🏆 You have {student.badges.length} badge{student.badges.length !== 1 ? 's' : ''} - share them with friends!
                 </p>
               )}
@@ -654,7 +678,7 @@ const StudentDashboard = () => {
         </motion.div>
 
         {/* Navigation Tabs */}
-        <div className="bg-white sticky top-[70px] z-50 rounded-xl shadow-lg mb-8 overflow-hidden">
+        <div className="bg-white sticky top-[70px] z-50 rounded-md shadow-lg mb-8 overflow-hidden">
           <div className="flex overflow-x-auto">
             {tabs.map((tab) => {
               const Icon = tab.icon
@@ -663,7 +687,7 @@ const StudentDashboard = () => {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center px-6 py-4 whitespace-nowrap transition-colors relative ${activeTab === tab.id
-                    ? 'bg-emerald-600 text-white'
+                    ? 'bg-black text-white'
                     : 'text-gray-600 hover:bg-gray-50'
                     }`}
                 >
@@ -703,12 +727,12 @@ const StudentDashboard = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-xl transition duration-500 ease-in-out hover:shadow-[0_0_15px_#22c55e,0_0_30px_#3b82f6] shadow-sm p-6 md:col-span-2 lg:col-span-3"
+                className="bg-white rounded-md shadow-lg p-6 md:col-span-2 lg:col-span-3"
               >
-                <h3 className="text-xl font-bold text-gray-800 mb-4 font-fredoka">Your Progress 📊</h3>
+                <h3 className="text-xl flex items-center justify-start gap-2 font-bold text-black mb-4 font-fredoka">Your Progress <span><BookMinus className='w-4 h-4' /></span></h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center p-4 text-green-800 bg-green-50 hover:bg-green-600 hover:text-white hover:scale-105
-                   transition-all duration-300 ease-in-out rounded-lg">
+                  <div className="text-center p-4 hover:bg-gray-300 bg-white shadow-lg hover:scale-105
+                   transition-all duration-300 ease-in-out rounded-md">
                     <motion.div
                       key={student?.completed_lessons?.length}
                       initial={{ scale: 1 }}
@@ -720,8 +744,8 @@ const StudentDashboard = () => {
                     </motion.div>
                     <div className="text-sm">Lessons</div>
                   </div>
-                  <div className="text-center p-4 bg-blue-50 hover:bg-blue-600 text-blue-800 hover:text-white hover:scale-105
-                   transition-all duration-300 ease-in-out rounded-lg">
+                  <div className="text-center p-4 hover:bg-gray-300 bg-white shadow-lg hover:scale-105
+                   transition-all duration-300 ease-in-out rounded-md">
                     <motion.div
                       key={student?.quiz_scores?.length}
                       initial={{ scale: 1 }}
@@ -733,8 +757,8 @@ const StudentDashboard = () => {
                     </motion.div>
                     <div className="text-sm">Quizzes</div>
                   </div>
-                  <div className="text-center p-4 bg-purple-50 text-purple-800 hover:text-white hover:bg-purple-600 hover:scale-105
-                   transition-all duration-300 ease-in-out rounded-lg">
+                  <div className="text-center p-4 hover:bg-gray-300 bg-white shadow-lg hover:scale-105
+                   transition-all duration-300 ease-in-out rounded-md">
                     <motion.div
                       key={student?.badges?.length}
                       initial={{ scale: 1 }}
@@ -746,8 +770,8 @@ const StudentDashboard = () => {
                     </motion.div>
                     <div className="text-sm ">Badges</div>
                   </div>
-                  <div className="text-center p-4 bg-orange-50 text-orange-800 hover:text-white hover:bg-orange-600 hover:scale-105
-                   transition-all duration-300 ease-in-out rounded-lg">
+                  <div className="text-center p-4 hover:bg-gray-300 bg-white shadow-lg hover:scale-105
+                   transition-all duration-300 ease-in-out rounded-md">
                     <motion.div
                       key={student?.level}
                       initial={{ scale: 1 }}
@@ -768,14 +792,14 @@ const StudentDashboard = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
-                  className="bg-white rounded-xl hover:shadow-2xl hover:-translate-y-2
-                transition-all duration-500 ease-in-out shadow-sm p-6 relative"
+                  className="bg-white rounded-md shadow-lg hover:shadow-2xl hover:-translate-y-2
+                transition-all duration-500 ease-in-out p-6 relative"
                 >
                   {newlyEarnedBadges.length > 0 && (
                     <motion.div
                       initial={{ scale: 0, rotate: -12 }}
                       animate={{ scale: 1, rotate: 0 }}
-                      className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg"
+                      className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 to-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg"
                     >
                       🎉 NEW BADGES!
                     </motion.div>
@@ -785,7 +809,7 @@ const StudentDashboard = () => {
                     <h3 className="text-lg font-bold text-gray-800 font-fredoka">Recent Badges</h3>
                     <button
                       onClick={() => setActiveTab('badges')}
-                      className="text-purple-600 hover:text-purple-700 text-sm font-medium flex items-center"
+                      className="text-green-800 hover:text-green-700 text-sm font-medium flex items-center"
                     >
                       View All →
                       {newlyEarnedBadges.length > 0 && (
@@ -808,9 +832,9 @@ const StudentDashboard = () => {
                           initial={isNew ? { scale: 0, opacity: 0 } : false}
                           animate={isNew ? { scale: 1, opacity: 1 } : false}
                           transition={{ delay: index * 0.2 }}
-                          className={`flex items-center p-3 rounded-lg border ${isNew
-                            ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-300 shadow-md'
-                            : 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200'
+                          className={`flex items-center transition-transform duration-300 ease-out hover:scale-105 gap-1 p-3 rounded-lg border ${isNew
+                            ? 'bg-gradient-to-r from-yellow-50 to-green-50 border-yellow-300 shadow-md'
+                            : 'bg-gradient-to-r from-yellow-50 to-green-50 border-yellow-200'
                             }`}
                         >
                           <span className="text-2xl mr-3">{badge.icon}</span>
@@ -831,7 +855,7 @@ const StudentDashboard = () => {
                           </div>
                           <button
                             onClick={() => setActiveTab('badges')}
-                            className="text-blue-600 hover:text-blue-700 text-xs font-medium flex items-center"
+                            className="text-green-600 hover:text-green-700 cursor-pointer text-xs font-medium flex items-center"
                           >
                             <Share2 size={12} className="mr-1" />
                             Share
@@ -848,12 +872,12 @@ const StudentDashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-white rounded-xl transition duration-500  hover:shadow-[0_0_15px_#22c55e,0_0_30px_#3b82f6] hover:-translate-y-2
-                 ease-in-out shadow-sm p-6"
+                className="bg-white rounded-md transition-transform hover:scale-105 duration-300
+                 ease-in-out shadow-lg p-6"
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-gray-800 font-fredoka">Next Achievement</h3>
-                  <Award className="text-yellow-500" size={20} />
+                  <Award className="text-green-800" size={20} />
                 </div>
 
                 {(() => {
@@ -898,7 +922,7 @@ const StudentDashboard = () => {
                             initial={{ width: 0 }}
                             animate={{ width: `${progress}%` }}
                             transition={{ duration: 1, ease: "easeOut" }}
-                            className="bg-gradient-to-r from-green-400 to-blue-500 h-2 rounded-full"
+                            className="bg-black h-2 rounded-full"
                           />
                         </div>
                       </div>
@@ -916,14 +940,13 @@ const StudentDashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: student?.badges?.length ? 0.3 : 0.2 }}
-                className="bg-white rounded-xl hover:-translate-y-2
-                transition duration-500 ease-in-out hover:shadow-[0_0_15px_#22c55e,0_0_30px_#3b82f6] shadow-sm p-6"
+                className="bg-white rounded-md transition-transform hover:scale-105 duration-300 ease-in-out shadow-lg p-6"
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-gray-800 font-fredoka">Recent Lessons</h3>
                   <button
                     onClick={() => setActiveTab('lessons')}
-                    className="text-green-600 hover:text-green-700 cursor-pointer text-sm font-medium"
+                    className="text-green-700 cursor-pointer text-sm font-medium"
                   >
                     View All →
                   </button>
@@ -932,7 +955,7 @@ const StudentDashboard = () => {
                   {lessons.slice(0, 3).map((lesson) => {
                     const isCompleted = student?.completed_lessons?.includes(lesson._id)
                     return (
-                      <div key={lesson._id} className="flex items-center p-3 transform transition hover:bg-green-200 duration-300 hover:scale-110 bg-gray-50 rounded-lg">
+                      <div key={lesson._id} className="flex  items-center shadow-sm p-3 transform transition hover:bg-gray-100 duration-300 hover:scale-105 rounded-md">
                         <span className="text-xl mr-3">{getCategoryEmoji(lesson.category)}</span>
                         <div className="flex-1">
                           <h4 className="font-medium text-gray-800 text-sm">{lesson.title}</h4>
@@ -943,7 +966,7 @@ const StudentDashboard = () => {
                         ) : (
                           <button
                             onClick={() => completeLesson(lesson._id, lesson.eco_points_reward)}
-                            className="text-blue-600 hover:text-blue-700 text-xs font-medium bg-blue-50 px-2 py-1 rounded"
+                            className="text-green-600 cursor-pointer hover:text-green-700 text-xs font-medium bg-blue-50 px-2 py-1 rounded"
                           >
                             Start
                           </button>
@@ -959,21 +982,20 @@ const StudentDashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: student?.badges?.length ? 0.4 : 0.3 }}
-                className="bg-white hover:-translate-y-2
-                transition duration-500 ease-in-out hover:shadow-[0_0_15px_#22c55e,0_0_30px_#3b82f6] rounded-xl shadow-sm p-6"
+                className="bg-white rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6"
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-gray-800 font-fredoka">Available Quizzes</h3>
                   <button
                     onClick={() => setActiveTab('quizzes')}
-                    className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                    className="text-green-600 cursor-pointer hover:text-green-700 text-sm font-medium"
                   >
                     View All →
                   </button>
                 </div>
                 <div className="space-y-3">
                   {quizzes.slice(0, 3).map((quiz) => (
-                    <div key={quiz._id} className="flex items-center transform transition hover:bg-green-200 duration-300 hover:scale-110 p-3 bg-gray-50 rounded-lg">
+                    <div key={quiz._id} className="flex shadow-sm items-center transition-transform hover:bg-gray-100 duration-300 hover:scale-105 p-3 rounded-md">
                       <span className="text-xl mr-3">{getCategoryEmoji(quiz.category)}</span>
                       <div className="flex-1">
                         <h4 className="font-medium text-gray-800 text-sm">{quiz.title}</h4>
@@ -981,7 +1003,7 @@ const StudentDashboard = () => {
                       </div>
                       <button
                         onClick={() => setActiveTab('quizzes')}
-                        className="text-purple-600 hover:text-purple-700 text-xs font-medium"
+                        className="text-green-600 hover:text-green-700 cursor-pointer text-xs font-medium"
                       >
                         Take
                       </button>
@@ -995,21 +1017,20 @@ const StudentDashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: student?.badges?.length ? 0.5 : 0.4 }}
-                className="bg-white hover:-translate-y-2
-                transition duration-500 ease-in-out hover:shadow-[0_0_15px_#22c55e,0_0_30px_#3b82f6] rounded-xl shadow-sm p-6"
+                className="bg-white rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6"
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-gray-800 font-fredoka">NGO Campaigns</h3>
                   <button
                     onClick={() => setActiveTab('ngos')}
-                    className="text-pink-600 hover:text-pink-700 text-sm font-medium"
+                    className="text-green-600 hover:text-green-700 cursor-pointer text-sm font-medium"
                   >
                     View All →
                   </button>
                 </div>
                 <div className="space-y-3">
                   {campaigns.slice(0, 3).map((campaign) => (
-                    <div key={campaign._id} className="flex transform transition hover:bg-green-200 duration-300 hover:scale-110 items-center p-3 bg-gray-50 rounded-lg">
+                    <div key={campaign._id} className="flex transition-transform hover:bg-gray-100 duration-300 hover:scale-105 items-center p-3 shadow-sm rounded-lg">
                       <span className="text-xl mr-3">{getCategoryEmoji(campaign.category)}</span>
                       <div className="flex-1">
                         <h4 className="font-medium text-gray-800 text-sm">{campaign.title}</h4>
@@ -1017,7 +1038,7 @@ const StudentDashboard = () => {
                       </div>
                       <button
                         onClick={() => setActiveTab('ngos')}
-                        className="text-purple-600 hover:text-purple-700 text-xs font-medium"
+                        className="text-green-600 cursor-pointer hover:text-green-700 text-xs font-medium"
                       >
                         Join
                       </button>
@@ -1049,7 +1070,7 @@ const StudentDashboard = () => {
                   <motion.div
                     key={lesson._id}
                     whileHover={{ scale: 1.02 }}
-                    className={`bg-white rounded-xl hover:shadow-2xl hover:-translate-y-2
+                    className={`bg-[#fafaff] rounded-xl hover:shadow-2xl hover:-translate-y-2
                 transition-all duration-500 ease-in-out shadow-sm overflow-hidden border-2 ${isCompleted ? 'border-green-200 bg-green-50' : 'border-gray-100 hover:border-green-200'
                       }`}
                   >
@@ -1110,7 +1131,7 @@ const StudentDashboard = () => {
                   <motion.div
                     key={challenge._id}
                     whileHover={{ scale: 1.02 }}
-                    className="bg-white rounded-xl shadow-sm border border-gray-100 p-6"
+                    className="bg-[#fafaff] rounded-md shadow-lg p-6"
                   >
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-2xl">{getCategoryEmoji(challenge.category)}</span>
@@ -1135,9 +1156,9 @@ const StudentDashboard = () => {
                     <button
                       onClick={() => !isJoined && joinChallenge(challenge._id)}
                       disabled={isJoined}
-                      className={`w-full py-2 rounded-lg font-medium transition-colors ${isJoined
-                        ? 'bg-orange-100 text-orange-800 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600'
+                      className={`w-full py-2 text-white rounded-lg font-medium transition-colors ${isJoined
+                        ? 'bg-green-100 text-green-800 cursor-not-allowed'
+                        : 'bg-emerald-600 hover:bg-emerald-500'
                         }`}
                     >
                       {isJoined ? '✅ Joined' : 'Join Challenge'}
@@ -1155,7 +1176,7 @@ const StudentDashboard = () => {
               animate={{ opacity: 1 }}
               className="bg-white rounded-xl shadow-sm overflow-hidden"
             >
-              <div className="p-6 bg-gradient-to-r from-yellow-50 to-orange-50">
+              <div className="p-6 bg-gradient-to-r from-yellow-50 to-green-50">
                 <h3 className="text-xl font-bold text-gray-800 mb-2 font-fredoka">🏆 Eco Champions Leaderboard</h3>
                 <p className="text-gray-600">See how you rank among your fellow eco-warriors!</p>
               </div>
@@ -1175,7 +1196,7 @@ const StudentDashboard = () => {
                     >
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mr-4 ${index === 0 ? 'bg-yellow-100 text-yellow-800' :
                         index === 1 ? 'bg-gray-100 text-gray-800' :
-                          index === 2 ? 'bg-orange-100 text-orange-800' :
+                          index === 2 ? 'bg-green-100 text-green-800' :
                             'bg-blue-100 text-blue-800'
                         }`}>
                         {index + 1}
@@ -1217,6 +1238,9 @@ const StudentDashboard = () => {
           )}
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   )
 }

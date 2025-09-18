@@ -174,9 +174,9 @@ const BadgesPage = ({ onBack, newlyEarnedBadges = [], onClearNewBadges }) => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
+            <div className="min-h-screen bg-[#fafaff] flex items-center justify-center">
                 <div className="text-center flex flex-col justify-center items-center gap-5">
-                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-500 mb-4"></div>
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-black mb-4"></div>
                     <p className="text-lg text-gray-600">Loading badges...</p>
                 </div>
             </div>
@@ -184,7 +184,7 @@ const BadgesPage = ({ onBack, newlyEarnedBadges = [], onClearNewBadges }) => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+        <div className="min-h-screen bg-[#fafaff]">
             {/* Celebration Overlay */}
             <AnimatePresence>
                 {showCelebration && (
@@ -202,7 +202,7 @@ const BadgesPage = ({ onBack, newlyEarnedBadges = [], onClearNewBadges }) => {
                             className="text-center"
                         >
                             <div className="text-8xl mb-4">🎉</div>
-                            <h2 className="text-4xl font-bold text-white mb-2 font-fredoka">
+                            <h2 className="text-4xl font-bold text-[#fafaff] mb-2 font-fredoka">
                                 New Badge{newlyEarnedBadges.length > 1 ? 's' : ''} Earned!
                             </h2>
                             <div className="flex justify-center space-x-4">
@@ -249,13 +249,13 @@ const BadgesPage = ({ onBack, newlyEarnedBadges = [], onClearNewBadges }) => {
             </AnimatePresence>
 
             {/* Header */}
-            <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-green-100">
+            <header className="bg-[#fafaff] sticky top-0 z-50 shadow-lg">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <div className="flex items-center">
                             <button
                                 onClick={onBack}
-                                className="flex items-center text-green-500 hover:text-green-700 transition-colors mr-4"
+                                className="flex items-center text-green-800 hover:text-green-700 transition-colors mr-4"
                             >
                                 <ArrowLeft size={20} className="mr-2" />
                                 Back to Dashboard
@@ -290,7 +290,7 @@ const BadgesPage = ({ onBack, newlyEarnedBadges = [], onClearNewBadges }) => {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-2xl p-6 mb-8 text-white relative overflow-hidden"
+                    className="bg-[#fafaff] rounded-md p-6 mb-8 text-black shadow-lg relative overflow-hidden"
                 >
                     {newlyEarnedBadges.length > 0 && (
                         <motion.div
@@ -344,7 +344,7 @@ const BadgesPage = ({ onBack, newlyEarnedBadges = [], onClearNewBadges }) => {
                                 initial={{ width: 0 }}
                                 animate={{ width: `${(earnedCount / totalCount) * 100}%` }}
                                 transition={{ duration: 1, ease: "easeOut" }}
-                                className="bg-white h-3 rounded-full relative overflow-hidden"
+                                className="bg-emerald-700 h-3 rounded-full relative overflow-hidden"
                             >
                                 {newlyEarnedBadges.length > 0 && (
                                     <motion.div
@@ -359,14 +359,14 @@ const BadgesPage = ({ onBack, newlyEarnedBadges = [], onClearNewBadges }) => {
                 </motion.div>
 
                 {/* Category Filter */}
-                <div className="bg-white rounded-xl sticky top-[65px] z-50 shadow-sm mb-8 overflow-hidden">
+                <div className="bg-[#fafaff] rounded-md sticky top-[65px] z-50 shadow-lg mb-8 overflow-hidden">
                     <div className="flex overflow-x-auto">
                         {categories.map((category) => (
                             <button
                                 key={category.id}
                                 onClick={() => setSelectedCategory(category.id)}
                                 className={`flex items-center px-6 py-4 whitespace-nowrap transition-colors ${selectedCategory === category.id
-                                    ? 'bg-gradient-to-r from-green-500 to-blue-500 text-white'
+                                    ? 'bg-black text-white'
                                     : 'text-gray-600 hover:bg-gray-50'
                                     }`}
                             >
@@ -448,7 +448,7 @@ const BadgesPage = ({ onBack, newlyEarnedBadges = [], onClearNewBadges }) => {
                                                 initial={{ scale: 0 }}
                                                 animate={{ scale: 1 }}
                                                 transition={{ delay: 0.5 }}
-                                                className="absolute top-4 right-4 bg-green-500 text-white rounded-full p-2"
+                                                className="absolute top-4 right-4 bg-green-800 text-white rounded-full p-2"
                                             >
                                                 <Award size={16} />
                                             </motion.div>
@@ -461,7 +461,7 @@ const BadgesPage = ({ onBack, newlyEarnedBadges = [], onClearNewBadges }) => {
                                                 animate={{ scale: 1 }}
                                                 transition={{ delay: 0.7 }}
                                                 onClick={() => openShareModal(badge)}
-                                                className="absolute top-4 left-4 bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 transition-colors"
+                                                className="absolute top-4 left-4 bg-green-800 hover:bg-green-700 text-white rounded-full p-2 transition-colors"
                                                 title="Share this badge"
                                             >
                                                 <Share2 size={16} />
@@ -520,7 +520,7 @@ const BadgesPage = ({ onBack, newlyEarnedBadges = [], onClearNewBadges }) => {
 
                                         {/* Status */}
                                         {earned ? (
-                                            <div className="space-y-2">
+                                            <div className="space-y-2 flex flex-col gap-2">
                                                 <motion.div
                                                     initial={newlyEarned ? { scale: 0 } : false}
                                                     animate={newlyEarned ? { scale: 1 } : false}
@@ -542,9 +542,9 @@ const BadgesPage = ({ onBack, newlyEarnedBadges = [], onClearNewBadges }) => {
                                                 </motion.div>
                                                 <button
                                                     onClick={() => openShareModal(badge)}
-                                                    className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center ${newlyEarned
+                                                    className={`w-full px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center justify-center ${newlyEarned
                                                         ? 'bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white'
-                                                        : 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white'
+                                                        : 'bg-emerald-700 hover:bg-emerald-600 cursor-pointer text-white'
                                                         }`}
                                                 >
                                                     <Share2 size={14} className="mr-2" />

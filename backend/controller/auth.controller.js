@@ -256,7 +256,7 @@ export const ngoRegister = async (req, res) => {
     res.cookie("token", token)
 
     res.status(201).json({success: true,
-        message: "Teacher registered successfully",
+        message: "NGO registered successfully",
         token,
         user: {
             role: "ngo",

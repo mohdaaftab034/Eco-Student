@@ -14,12 +14,14 @@ import {
 import toast from 'react-hot-toast'
 import { userDataContext } from '../../Context/UserContext'
 import { useRealtimeUpdates } from '../../hooks/useRealtimeUpdates'
+import Footer from '../../components/Footer'
 
 const QuizzesPage = ({ onBack }) => {
-    const { user, axios } = useContext(userDataContext);
+    const { user, axios, token } = useContext(userDataContext);
     const { student, updateStudentPoints, updateStudentBadges } = useRealtimeUpdates(user?._id)
 
     const [quizzes, setQuizzes] = useState([])
+    const [students, setStudent] = useState(null)
     const [selectedQuiz, setSelectedQuiz] = useState(null)
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
     const [selectedAnswers, setSelectedAnswers] = useState([])
@@ -92,28 +94,30 @@ const QuizzesPage = ({ onBack }) => {
     }
 
     const handleQuizSubmit = async () => {
-        if (!selectedQuiz || !student) return
+        if (!selectedQuiz || !student) return;
 
-        const timeTaken = selectedQuiz.time_limit * 60 - timeLeft
-        let correctAnswers = 0
-        let totalPoints = 0
+        const timeTaken = selectedQuiz.time_limit * 60 - timeLeft;
+        let correctAnswers = 0;
+        let totalPoints = 0;
 
         const answers = selectedQuiz.questions.map((question, index) => {
-            const isCorrect = selectedAnswers[index] === question.correct_answer
+            const isCorrect = selectedAnswers[index] === question.correct_answer;
             if (isCorrect) {
-                correctAnswers++
-                totalPoints += question.points
+                correctAnswers++;
+                totalPoints += question.points;
             }
             return {
                 question_index: index,
                 selected_answer: selectedAnswers[index],
                 is_correct: isCorrect,
-                points_earned: isCorrect ? question.points : 0
-            }
-        })
+                points_earned: isCorrect ? question.points : 0,
+            };
+        });
 
-        const scorePercentage = Math.round((correctAnswers / selectedQuiz.questions.length) * 100)
-        const passed = scorePercentage >= selectedQuiz.passing_score
+        const scorePercentage = Math.round(
+            (correctAnswers / selectedQuiz.questions.length) * 100
+        );
+        const passed = scorePercentage >= selectedQuiz.passing_score;
 
         const attempt = {
             quiz_id: selectedQuiz._id,
@@ -122,39 +126,63 @@ const QuizzesPage = ({ onBack }) => {
             correct_answers: correctAnswers,
             time_taken: timeTaken,
             completed_at: new Date().toISOString(),
-            answers
-        }
+            answers,
+        };
 
         try {
+            //  Append new attempt to student's quiz_scores
             const updatedQuizScores = [
                 ...(student.quiz_scores || []),
-                { quiz_id: selectedQuiz._id, score: scorePercentage, completed_at: attempt.completed_at }
-            ]
-            await lumi.entities.students.update(student._id, { quiz_scores: updatedQuizScores })
+                attempt,
+            ];
 
+            //  Send updated quiz_scores to backend
+            const res = await axios.put(
+                `/api/students/${student._id}`,
+                { quiz_scores: updatedQuizScores },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true,
+                }
+            );
+
+            const updatedStudent = res.data.student;
+
+            //  Award points if passed
             if (passed) {
-                await updateStudentPoints(selectedQuiz.eco_points_reward, `Quiz completed with ${scorePercentage}%!`)
+                await updateStudentPoints(
+                    selectedQuiz.eco_points_reward,
+                    `Quiz completed with ${scorePercentage}%!`
+                );
             }
 
-            const newBadges = checkForNewBadges(scorePercentage, updatedQuizScores)
+            //  Check and assign new badges
+            const newBadges = checkForNewBadges(scorePercentage, updatedQuizScores);
             if (newBadges.length > 0) {
-                await updateStudentBadges(newBadges)
+                await updateStudentBadges(newBadges);
             }
 
-            setQuizResult(attempt)
-            setQuizCompleted(true)
-            setQuizStarted(false)
+            //  Update state
+            setStudent(updatedStudent);
+            setQuizResult(attempt);
+            setQuizCompleted(true);
+            setQuizStarted(false);
 
             if (passed) {
-                toast.success(`🎉 Quiz completed! Score: ${scorePercentage}% (+${selectedQuiz.eco_points_reward} points)`)
+                toast.success(
+                    `🎉 Quiz completed! Score: ${scorePercentage}% (+${selectedQuiz.eco_points_reward} points)`
+                );
             } else {
-                toast.error(`Quiz completed with ${scorePercentage}%. Need ${selectedQuiz.passing_score}% to pass.`)
+                toast.error(
+                    `Quiz completed with ${scorePercentage}%. Need ${selectedQuiz.passing_score}% to pass.`
+                );
             }
         } catch (error) {
-            console.error('Failed to submit quiz:', error)
-            toast.error('Failed to submit quiz')
+            console.error("Failed to submit quiz:", error);
+            toast.error("Failed to submit quiz");
         }
-    }
+    };
+
 
     const checkForNewBadges = (score, quizScores) => {
         const currentBadgeIds = student?.badges?.map((b) => b.badge_id) || []
@@ -253,9 +281,9 @@ const QuizzesPage = ({ onBack }) => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
+            <div className="min-h-screen bg-[#fafaff] flex items-center justify-center">
                 <div className="text-center flex justify-center flex-col items-center gap-5">
-                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mb-4"></div>
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-black mb-4"></div>
                     <p className="text-lg text-gray-600">Loading quizzes...</p>
                 </div>
             </div>
@@ -268,9 +296,9 @@ const QuizzesPage = ({ onBack }) => {
         const progress = ((currentQuestionIndex + 1) / selectedQuiz.questions.length) * 100
 
         return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+            <div className="min-h-screen bg-[#fafaff]">
                 {/* Quiz Header */}
-                <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-blue-100">
+                <header className="bg-[#fafaff] sticky top-0 z-50 shadow-lg ">
                     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex items-center justify-between h-16">
                             <div className="flex items-center">
@@ -300,7 +328,7 @@ const QuizzesPage = ({ onBack }) => {
                             <motion.div
                                 initial={{ width: 0 }}
                                 animate={{ width: `${progress}%` }}
-                                className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full"
+                                className="bg-green-700 h-2 rounded-full"
                             />
                         </div>
                     </div>
@@ -314,7 +342,7 @@ const QuizzesPage = ({ onBack }) => {
                     >
                         <div className="mb-6">
                             <div className="flex items-center justify-between mb-4">
-                                <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
                                     Question {currentQuestionIndex + 1}
                                 </span>
                                 <span className="text-sm text-gray-500">
@@ -333,8 +361,8 @@ const QuizzesPage = ({ onBack }) => {
                                     key={index}
                                     onClick={() => handleAnswerSelect(index)}
                                     className={`w-full p-4 text-left rounded-lg border-2 transition-all ${selectedAnswers[currentQuestionIndex] === index
-                                        ? 'border-blue-500 bg-blue-50 text-blue-800'
-                                        : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                                        ? 'border-green-500 bg-green-50 text-green-800'
+                                        : 'border-gray-200 hover:border-green-300 hover:bg-green-50'
                                         }`}
                                 >
                                     <div className="flex items-center">
@@ -351,7 +379,7 @@ const QuizzesPage = ({ onBack }) => {
                         {selectedAnswers[currentQuestionIndex] !== -1 && (
                             <button
                                 onClick={() => setShowExplanation(!showExplanation)}
-                                className="mb-4 text-blue-600 hover:text-blue-700 text-sm font-medium"
+                                className="mb-4 text-green-600 hover:text-green-700 text-sm font-medium"
                             >
                                 {showExplanation ? 'Hide' : 'Show'} Explanation
                             </button>
@@ -377,7 +405,7 @@ const QuizzesPage = ({ onBack }) => {
                             <button
                                 onClick={previousQuestion}
                                 disabled={currentQuestionIndex === 0}
-                                className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 Previous
                             </button>
@@ -385,7 +413,7 @@ const QuizzesPage = ({ onBack }) => {
                             <button
                                 onClick={nextQuestion}
                                 disabled={selectedAnswers[currentQuestionIndex] === -1}
-                                className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="px-6 py-2 bg-black text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {currentQuestionIndex === selectedQuiz.questions.length - 1 ? 'Submit Quiz' : 'Next'}
                             </button>
@@ -401,14 +429,14 @@ const QuizzesPage = ({ onBack }) => {
         const passed = quizResult.score >= selectedQuiz.passing_score
 
         return (
-            <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
-                <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-green-100">
+            <div className="min-h-screen bg-[#fafaff]">
+                <header className="bg-[#fafaff] sticky top-0 z-50 shadow-lg ">
                     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex items-center justify-between h-16">
                             <h1 className="text-2xl font-bold text-gray-800">Quiz Results</h1>
                             <button
                                 onClick={resetQuiz}
-                                className="flex items-center text-blue-500 hover:text-blue-700 transition-colors"
+                                className="flex items-center text-green-800 hover:text-green-700 transition-colors"
                             >
                                 <ArrowLeft size={20} className="mr-2" />
                                 Back to Quizzes
@@ -422,7 +450,7 @@ const QuizzesPage = ({ onBack }) => {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className={`bg-white rounded-xl shadow-sm p-8 mb-8 border-2 ${passed ? 'border-green-300' : 'border-red-300'
+                        className={`bg-white rounded-md shadow-lg p-8 mb-8 border-2 ${passed ? 'border-green-300' : 'border-red-300'
                             }`}
                     >
                         <div className="text-center">
@@ -439,9 +467,9 @@ const QuizzesPage = ({ onBack }) => {
 
                             {/* Score Breakdown */}
                             <div className="grid md:grid-cols-4 gap-4 mb-6">
-                                <div className="bg-blue-50 p-4 rounded-lg">
-                                    <div className="text-2xl font-bold text-blue-600">{quizResult.score}%</div>
-                                    <div className="text-sm text-blue-800">Final Score</div>
+                                <div className="bg-green-50 p-4 rounded-lg">
+                                    <div className="text-2xl font-bold text-green-600">{quizResult.score}%</div>
+                                    <div className="text-sm text-green-800">Final Score</div>
                                 </div>
                                 <div className="bg-green-50 p-4 rounded-lg">
                                     <div className="text-2xl font-bold text-green-600">{quizResult.correct_answers}</div>
@@ -463,14 +491,14 @@ const QuizzesPage = ({ onBack }) => {
                             <div className="flex justify-center space-x-4">
                                 <button
                                     onClick={() => startQuiz(selectedQuiz)}
-                                    className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600"
+                                    className="flex items-center px-6 py-3 bg-black text-white rounded-lg"
                                 >
                                     <RotateCcw size={20} className="mr-2" />
                                     Retake Quiz
                                 </button>
                                 <button
                                     onClick={resetQuiz}
-                                    className="flex items-center px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                                    className="flex items-center px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
                                 >
                                     <ArrowLeft size={20} className="mr-2" />
                                     Back to Quizzes
@@ -480,9 +508,9 @@ const QuizzesPage = ({ onBack }) => {
                     </motion.div>
 
                     {/* Detailed Results */}
-                    <div className="bg-white rounded-xl shadow-sm p-6">
+                    <div className="bg-[#fafaff] rounded-md shadow-lg p-6">
                         <h3 className="text-xl font-bold text-gray-800 mb-4">Question Review</h3>
-                        <div className="space-y-4">
+                        <div className="space-y-4 flex flex-col gap-2">
                             {selectedQuiz.questions.map((question, index) => {
                                 const answer = quizResult.answers[index]
                                 const isCorrect = answer.is_correct
@@ -521,25 +549,25 @@ const QuizzesPage = ({ onBack }) => {
 
     // Main Quizzes List
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="min-h-screen bg-[#fafaff]">
             {/* Header */}
-            <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-blue-100">
+            <header className="bg-[#fafaff] sticky top-0 z-50 shadow-lg ">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <div className="flex items-center">
                             <button
                                 onClick={onBack}
-                                className="flex items-center text-blue-500 hover:text-blue-700 transition-colors mr-4"
+                                className="flex items-center text-green-800 hover:text-green-700 transition-colors mr-4"
                             >
                                 <ArrowLeft size={20} className="mr-2" />
                                 Back to Dashboard
                             </button>
-                            <h1 className="text-2xl font-bold text-gray-800 font-fredoka">Environmental Quizzes</h1>
+                            <h1 className="text-2xl font-bold text-gray-800 font-fredoka">Environmental <span className='text-green-800'>Quizzes</span></h1>
                         </div>
                         <div className="flex items-center space-x-4">
                             {student && (
-                                <div className="bg-gradient-to-r from-blue-100 to-purple-100 px-4 py-2 rounded-full">
-                                    <span className="font-bold text-blue-800">{student.quiz_scores?.length || 0} Completed</span>
+                                <div className="bg-gradient-to-r from-green-100 to-purple-100 px-4 py-2 rounded-full">
+                                    <span className="font-bold text-green-800">{student.quiz_scores?.length || 0} Completed</span>
                                 </div>
                             )}
                         </div>
@@ -552,12 +580,12 @@ const QuizzesPage = ({ onBack }) => {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 rounded-2xl p-6 mb-8 text-white"
+                    className="bg-[#fafaff] transition-transform duration-300 hover:scale-105 ease-in-out rounded-md shadow-lg p-6 mb-8 text-black"
                 >
                     <div className="flex items-center justify-between">
                         <div>
                             <h2 className="text-3xl font-bold mb-2 font-fredoka">Test Your Knowledge! 🧠</h2>
-                            <p className="text-lg opacity-90">
+                            <p className="text-lg font-light opacity-90">
                                 Challenge yourself with environmental quizzes and earn eco points!
                             </p>
                         </div>
@@ -580,7 +608,7 @@ const QuizzesPage = ({ onBack }) => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
                                 whileHover={{ scale: 1.02 }}
-                                className={`bg-white rounded-xl shadow-sm overflow-hidden border-2 transition-all ${completed ? 'border-green-200 bg-green-50' : 'border-gray-100 hover:border-blue-200'
+                                className={`bg-[#fafaff] rounded-md shadow-lg overflow-hidden border-2 transition-all ${completed ? 'border-green-200 bg-green-50' : 'border-gray-100 hover:border-green-200'
                                     }`}
                             >
                                 <div className="p-6">
@@ -622,7 +650,7 @@ const QuizzesPage = ({ onBack }) => {
                                             </div>
                                             <button
                                                 onClick={() => startQuiz(quiz)}
-                                                className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 rounded-lg font-medium hover:from-blue-600 hover:to-purple-600 transition-colors flex items-center justify-center"
+                                                className="w-full bg-black text-white py-2 rounded-lg font-medium transition-colors flex items-center justify-center"
                                             >
                                                 <RotateCcw size={16} className="mr-2" />
                                                 Retake Quiz
@@ -631,7 +659,7 @@ const QuizzesPage = ({ onBack }) => {
                                     ) : (
                                         <button
                                             onClick={() => startQuiz(quiz)}
-                                            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 rounded-lg font-medium hover:from-blue-600 hover:to-purple-600 transition-colors flex items-center justify-center"
+                                            className="w-full bg-black text-white py-2 rounded-lg font-medium transition-colors flex items-center justify-center"
                                         >
                                             <Play size={16} className="mr-2" />
                                             Start Quiz
@@ -651,6 +679,9 @@ const QuizzesPage = ({ onBack }) => {
                     </div>
                 )}
             </div>
+
+            {/* Footer  */}
+            <Footer />
         </div>
     )
 }

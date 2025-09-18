@@ -150,17 +150,17 @@ const StudentGrowthPage = ({ onBack }) => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mb-4"></div>
-                    <p className="text-lg text-gray-600">Loading student data...</p>
+            <div className="min-h-screen bg-[#fafaff] flex items-center justify-center">
+                <div className="text-center flex justify-center items-center gap-5 flex-col">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-black mb-4"></div>
+                    <p className="text-lg text-black">Loading student data...</p>
                 </div>
             </div>
         )
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6">
+        <div className="min-h-screen bg-[#fafaff] p-6">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <motion.div
@@ -171,19 +171,19 @@ const StudentGrowthPage = ({ onBack }) => {
                     <div className="flex items-center">
                         <button
                             onClick={onBack}
-                            className="mr-4 p-2 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow"
+                            className="mr-4 p-2 rounded-md bg-[#fafaff] shadow-lg hover:shadow-md transition-shadow"
                         >
-                            <ArrowLeft size={20} className="text-gray-600" />
+                            <ArrowLeft size={20} className="text-black" />
                         </button>
                         <div>
                             <h1 className="text-3xl font-bold text-gray-800 font-fredoka">Student Growth Analytics</h1>
-                            <p className="text-gray-600">Track individual student progress and performance</p>
+                            <p className="text-black font-light">Track individual student progress and performance</p>
                         </div>
                     </div>
 
                     <button
                         onClick={exportStudentData}
-                        className="flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg hover:from-green-600 hover:to-blue-600 transition-colors"
+                        className="flex items-center px-4 py-2 bg-emerald-700 text-white rounded-md hover:bg-emerald-600 transition-colors"
                     >
                         <Download size={20} className="mr-2" />
                         Export Report
@@ -197,15 +197,15 @@ const StudentGrowthPage = ({ onBack }) => {
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="bg-white rounded-xl shadow-sm p-6"
+                                className="bg-[#fafaff] rounded-md shadow-lg p-6"
                             >
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <p className="text-sm font-medium text-gray-600">Total Students</p>
-                                        <p className="text-3xl font-bold text-blue-600">{students.length}</p>
+                                        <p className="text-sm font-medium text-black">Total Students</p>
+                                        <p className="text-3xl font-bold text-green-800">{students.length}</p>
                                     </div>
-                                    <div className="bg-blue-100 p-3 rounded-lg">
-                                        <TrendingUp className="text-blue-600" size={24} />
+                                    <div className="bg-green-100 p-3 rounded-md">
+                                        <TrendingUp className="text-green-800" size={24} />
                                     </div>
                                 </div>
                             </motion.div>
@@ -214,17 +214,17 @@ const StudentGrowthPage = ({ onBack }) => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.1 }}
-                                className="bg-white rounded-xl shadow-sm p-6"
+                                className="bg-[#fafaff] rounded-md shadow-lg p-6"
                             >
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <p className="text-sm font-medium text-gray-600">Avg Eco Points</p>
-                                        <p className="text-3xl font-bold text-green-600">
+                                        <p className="text-sm font-medium text-black">Avg Eco Points</p>
+                                        <p className="text-3xl font-bold text-green-800">
                                             {Math.round(students.reduce((sum, s) => sum + s.eco_points, 0) / students.length) || 0}
                                         </p>
                                     </div>
-                                    <div className="bg-green-100 p-3 rounded-lg">
-                                        <Award className="text-green-600" size={24} />
+                                    <div className="bg-green-100 p-3 rounded-md">
+                                        <Award className="text-green-800" size={24} />
                                     </div>
                                 </div>
                             </motion.div>
@@ -233,17 +233,17 @@ const StudentGrowthPage = ({ onBack }) => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.2 }}
-                                className="bg-white rounded-xl shadow-sm p-6"
+                                className="bg-[#fafaff] rounded-md shadow-lg p-6"
                             >
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <p className="text-sm font-medium text-gray-600">Avg Lessons</p>
-                                        <p className="text-3xl font-bold text-purple-600">
+                                        <p className="text-sm font-medium text-black">Avg Lessons</p>
+                                        <p className="text-3xl font-bold text-green-800">
                                             {Math.round(students.reduce((sum, s) => sum + (s.completed_lessons?.length || 0), 0) / students.length) || 0}
                                         </p>
                                     </div>
-                                    <div className="bg-purple-100 p-3 rounded-lg">
-                                        <BookOpen className="text-purple-600" size={24} />
+                                    <div className="bg-green-100 p-3 rounded-md">
+                                        <BookOpen className="text-green-800" size={24} />
                                     </div>
                                 </div>
                             </motion.div>
@@ -252,17 +252,17 @@ const StudentGrowthPage = ({ onBack }) => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.3 }}
-                                className="bg-white rounded-xl shadow-sm p-6"
+                                className="bg-[#fafaff] rounded-md shadow-lg p-6"
                             >
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <p className="text-sm font-medium text-gray-600">Avg Quiz Score</p>
-                                        <p className="text-3xl font-bold text-orange-600">
+                                        <p className="text-sm font-medium text-black">Avg Quiz Score</p>
+                                        <p className="text-3xl font-bold text-green-800">
                                             {Math.round(students.reduce((sum, s) => sum + getAverageQuizScore(s), 0) / students.length) || 0}%
                                         </p>
                                     </div>
-                                    <div className="bg-orange-100 p-3 rounded-lg">
-                                        <Target className="text-orange-600" size={24} />
+                                    <div className="bg-green-100 p-3 rounded-md">
+                                        <Target className="text-green-800" size={24} />
                                     </div>
                                 </div>
                             </motion.div>
@@ -273,7 +273,7 @@ const StudentGrowthPage = ({ onBack }) => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4 }}
-                            className="bg-white rounded-xl shadow-sm p-6 mb-6"
+                            className="bg-[#fafaff] rounded-md shadow-lg p-6 mb-6"
                         >
                             <div className="grid md:grid-cols-5 gap-4">
                                 <div className="md:col-span-2">
@@ -284,7 +284,7 @@ const StudentGrowthPage = ({ onBack }) => {
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
                                             placeholder="Search students..."
-                                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
                                 </div>
@@ -293,7 +293,7 @@ const StudentGrowthPage = ({ onBack }) => {
                                     <select
                                         value={filterGrade}
                                         onChange={(e) => setFilterGrade(e.target.value)}
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     >
                                         <option value="">All Grades</option>
                                         <option value="Grade 1">Grade 1</option>
@@ -308,7 +308,7 @@ const StudentGrowthPage = ({ onBack }) => {
                                     <select
                                         value={filterSchool}
                                         onChange={(e) => setFilterSchool(e.target.value)}
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     >
                                         <option value="">All Schools</option>
                                         {Array.from(new Set(students.map(s => s.school))).map(school => (
@@ -321,7 +321,7 @@ const StudentGrowthPage = ({ onBack }) => {
                                     <select
                                         value={sortBy}
                                         onChange={(e) => setSortBy(e.target.value)}
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     >
                                         <option value="eco_points">Sort by Eco Points</option>
                                         <option value="name">Sort by Name</option>
@@ -337,7 +337,7 @@ const StudentGrowthPage = ({ onBack }) => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.5 }}
-                            className="bg-white rounded-xl shadow-sm overflow-hidden"
+                            className="bg-[#fafaff] rounded-md shadow-lg overflow-hidden"
                         >
                             <div className="overflow-x-auto">
                                 <table className="w-full">
@@ -353,7 +353,7 @@ const StudentGrowthPage = ({ onBack }) => {
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
+                                    <tbody className="bg-[#fafaff] divide-y divide-gray-200">
                                         {filteredStudents.map((student) => (
                                             <tr key={student._id} className="hover:bg-gray-50">
                                                 <td className="px-6 py-4 whitespace-nowrap">
@@ -395,7 +395,7 @@ const StudentGrowthPage = ({ onBack }) => {
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <button
                                                         onClick={() => setSelectedStudent(student)}
-                                                        className="text-blue-600 hover:text-blue-900 text-sm font-medium"
+                                                        className="text-green-600 hover:text-green-900 cursor-pointer text-sm font-medium"
                                                     >
                                                         View Details
                                                     </button>
@@ -412,18 +412,18 @@ const StudentGrowthPage = ({ onBack }) => {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="space-y-6"
+                        className="space-y-6 flex flex-col gap-4"
                     >
                         {/* Student Header */}
-                        <div className="bg-white rounded-xl shadow-sm p-6">
+                        <div className="bg-[#fafaff] rounded-md shadow-lg p-6">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center">
-                                    <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-4 rounded-full mr-4">
+                                    <div className="bg-[#fafaff] shadow-lg p-4 rounded-full mr-4">
                                         <span className="text-white text-2xl">👤</span>
                                     </div>
                                     <div>
                                         <h2 className="text-2xl font-bold text-gray-800">{selectedStudent.name}</h2>
-                                        <p className="text-gray-600">{selectedStudent.grade} • {selectedStudent.school}</p>
+                                        <p className="text-black">{selectedStudent.grade} • {selectedStudent.school}</p>
                                         <p className="text-sm text-gray-500">
                                             Level: {getStudentLevel(selectedStudent.eco_points)} • {selectedStudent.eco_points} Eco Points
                                         </p>
@@ -432,7 +432,7 @@ const StudentGrowthPage = ({ onBack }) => {
 
                                 <button
                                     onClick={() => setSelectedStudent(null)}
-                                    className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                                    className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-black transition-colors"
                                 >
                                     Back to List
                                 </button>
@@ -441,7 +441,7 @@ const StudentGrowthPage = ({ onBack }) => {
 
                         {/* Progress Overview */}
                         <div className="grid md:grid-cols-3 gap-6">
-                            <div className="bg-white rounded-xl shadow-sm p-6">
+                            <div className="bg-[#fafaff] rounded-md shadow-lg p-6">
                                 <h3 className="text-lg font-bold text-gray-800 mb-4">Learning Progress</h3>
                                 <div className="space-y-4">
                                     <div>
@@ -451,7 +451,7 @@ const StudentGrowthPage = ({ onBack }) => {
                                         </div>
                                         <div className="w-full bg-gray-200 rounded-full h-3">
                                             <div
-                                                className="bg-gradient-to-r from-green-400 to-blue-500 h-3 rounded-full"
+                                                className="bg-emerald-700 h-3 rounded-full"
                                                 style={{ width: `${getProgressPercentage(selectedStudent.eco_points)}%` }}
                                             ></div>
                                         </div>
@@ -460,36 +460,36 @@ const StudentGrowthPage = ({ onBack }) => {
                                     <div className="grid grid-cols-2 gap-4 pt-4">
                                         <div className="text-center">
                                             <p className="text-2xl font-bold text-green-600">{selectedStudent.eco_points}</p>
-                                            <p className="text-sm text-gray-600">Eco Points</p>
+                                            <p className="text-sm text-black">Eco Points</p>
                                         </div>
                                         <div className="text-center">
-                                            <p className="text-2xl font-bold text-blue-600">{selectedStudent.completed_lessons?.length || 0}</p>
-                                            <p className="text-sm text-gray-600">Lessons</p>
+                                            <p className="text-2xl font-bold text-green-600">{selectedStudent.completed_lessons?.length || 0}</p>
+                                            <p className="text-sm text-black">Lessons</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="bg-white rounded-xl shadow-sm p-6">
+                            <div className="bg-[#fafaff] rounded-md shadow-lg p-6">
                                 <h3 className="text-lg font-bold text-gray-800 mb-4">Quiz Performance</h3>
                                 <div className="text-center">
-                                    <div className="text-4xl font-bold text-purple-600 mb-2">
+                                    <div className="text-4xl font-bold text-green-600 mb-2">
                                         {getAverageQuizScore(selectedStudent)}%
                                     </div>
-                                    <p className="text-gray-600 mb-4">Average Score</p>
+                                    <p className="text-black mb-4">Average Score</p>
                                     <div className="text-sm text-gray-500">
                                         {selectedStudent.quiz_scores?.length || 0} quizzes completed
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="bg-white rounded-xl shadow-sm p-6">
+                            <div className="bg-[#fafaff] rounded-md shadow-lg p-6">
                                 <h3 className="text-lg font-bold text-gray-800 mb-4">Achievements</h3>
                                 <div className="text-center">
-                                    <div className="text-4xl font-bold text-orange-600 mb-2">
+                                    <div className="text-4xl font-bold text-green-600 mb-2">
                                         {selectedStudent.badges_earned?.length || 0}
                                     </div>
-                                    <p className="text-gray-600 mb-4">Badges Earned</p>
+                                    <p className="text-black mb-4">Badges Earned</p>
                                     <div className="flex justify-center space-x-1">
                                         {Array.from({ length: Math.min(selectedStudent.badges_earned?.length || 0, 5) }).map((_, i) => (
                                             <span key={i} className="text-lg">🏆</span>
@@ -500,11 +500,11 @@ const StudentGrowthPage = ({ onBack }) => {
                         </div>
 
                         {/* Recent Activity */}
-                        <div className="bg-white rounded-xl shadow-sm p-6">
-                            <h3 className="text-lg font-bold text-gray-800 mb-6">Recent Activity</h3>
+                        <div className="bg-[#fafaff] rounded-md shadow-lg p-6">
+                            <h3 className="text-lg font-bold text-black mb-6">Recent Activity</h3>
                             <div className="space-y-4">
                                 {getRecentActivity(selectedStudent).map((activity, index) => (
-                                    <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-md">
                                         <div className="flex items-center">
                                             <div className={`p-2 rounded-full mr-3 ${activity.type === 'quiz' ? 'bg-purple-100' : 'bg-green-100'
                                                 }`}>

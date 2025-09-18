@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Play, CheckCircle, Clock, Star, Award, BookOpen, Target } from 'lucide-react'
+import { ArrowLeft, Play, CheckCircle, Clock, Star, Award, BookOpen, Target, BookUser, BookDashed } from 'lucide-react'
 // import { useAuth } from '../../hooks/useAuth'
 import { useRealtimeUpdates } from '../../hooks/useRealtimeUpdates'
 // import { lumi } from '../../lib/lumi'
 import toast from 'react-hot-toast'
 import { userDataContext } from '../../Context/UserContext'
+import Footer from '../../components/Footer'
 
 const LessonPage = ({ onBack }) => {
-    const { user, axios } = useContext(userDataContext)
+    const { user, axios, token } = useContext(userDataContext)
     const { student, updateStudentPoints, updateStudentBadges } = useRealtimeUpdates(user?._id)
 
     const [lessons, setLessons] = useState([])
@@ -91,38 +92,57 @@ const LessonPage = ({ onBack }) => {
     };
 
     const completeLesson = async (lesson) => {
-        if (!student) return;
+        if (!student) return
 
         try {
-            // Hit backend to complete lesson
-            const res = await axios.post("/api/students/complete-lesson", {
-                studentId: student._id,
-                lessonId: lesson._id
-            });
+            const updatedLessons = [...(student.completed_lessons || []), lesson._id]
 
-            const updatedStudent = res.data;
+            // 🔹 Backend API ko call karke lesson completion update karo
+            const res = await axios.put(`/api/students/${student._id}/lessons`, {
+                completed_lessons: updatedLessons,
+                eco_points_reward: lesson.eco_points_reward,
 
-            // Check new badges
+            })
+
+            const updatedStudent = res.data // backend se updated student object aa jayega
+
+            // 🔹 Check for new badges BEFORE updating points
             const newBadges = checkForNewBadges(
                 updatedStudent.eco_points,
                 updatedStudent.completed_lessons.length,
-                updatedStudent.badges
-            );
+                updatedStudent.badges || []
+            )
 
+            // 🔹 Real-time points system
+            await updateStudentPoints(lesson.eco_points_reward, "Lesson completed!")
+
+            // 🔹 Badges update if any
             if (newBadges.length > 0) {
-                await axios.post("/api/students/updateBadges", {
-                    studentId: student._id,
-                    badges: newBadges
-                });
+                await updateStudentBadges(newBadges)
 
-                toast.success(`🏆 New badge${newBadges.length > 1 ? "s" : ""} earned!`);
+                setTimeout(() => {
+                    toast.success(
+                        `🏆 New badge${newBadges.length > 1 ? "s" : ""} earned! Check your badges section!`,
+                        {
+                            duration: 4000,
+                            onClick: () => {
+                                window.dispatchEvent(
+                                    new CustomEvent("openBadgesPage", { detail: { newBadges } })
+                                )
+                            }
+                        }
+                    )
+                }, 2000)
             }
 
-            setSelectedLesson(null);
+            // Close lesson view
+            setSelectedLesson(null)
+
         } catch (error) {
-            toast.error("Failed to complete lesson");
+            console.error(error)
+            toast.error("Failed to complete lesson")
         }
-    };
+    }
 
 
     const checkForNewBadges = (points, lessonsCompleted, currentBadges) => {
@@ -167,7 +187,7 @@ const LessonPage = ({ onBack }) => {
             case 'advanced':
                 return 'bg-red-100 text-red-800'
             default:
-                return 'bg-gray-100 text-gray-800'
+                return 'bg-gray-100 text-black'
         }
     }
 
@@ -189,9 +209,9 @@ const LessonPage = ({ onBack }) => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
+            <div className="min-h-screen bg-[#fafaff] flex items-center justify-center">
                 <div className="text-center flex justify-center items-center gap-5 flex-col">
-                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-500 mb-4"></div>
+                    <div className="animate-spin rounded-full h-16 w-16 border-black mb-4"></div>
                     <p className="text-lg text-gray-600">Loading lessons...</p>
                 </div>
             </div>
@@ -203,14 +223,14 @@ const LessonPage = ({ onBack }) => {
         const completed = isCompleted(selectedLesson._id)
 
         return (
-            <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+            <div className="min-h-screen bg-[#fafaff]">
                 {/* Header */}
-                <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-green-100">
+                <header className="bg-[#fafaff] sticky top-0 z-50 shadow-lg">
                     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex items-center justify-between h-16">
                             <button
                                 onClick={() => setSelectedLesson(null)}
-                                className="flex items-center text-gray-600 hover:text-green-600 transition-colors"
+                                className="flex items-center text-black hover:text-green-600 transition-colors"
                             >
                                 <ArrowLeft size={20} className="mr-2" />
                                 Back to Lessons
@@ -232,7 +252,7 @@ const LessonPage = ({ onBack }) => {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-white rounded-xl shadow-sm overflow-hidden"
+                        className="bg-[#fafaff] rounded-md shadow-lg overflow-hidden"
                     >
                         <img
                             src={selectedLesson.media_url}
@@ -245,7 +265,7 @@ const LessonPage = ({ onBack }) => {
                                 <div className="flex items-center">
                                     <span className="text-3xl mr-3">{getCategoryEmoji(selectedLesson.category)}</span>
                                     <div>
-                                        <h1 className="text-3xl font-bold text-gray-800 mb-2">{selectedLesson.title}</h1>
+                                        <h1 className="text-3xl font-bold text-black mb-2">{selectedLesson.title}</h1>
                                         <p className="text-gray-600">{selectedLesson.description}</p>
                                     </div>
                                 </div>
@@ -290,7 +310,7 @@ const LessonPage = ({ onBack }) => {
                                 ) : (
                                     <button
                                         onClick={() => completeLesson(selectedLesson)}
-                                        className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-8 py-3 rounded-lg font-bold hover:from-green-600 hover:to-blue-600 transition-colors flex items-center mx-auto"
+                                        className="bg-black text-white px-8 py-3 rounded-lg font-bold hover:bg-black/50 transition-colors flex items-center mx-auto"
                                     >
                                         <Award size={20} className="mr-2" />
                                         Complete Lesson & Earn {selectedLesson.eco_points_reward} Points
@@ -306,19 +326,19 @@ const LessonPage = ({ onBack }) => {
 
     // Main Lessons List
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
-            <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-green-100">
+        <div className="min-h-screen bg-[#fafaff]">
+            <header className="bg-[#fafaff] sticky top-0 z-50 shadow-lg ">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <div className="flex items-center">
                             <button
                                 onClick={onBack}
-                                className="flex items-center text-green-500 hover:text-green-700 transition-colors mr-4"
+                                className="flex items-center text-green-800 hover:text-green-700 transition-colors mr-4"
                             >
                                 <ArrowLeft size={20} className="mr-2" />
                                 Back to Dashboard
                             </button>
-                            <h1 className="text-2xl font-bold text-gray-800 font-fredoka">Environmental Lessons</h1>
+                            <h1 className="text-2xl font-bold text-black font-fredoka">Environmental Lessons</h1>
                         </div>
                         <div className="flex items-center space-x-4">
                             {student && (
@@ -337,12 +357,12 @@ const LessonPage = ({ onBack }) => {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-500 rounded-2xl p-6 mb-8 text-white"
+                    className="bg-[#fafaff] text-black transition-transform duration-300 hover:scale-105 ease-in-out rounded-md p-6 mb-8 shadow-lg"
                 >
                     <div className="flex items-center justify-between">
                         <div>
-                            <h2 className="text-3xl font-bold mb-2 font-fredoka">Learn & Earn! 📚</h2>
-                            <p className="text-lg opacity-90">
+                            <h2 className="text-3xl flex justify-start gap-2 items-center font-bold mb-2 font-fredoka">Learn & Earn! <BookDashed className='h-6 w-6'/> </h2>
+                            <p className="text-light opacity-90">
                                 Complete environmental lessons to earn eco points and unlock badges!
                             </p>
                         </div>
@@ -353,19 +373,19 @@ const LessonPage = ({ onBack }) => {
                 </motion.div>
 
                 {/* Filters */}
-                <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+                <div className="bg-[#fafaff] rounded-md shadow-lg p-6 mb-8">
                     <div className="grid md:grid-cols-2 gap-6">
                         {/* Category Filter */}
                         <div>
-                            <h3 className="text-lg font-bold text-gray-800 mb-3">Category</h3>
+                            <h3 className="text-lg font-bold text-black mb-3">Category</h3>
                             <div className="flex flex-wrap gap-2">
                                 {categories.map((category) => (
                                     <button
                                         key={category.id}
                                         onClick={() => setSelectedCategory(category.id)}
-                                        className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${selectedCategory === category.id
-                                            ? 'bg-green-500 text-white'
-                                            : 'bg-gray-100 text-gray-700 hover:bg-green-100'
+                                        className={`flex items-center px-3 py-2 cursor-pointer rounded-lg text-sm font-medium transition-colors ${selectedCategory === category.id
+                                            ? 'bg-black text-white'
+                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                             }`}
                                     >
                                         <span className="mr-2">{category.emoji}</span>
@@ -377,15 +397,15 @@ const LessonPage = ({ onBack }) => {
 
                         {/* Difficulty Filter */}
                         <div>
-                            <h3 className="text-lg font-bold text-gray-800 mb-3">Difficulty</h3>
+                            <h3 className="text-lg font-bold text-black mb-3">Difficulty</h3>
                             <div className="flex flex-wrap gap-2">
                                 {difficulties.map((difficulty) => (
                                     <button
                                         key={difficulty.id}
                                         onClick={() => setSelectedDifficulty(difficulty.id)}
-                                        className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${selectedDifficulty === difficulty.id
-                                            ? 'bg-blue-500 text-white'
-                                            : 'bg-gray-100 text-gray-700 hover:bg-blue-100'
+                                        className={`px-3 py-2 cursor-pointer rounded-md text-sm font-medium transition-colors ${selectedDifficulty === difficulty.id
+                                            ? 'bg-black text-white'
+                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                             }`}
                                     >
                                         {difficulty.name}
@@ -408,7 +428,7 @@ const LessonPage = ({ onBack }) => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
                                 whileHover={{ scale: 1.02 }}
-                                className={`bg-white rounded-xl shadow-sm overflow-hidden border-2 transition-all ${completed ? 'border-green-200 bg-green-50' : 'border-gray-100 hover:border-green-200'
+                                className={`bg-white rounded-md shadow-lg overflow-hidden border-1 transition-all ${completed ? 'border-green-200 bg-gray-50' : 'border-gray-100 hover:border-black'
                                     }`}
                             >
                                 <div className="relative">
@@ -432,8 +452,8 @@ const LessonPage = ({ onBack }) => {
                                         </span>
                                     </div>
 
-                                    <h3 className="text-lg font-bold text-gray-800 mb-2">{lesson.title}</h3>
-                                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">{lesson.description}</p>
+                                    <h3 className="text-lg font-bold text-black mb-2">{lesson.title}</h3>
+                                    <p className="text-black font-light text-sm mb-4 line-clamp-3">{lesson.description}</p>
 
                                     <div className="flex items-center justify-between mb-4">
                                         <div className="flex items-center text-sm text-gray-500">
@@ -448,9 +468,9 @@ const LessonPage = ({ onBack }) => {
 
                                     <button
                                         onClick={() => setSelectedLesson(lesson)}
-                                        className={`w-full py-2 rounded-lg font-medium transition-colors flex items-center justify-center ${completed
-                                            ? 'bg-green-100 text-green-800 hover:bg-green-200'
-                                            : 'bg-gradient-to-r from-green-500 to-blue-500 text-white hover:from-green-600 hover:to-blue-600'
+                                        className={`w-full py-2 rounded-md cursor-pointer font-medium transition-colors flex items-center justify-center ${completed
+                                            ? 'bg-green-100 text-black hover:bg-green-200'
+                                            : 'bg-black text-white hover:bg-gray-900'
                                             }`}
                                     >
                                         {completed ? (
@@ -473,12 +493,15 @@ const LessonPage = ({ onBack }) => {
 
                 {filteredLessons.length === 0 && (
                     <div className="text-center py-12">
-                        <BookOpen size={64} className="mx-auto mb-4 text-gray-300" />
-                        <h3 className="text-xl font-bold text-gray-600 mb-2">No lessons found</h3>
-                        <p className="text-gray-500">Try adjusting your filters or check back later for new content!</p>
+                        <BookOpen size={64} className="mx-auto mb-4 text-black" />
+                        <h3 className="text-xl font-bold text-black mb-2">No lessons found</h3>
+                        <p className="text-black font-light">Try adjusting your filters or check back later for new content!</p>
                     </div>
                 )}
             </div>
+
+            {/* Footer  */}
+            <Footer />
         </div>
     )
 }

@@ -16,7 +16,7 @@ router.get('/', fetchStudent);
 router.post('/', createStudent);
 router.get('/leaderboard', getLeaderBoard);
 router.put('/:id',protect, updateStudent);
-router.put('/:id/lessons', protect, completeLesson);
+router.put('/:id/lessons', completeLesson);
 router.put('/:id/quiz', protect, addQuizScore);
 
 
