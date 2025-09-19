@@ -52,7 +52,7 @@ const ChatBox = () => {
           <div
             key={idx}
             className={`p-2 rounded-lg max-w-xs ${
-              msg.sender === "student" ? "bg-green-200 self-end" : "bg-white self-start"
+              msg.sender === "student" ? "bg-green-400 text-white self-end" : "bg-white self-start"
             }`}
           >
             {msg.text.split("\n").map((line, i) => (

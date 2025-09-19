@@ -433,7 +433,7 @@ const NGODashboard = () => {
                 <h3 className="text-2xl font-bold text-gray-800 font-fredoka">Events & Challenges</h3>
                 <button
                   onClick={() => setShowCreateEvent(true)}
-                  className="flex items-center bg-[#fafaff] text-white px-4 py-2 rounded-md shadow-lg transition-colors"
+                  className="flex items-center bg-emerald-700 text-white px-4 py-2 rounded-md shadow-lg transition-colors"
                 >
                   <Plus size={20} className="mr-2" />
                   Create Challenge

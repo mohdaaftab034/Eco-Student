@@ -61,7 +61,7 @@ export const updateStudentBadges = async (req, res) => {
 
 export const fetchStudent = async (req, res) => {
     try {
-        const students = await Student.find().sort({ createdAt: -1 })
+        const students = await Student.find().sort({ eco_points: -1  })
         res.json(students);
     } catch (err) {
         console.error(err);

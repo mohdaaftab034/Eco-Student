@@ -574,7 +574,7 @@ const StudentDashboard = () => {
     <div className="min-h-screen relative bg-[#fafaff] ">
 
       {video && <div className='fixed bottom-10 w-70 h-35 z-100 right-10 bg-blue-500 text-white rounded-lg overflow-hidden shadow-lg'>
-        <video src="/public/video.mp4" autoPlay loop muted playsInline className='w-full h-full object-cover'></video>
+        <video src="https://www.pexels.com/download/video/3209571" autoPlay loop muted playsInline className='w-full h-full object-cover'></video>
         <X onClick={() => setVideo(prev => !prev)} className='absolute right-3 top-3 cursor-pointer hover:bg-white hover:text-green-700 rounded-full text-white' />
       </div>}
       {/* Header */}
@@ -619,9 +619,9 @@ const StudentDashboard = () => {
                 {open && (
                   <AnimatePresence>
                     <motion.div
-                      initial={{ opacity: 0, y: -20 }}   // ऊपर से छुपा हुआ
-                      animate={{ opacity: 1, y: 0 }}      // नीचे आकर दिखे
-                      exit={{ opacity: 0, y: -20 }}       // बंद होते समय ऊपर जाए
+                      initial={{ opacity: 0, y: -20 }}   
+                      animate={{ opacity: 1, y: 0 }}      
+                      exit={{ opacity: 0, y: -20 }}       
                       transition={{ duration: 0.3, ease: "easeOut" }}
                       className="absolute flex flex-col items-start justify-center gap-2 top-[70px] right-5 md:right-25 bg-white shadow-lg rounded-lg w-60 h-30"
                     >

@@ -29,7 +29,7 @@ const StudentGrowthPage = ({ onBack }) => {
                 setStudents([]);
                 console.warn('API returned non-array data:', res.data);
             }
-            console.log(res.data);
+            
         } catch (error) {
             console.error('Failed to fetch students:', error);
             toast.error('Failed to load student data');

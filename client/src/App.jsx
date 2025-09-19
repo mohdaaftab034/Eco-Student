@@ -49,7 +49,7 @@ const getUserRole = (user) => {
   return "student";
 };
 
-// ✅ store selected role from login page
+//  store selected role from login page
 let selectedRole = null;
 
 export const setSelectedRole = (role) => {
@@ -66,13 +66,16 @@ function App() {
 
   if (isCheckingAuth) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-lg text-gray-600">Checking authentication...</p>
+      <div className="min-h-screen bg-[#fafaff] flex items-center justify-center">
+        <div className="text-center flex flex-col justify-center items-center gap-5">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-black mb-4"></div>
+          <p className="text-lg text-gray-600">Loading teacher dashboard...</p>
+        </div>
       </div>
-    );
+    )
   }
 
-  // ✅ Not logged in
+  //  Not logged in
   if (!isAuthenticated) {
     return (
       <>
@@ -91,7 +94,7 @@ function App() {
     );
   }
 
-  // ✅ logged in user
+  //  logged in user
   const userRole = getSelectedRole() || getUserRole(user);
   console.log(`UserRole ${userRole}, user:`, user);
 

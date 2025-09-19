@@ -79,7 +79,8 @@ const TeacherDashboard = () => {
 
   useEffect(() => {
     if (activeTab === 'dashboard') {
-      fetchData()
+      fetchData();
+      fetchStudents();
     }
   }, [activeTab])
 
@@ -97,18 +98,39 @@ const TeacherDashboard = () => {
     return unsubscribe
   }, [])
 
+  const fetchStudents = async () => {
+    setLoading(true); // ensure loading shows while fetching
+    try {
+      const res = await axios.get('/api/students');
+      // Make sure res.data is an array
+      if (Array.isArray(res.data)) {
+        setStudents(res.data);
+      } else {
+        setStudents([]);
+        console.warn('API returned non-array data:', res.data);
+      }
+
+    } catch (error) {
+      console.error('Failed to fetch students:', error);
+      toast.error('Failed to load student data');
+      setStudents([]); // fallback empty array
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   const fetchData = async () => {
     try {
       const [lessonsRes, quizzesRes, studentsRes] = await Promise.all([
         axios.get('/api/lessons'),
         axios.get('/api/quizzes?sort=-createdAt&limit=6'),
-        axios.get('/api/students?sort=-eco_points&limit=10')
+        
       ])
 
       setLessons(lessonsRes.data.lessons || [])
       setQuizzes(quizzesRes.data || [])
-      setStudents(studentsRes.data || [])
+    
     } catch (error) {
       console.error('Failed to fetch data:', error)
       toast.error('Failed to load dashboard data')
@@ -385,7 +407,7 @@ const TeacherDashboard = () => {
                   transition={{ duration: 0.5 }}
                   className="text-3xl font-bold text-green-600"
                 >
-                  {students.length}
+                  {students?.length}
                 </motion.p>
               </div>
               <Users className="text-green-500" size={32} />
@@ -558,9 +580,9 @@ const TeacherDashboard = () => {
                     <td className="px-4 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${index === 0 ? 'bg-yellow-100 text-yellow-800' :
-                            index === 1 ? 'bg-gray-100 text-gray-800' :
-                              index === 2 ? 'bg-orange-100 text-orange-800' :
-                                'bg-blue-100 text-blue-800'
+                          index === 1 ? 'bg-gray-100 text-gray-800' :
+                            index === 2 ? 'bg-orange-100 text-orange-800' :
+                              'bg-blue-100 text-blue-800'
                           }`}>
                           {index + 1}
                         </span>
