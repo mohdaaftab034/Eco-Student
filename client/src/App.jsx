@@ -19,6 +19,7 @@ import EcoPoints from "./components/EcoPoints.jsx";
 import Education from "./components/Education.jsx";
 import Sanitization from "./components/Sanitization.jsx";
 import StudentLogin from "./pages/StudentLogin.jsx";
+import TeacherDashboard from "./pages/TeacherDashboard.jsx";
 
 
 
