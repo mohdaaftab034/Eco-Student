@@ -632,24 +632,7 @@ const StudentDashboard = () => {
                       >
                         <User2 className="w-4 h-4" /> Profile
                       </p>
-                      <p onClick={() => navigate('/waste-log')} className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-gray-600 font-medium">
-                        <UserCircle className="w-4 h-4" /> Log Waste
-                      </p>
-                      <p onClick={() => navigate('/collection-centers')} className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-gray-600 font-medium">
-                        <UserCircle className="w-4 h-4" /> Centers
-                      </p>
-                      <p onClick={() => navigate('/eco-points')} className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-gray-600 font-medium">
-                        <UserCircle className="w-4 h-4" /> Eco Points
-                      </p>
-                      <p onClick={() => navigate('/education')} className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-gray-600 font-medium">
-                        <UserCircle className="w-4 h-4" /> Education
-                      </p>
-                      <p onClick={() => navigate('/feed')} className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-gray-600 font-medium">
-                        <UserCircle className="w-4 h-4" /> Community
-                      </p>
-                      <p onClick={() => navigate('/sanitization')} className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-gray-600 font-medium">
-                        <UserCircle className="w-4 h-4" /> Sanitization
-                      </p>
+                     
                       <p
                         onClick={userSignOut}
                         className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-red-600 font-medium"

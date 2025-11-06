@@ -49,27 +49,21 @@ const AboutPage = () => {
 
     const teamMembers = [
         {
-            name: "Dr. Sarah Green",
-            role: "Environmental Education Specialist",
-            image: "https://images.pexels.com/photos/3768911/pexels-photo-3768911.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop",
-            bio: "15+ years in environmental education and curriculum development"
+            name: "Maithili Chaurasiya",
+            role: "Team Leader, Frontend Developer",
+            image: "https://i.postimg.cc/63gm6R6t/maithili.jpg",
+            bio: "Hello, I'm Frontend Developer."
         },
         {
-            name: "Alex Chen",
-            role: "Technology Lead",
-            image: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop",
-            bio: "Expert in educational technology and gamification systems"
+            name: "Mohd Aaftab",
+            role: "Backend Developer",
+            image: "https://i.postimg.cc/5tzLzCb3/aaftab.jpg",
+            bio: "Hello, I'm Full Stack Developer"
         },
         {
-            name: "Maria Rodriguez",
-            role: "Community Outreach Director",
-            image: "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop",
-            bio: "Connecting schools, NGOs, and communities for environmental action"
-        },
-        {
-            name: "David Park",
+            name: "Khushboo Verma",
             role: "UX/UI Designer",
-            image: "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop",
+            image: "https://i.postimg.cc/qMzv5HSj/Khushboo.jpg",
             bio: "Creating intuitive and engaging learning experiences for children"
         }
     ]
@@ -104,7 +98,7 @@ const AboutPage = () => {
                     EcoLearn
                 </h1>
             </div>
-            
+
             {/* Hero Section */}
             <motion.section
                 className="relative py-20 px-4 overflow-hidden"
@@ -293,13 +287,13 @@ const AboutPage = () => {
 
             {/* Team Section */}
             <motion.section
-                className="py-20 px-4"
+                className="py-20 w-full flex justify-center px-4"
                 initial="initial"
                 whileInView="animate"
                 viewport={{ once: true }}
                 variants={staggerContainer}
             >
-                <div className="max-w-6xl mx-auto">
+                <div className="max-w-6xl flex flex-col items-center justify-center">
                     <motion.div variants={fadeInUp} className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                             Meet Our Team
