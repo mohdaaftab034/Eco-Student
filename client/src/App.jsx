@@ -7,7 +7,6 @@ import TeacherLogin from "./pages/TeacherLogin";
 import NGOLogin from "./pages/NGOLogin";
 import StudentDashboard from "./pages/StudentDashboard";
 import NGODashboard from "./pages/NGODashboard";
-import TeacherDashboard from "./pages/TeacherDashboard";
 import CreateStudentProfile from "./pages/Student/CreateProfile";
 import AdminDashboard from "./pages/AdminDashboard";
 import AboutPage from "./components/AboutPage";
@@ -19,7 +18,7 @@ import CollectionCenters from "./components/CollectionCenters.jsx";
 import EcoPoints from "./components/EcoPoints.jsx";
 import Education from "./components/Education.jsx";
 import Sanitization from "./components/Sanitization.jsx";
-import StudentLogin from "./pages/studentLogin.jsx";
+import StudentLogin from "./pages/StudentLogin.jsx";
 
 
 
