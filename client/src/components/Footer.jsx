@@ -1,6 +1,7 @@
 
 import React from 'react'
-import { Heart, Leaf, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Youtube } from 'lucide-react'
+import { Heart, Leaf, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Youtube, Recycle } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
     return (
@@ -11,12 +12,13 @@ const Footer = () => {
 
                     {/* Brand Section */}
                     <div className="space-y-4 flex flex-col gap-2">
-                        <div className="flex items-center gap-2 space-x-2">
-                            <div className="bg-green-500 p-2 rounded-full">
-                                <Leaf className="h-6 w-6 text-white" />
-                            </div>
-                            <h3 className="text-xl font-bold">EcoLearn</h3>
-                        </div>
+                        <Link to="/student" className="flex items-center space-x-2">
+                            <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent">
+                                <span className="hidden sm:inline">EcoLearn India</span>
+                                <span className="sm:hidden">SW</span>
+                            </span>
+                        </Link>
+
                         <p className="text-sm leading-relaxed">
                             Empowering the next generation through gamified environmental education.
                             Learn, play, and make a difference for our planet.
@@ -159,7 +161,7 @@ const Footer = () => {
                         <div className="flex items-center gap-2 space-x-2  text-sm">
                             <span>© 2025 EcoLearn. Made with</span>
                             <Heart className="h-4 w-4 text-red-400" />
-                            <span>for our planet.</span>
+                            <span>Team BugBusters.</span>
                         </div>
 
                         {/* Legal Links */}

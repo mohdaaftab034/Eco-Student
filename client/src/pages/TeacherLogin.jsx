@@ -32,7 +32,7 @@ const TeacherLogin = () => {
             console.log(data);
 
             if (data.success) {
-                // ✅ 1. Save everything in context first
+                //  1. Save everything in context first
                 setUser(data.user);
                 setToken(data.token);
                 localStorage.setItem('token', data.token);
@@ -41,7 +41,7 @@ const TeacherLogin = () => {
 
                 toast.success(data.message);
 
-                // ✅ 2. Navigate only after context is updated
+                //  2. Navigate only after context is updated
                 setTimeout(() => {
                     navigate('/');
                 }, 100);

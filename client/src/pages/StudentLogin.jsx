@@ -31,7 +31,6 @@ const StudentLogin = () => {
         setUser(data.user);
         setToken(data.token);
         localStorage.setItem('token', data.token);
-        console.log(data.token);
         setIsAuthenticated(true)
         navigate('/');
         toast.success(data.message);
@@ -50,8 +49,8 @@ const StudentLogin = () => {
 
 
   return (
-    <div className='flex justify-center w-screen h-screen items-center'>
-      <form className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] text-gray-500 rounded-2xl border border-green-300 bg-white">
+    <div className='flex justify-center w-screen bg-[var(--bg-color)] h-screen items-center'>
+      <form className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] text-gray-500 rounded-2xl border border-green-300 bg-[var(--secondary-color)]">
         <p className="text-2xl font-medium m-auto">
           <span className="text-green-500">Student</span> {state === "login" ? "Login" : "Sign Up"}
         </p>

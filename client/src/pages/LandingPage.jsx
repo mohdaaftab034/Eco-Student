@@ -88,7 +88,7 @@ const LandingPage = () => {
     ]
 
     return (
-        <div className="min-h-screen bg-[#fafaff] gap-10 flex-col flex items-center justify-center p-4" style={{
+        <div className="min-h-screen bg-[var(--bg-color)] gap-10 flex-col flex items-center justify-center p-4" style={{
             backgroundImage: "url('')",
             backgroundSize: "cover",
             backgroundPosition: "center",
@@ -107,16 +107,16 @@ const LandingPage = () => {
                         <motion.div
                             animate={{ rotate: 360 }}
                             transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                            className="bg-emerald-400 p-4 rounded-full mr-4"
+                            className="bg-[var(--secondary-color)] p-4 rounded-full mr-4"
                         >
-                            <Leaf className="text-white" size={48} />
+                            <Leaf className="text-black" size={48} />
                         </motion.div>
-                        <h1 className="text-6xl font-bold bg-emerald-800 bg-clip-text text-transparent font-fredoka">
+                        <h1 className="text-6xl font-bold text-[var(--text-color)]">
                             EcoLearn
                         </h1>
                     </div>
-                    <p className="text-3xl text-gray-900 font-bold mb-2">Environmental Education Platform</p>
-                    <p className="text-xl rounded-full py-1 bg-green-800 hover:bg-green-700 text-white drop-shadow-2xl font-bold">Choose your role to start your eco-journey! 🌍</p>
+                    <p className="text-3xl text-[var(--text-color)] font-bold mb-2"><span className='bg-[var(--primary-color)] text-black rounded-md p-1'>Environmental</span> Education Platform</p>
+                    <p className="text-xl rounded-full py-1 bg-[var(--secondary-color)] text-black drop-shadow-2xl font-bold">Choose your role to start your eco-journey! 🌍</p>
                 </motion.div>
 
                 {/* Role Selection */}
@@ -143,9 +143,8 @@ const LandingPage = () => {
                   relative cursor-pointer rounded-2xl border-2 p-6 transition-all duration-300
                   ${isSelected
                                         ? `${role.bgColor} ${role.borderColor.split(' ')[1]} shadow-lg ring-4 ring-opacity-30 ${role.borderColor.includes('green') ? 'ring-green-200' : role.borderColor.includes('blue') ? 'ring-blue-200' : 'ring-purple-200'}`
-                                        : `bg-white ${role.borderColor} hover:shadow-md`
-                                    }
-                `}
+                                        : `bg-[var(--secondary-color)] ${role.borderColor} hover:shadow-md`
+                                    }`}
                             >
                                 {isSelected && (
                                     <motion.div
@@ -195,8 +194,8 @@ const LandingPage = () => {
                         className={`
               px-12 py-4 rounded-full text-xl font-bold transition-all duration-300
               ${selectedRole
-                                ? 'bg-emerald-700 text-white shadow-lg hover:shadow-xl'
-                                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                ? 'bg-[var(--secondary-color)] text-black shadow-lg hover:shadow-xl'
+                                : 'bg-gray-200 text-gray-900 cursor-not-allowed'
                             }
               ${isLoading ? 'opacity-75 cursor-not-allowed' : ''}
             `}
@@ -212,7 +211,7 @@ const LandingPage = () => {
                     </motion.button>
 
                     <p className="text-gray-500 mt-4 text-sm">
-                        Safe and secure login powered by Lumi Platform
+                        Safe and secure login powered by Eco Learn Platform
                     </p>
 
                     {selectedRole && (

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useContext } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { BookOpen, Brain, Trophy, Star, Users, User, LogOut, Award, Zap, Target, Heart, Share2, RefreshCw, User2, Settings, LogOutIcon, CrossIcon, LucideCross, X, ChartAreaIcon, Book, BookMinus, UserCircle } from 'lucide-react'
+import { BookOpen, Brain, Trophy, Star, Users, User, LogOut, Award, Zap, Target, Heart, Share2, RefreshCw, User2, Settings, LogOutIcon, CrossIcon, LucideCross, X, ChartAreaIcon, Book, BookMinus, UserCircle, Recycle, Leaf } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { userDataContext } from '../Context/UserContext'
 import { useRealtimeEvents, useRealtimeUpdates } from '../hooks/useRealtimeUpdates'
@@ -9,7 +9,7 @@ import LessonPage from './Student/LessonPage'
 import QuizzesPage from './Student/QuizzesPage'
 import BadgesPage from './Student/BadgesPage'
 import NGOsPage from './Student/NgoPage'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import ChatBot from './Student/ChatBot'
 import Footer from '../components/Footer'
 import StudentProfile from './Student/StudentProfile'
@@ -571,22 +571,23 @@ const StudentDashboard = () => {
 
 
   return (
-    <div className="min-h-screen relative bg-[#fafaff] ">
+    <div className="min-h-screen relative bg-[var(--bg-color)] ">
 
-      {video && <div className='fixed bottom-10 w-70 h-35 z-100 right-10 bg-blue-500 text-white rounded-lg overflow-hidden shadow-lg'>
+      {video && <div className='fixed bottom-10 w-70 h-35 z-100 right-10 bg-blue-500 text-[var(--text-color)] rounded-lg overflow-hidden shadow-lg'>
         <video src="https://www.pexels.com/download/video/3209571" autoPlay loop muted playsInline className='w-full h-full object-cover'></video>
-        <X onClick={() => setVideo(prev => !prev)} className='absolute right-3 top-3 cursor-pointer hover:bg-white hover:text-green-700 rounded-full text-white' />
+        <X onClick={() => setVideo(prev => !prev)} className='absolute right-3 top-3 cursor-pointer hover:bg-white hover:text-green-700 rounded-full' />
       </div>}
       {/* Header */}
-      <header className="bg-[#fafaff] sticky top-0 z-50 shadow-md">
+      <header className="bg-[var(--bg-color)] sticky top-0 z-50 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center cursor-pointer">
-              <div className="bg-gradient-to-r hidden sm:flex text-black p-2 rounded-lg mr-3">
-                <Book className="text-black " size={24} />
-              </div>
-              <h1 className="text-2xl flex flex-col md:flex-row gap-2 font-bold text-gray-800 font-fredoka">EcoLearn <span className='text-green-800'>Student</span></h1>
-            </div>
+            <Link to="/student" className="flex items-center space-x-2">
+              <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent">
+                <span className="hidden sm:inline">EcoLearn India</span>
+                <span className="sm:hidden">SW</span>
+              </span>
+            </Link>
+
 
             <div className="flex gap-3 items-center space-x-4">
               {student && (
@@ -605,7 +606,7 @@ const StudentDashboard = () => {
               <button
                 onClick={manualRefresh}
                 disabled={refreshing}
-                className="hidden sm:flex items-center text-gray-600 hover:text-blue-600 transition-colors disabled:opacity-50"
+                className="hidden sm:flex items-center text-[var(--text-color)] hover:text-blue-600 transition-colors disabled:opacity-50"
                 title="Refresh content"
               >
                 <RefreshCw size={20} className={`mr-1 ${refreshing ? 'animate-spin' : ''}`} />
@@ -619,11 +620,11 @@ const StudentDashboard = () => {
                 {open && (
                   <AnimatePresence>
                     <motion.div
-                      initial={{ opacity: 0, y: -20 }}   
-                      animate={{ opacity: 1, y: 0 }}      
-                      exit={{ opacity: 0, y: -20 }}       
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.3, ease: "easeOut" }}
-                      className="absolute flex flex-col items-start justify-center gap-2 top-[70px] right-5 md:right-25 bg-white shadow-lg rounded-lg w-60 h-30"
+                      className="absolute flex flex-col z-101 items-start justify-center gap-2 top-[70px] right-5 md:right-25 bg-[var(--secondary-color)] shadow-lg rounded-lg w-60 min-h-30"
                     >
                       <p
                         onClick={() => navigate('/profile')}
@@ -631,8 +632,23 @@ const StudentDashboard = () => {
                       >
                         <User2 className="w-4 h-4" /> Profile
                       </p>
-                      <p className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-gray-600 font-medium">
+                      <p onClick={() => navigate('/waste-log')} className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-gray-600 font-medium">
+                        <UserCircle className="w-4 h-4" /> Log Waste
+                      </p>
+                      <p onClick={() => navigate('/collection-centers')} className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-gray-600 font-medium">
+                        <UserCircle className="w-4 h-4" /> Centers
+                      </p>
+                      <p onClick={() => navigate('/eco-points')} className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-gray-600 font-medium">
+                        <UserCircle className="w-4 h-4" /> Eco Points
+                      </p>
+                      <p onClick={() => navigate('/education')} className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-gray-600 font-medium">
+                        <UserCircle className="w-4 h-4" /> Education
+                      </p>
+                      <p onClick={() => navigate('/feed')} className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-gray-600 font-medium">
                         <UserCircle className="w-4 h-4" /> Community
+                      </p>
+                      <p onClick={() => navigate('/sanitization')} className="flex pl-3 items-center gap-2 h-8 cursor-pointer w-full text-gray-600 font-medium">
+                        <UserCircle className="w-4 h-4" /> Sanitization
                       </p>
                       <p
                         onClick={userSignOut}
@@ -644,7 +660,7 @@ const StudentDashboard = () => {
                   </AnimatePresence>
                 )}
               </div>
-              <p className='text-black font-medium hidden sm:flex'>{user.name}</p>
+              <p className='text-[var(--text-color)] font-medium hidden sm:flex'>{user.name}</p>
             </div>
           </div>
         </div>
@@ -655,18 +671,18 @@ const StudentDashboard = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white shadow-lg hover:scale-105 transition-transform duration-300 rounded-md p-6 mb-8 text-white"
+          className="bg-[var(--bg-color)] shadow-lg hover:scale-105 transition-transform duration-300 rounded-md p-6 mb-8 text-white"
         >
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-3xl text-black font-bold mb-2 font-fredoka">
-                Welcome back, <span className='text-green-800'>{student?.name || user?.userName}!</span> 🌟
+              <h2 className="text-3xl text-[var(--text-color)] font-bold mb-2 font-fredoka">
+                Welcome back, <span className='text-green-800  '>{student?.name || user?.userName}!</span> 🌟
               </h2>
-              <p className="text-lg text-black font-light opacity-90">
+              <p className="text-lg text-[var(--text-color)] font-light opacity-90">
                 Ready to continue your eco-adventure? Let's save the planet together!
               </p>
               {student?.badges && student.badges.length > 0 && (
-                <p className="text-sm text-black opacity-75 mt-2">
+                <p className="text-sm text-green-800 opacity-75 mt-2">
                   🏆 You have {student.badges.length} badge{student.badges.length !== 1 ? 's' : ''} - share them with friends!
                 </p>
               )}
@@ -678,7 +694,7 @@ const StudentDashboard = () => {
         </motion.div>
 
         {/* Navigation Tabs */}
-        <div className="bg-white sticky top-[70px] z-50 rounded-md shadow-lg mb-8 overflow-hidden">
+        <div className="bg-[var(--secondary-color)] sticky top-[70px] z-10 rounded-md shadow-lg mb-8 overflow-hidden">
           <div className="flex overflow-x-auto">
             {tabs.map((tab) => {
               const Icon = tab.icon
@@ -687,8 +703,8 @@ const StudentDashboard = () => {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center px-6 py-4 whitespace-nowrap transition-colors relative ${activeTab === tab.id
-                    ? 'bg-black text-white'
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? 'bg-black text-[var(--primary-color)]'
+                    : 'text-gray-600 hover:bg-[var(--primary-color)]'
                     }`}
                 >
                   <Icon size={20} className="mr-2" />
@@ -698,7 +714,7 @@ const StudentDashboard = () => {
                       key={student.badges.length} // Re-animate when badge count changes
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-1"
+                      className="ml-2 bg-black text-[var(--primary-color)] text-xs rounded-full px-2 py-1"
                     >
                       {student.badges.length}
                     </motion.span>
@@ -727,12 +743,12 @@ const StudentDashboard = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-md shadow-lg p-6 md:col-span-2 lg:col-span-3"
+                className="bg-[var(--bg-color)] rounded-md shadow-lg p-6 md:col-span-2 lg:col-span-3"
               >
-                <h3 className="text-xl flex items-center justify-start gap-2 font-bold text-black mb-4 font-fredoka">Your Progress <span><BookMinus className='w-4 h-4' /></span></h3>
+                <h3 className="text-xl flex items-center justify-start gap-2 font-bold text-[var(--text-color)] mb-4 font-fredoka">Your Progress <span><BookMinus className='w-4 h-4' /></span></h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center p-4 hover:bg-gray-300 bg-white shadow-lg hover:scale-105
-                   transition-all duration-300 ease-in-out rounded-md">
+                  <div className="text-center p-4 hover:bg-[var(--primary-color)] bg-[var(--secondary-color)] hover:rounded-2xl shadow-lg hover:scale-105
+                   transition-all duration-300 ease-in-out rounded-tl-2xl rounded-br-2xl">
                     <motion.div
                       key={student?.completed_lessons?.length}
                       initial={{ scale: 1 }}
@@ -744,8 +760,8 @@ const StudentDashboard = () => {
                     </motion.div>
                     <div className="text-sm">Lessons</div>
                   </div>
-                  <div className="text-center p-4 hover:bg-gray-300 bg-white shadow-lg hover:scale-105
-                   transition-all duration-300 ease-in-out rounded-md">
+                  <div className="text-center p-4 hover:bg-[var(--primary-color)] bg-[var(--secondary-color)] hover:rounded-2xl shadow-lg hover:scale-105
+                   transition-all duration-300 ease-in-out rounded-tl-2xl rounded-br-2xl">
                     <motion.div
                       key={student?.quiz_scores?.length}
                       initial={{ scale: 1 }}
@@ -757,8 +773,8 @@ const StudentDashboard = () => {
                     </motion.div>
                     <div className="text-sm">Quizzes</div>
                   </div>
-                  <div className="text-center p-4 hover:bg-gray-300 bg-white shadow-lg hover:scale-105
-                   transition-all duration-300 ease-in-out rounded-md">
+                  <div className="text-center p-4 hover:bg-[var(--primary-color)] bg-[var(--secondary-color)] hover:rounded-2xl shadow-lg hover:scale-105
+                   transition-all duration-300 ease-in-out rounded-tl-2xl rounded-br-2xl">
                     <motion.div
                       key={student?.badges?.length}
                       initial={{ scale: 1 }}
@@ -770,8 +786,8 @@ const StudentDashboard = () => {
                     </motion.div>
                     <div className="text-sm ">Badges</div>
                   </div>
-                  <div className="text-center p-4 hover:bg-gray-300 bg-white shadow-lg hover:scale-105
-                   transition-all duration-300 ease-in-out rounded-md">
+                  <div className="text-center p-4 hover:bg-[var(--primary-color)] bg-[var(--secondary-color)] hover:rounded-2xl shadow-lg hover:scale-105
+                   transition-all duration-300 ease-in-out rounded-tl-2xl rounded-br-2xl">
                     <motion.div
                       key={student?.level}
                       initial={{ scale: 1 }}
@@ -792,7 +808,7 @@ const StudentDashboard = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
-                  className="bg-white rounded-md shadow-lg hover:shadow-2xl hover:-translate-y-2
+                  className="bg-[var(--secondary-color)] rounded-md shadow-lg hover:shadow-2xl hover:-translate-y-2
                 transition-all duration-500 ease-in-out p-6 relative"
                 >
                   {newlyEarnedBadges.length > 0 && (
@@ -872,7 +888,7 @@ const StudentDashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-white rounded-md transition-transform hover:scale-105 duration-300
+                className="bg-[var(--secondary-color)] rounded-md transition-transform hover:scale-105 duration-300
                  ease-in-out shadow-lg p-6"
               >
                 <div className="flex items-center justify-between mb-4">
@@ -940,7 +956,7 @@ const StudentDashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: student?.badges?.length ? 0.3 : 0.2 }}
-                className="bg-white rounded-md transition-transform hover:scale-105 duration-300 ease-in-out shadow-lg p-6"
+                className="bg-[var(--secondary-color)] rounded-md transition-transform hover:scale-105 duration-300 ease-in-out shadow-lg p-6"
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-gray-800 font-fredoka">Recent Lessons</h3>
@@ -982,7 +998,7 @@ const StudentDashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: student?.badges?.length ? 0.4 : 0.3 }}
-                className="bg-white rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6"
+                className="bg-[var(--secondary-color)] rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6"
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-gray-800 font-fredoka">Available Quizzes</h3>
@@ -1017,7 +1033,7 @@ const StudentDashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: student?.badges?.length ? 0.5 : 0.4 }}
-                className="bg-white rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6"
+                className="bg-[var(--secondary-color)] rounded-md transition-transform duration-300 hover:scale-105 shadow-lg p-6"
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-gray-800 font-fredoka">NGO Campaigns</h3>

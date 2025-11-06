@@ -25,7 +25,7 @@ export const registerUser = async (req, res) => {
         const user = await userModel.create({
             fullName,
             email,
-            password: hashedPassword, 
+            password: hashedPassword,
             role: "student"
         });
 
@@ -83,7 +83,7 @@ export const loginUser = async (req, res) => {
             });
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const isPasswordValid = bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             return res.status(400).json({
                 success: false,
@@ -100,7 +100,6 @@ export const loginUser = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             sameSite: "lax",
-            secure: process.env.NODE_ENV === "production"
         });
 
         res.status(200).json({
@@ -123,11 +122,12 @@ export const loginUser = async (req, res) => {
 export const logoutUser = (req, res) => {
     try {
         res.clearCookie("token");
-        res.status(200).json({success: true,
+        res.status(200).json({
+            success: true,
             message: "User logged out successfully"
         });
     } catch (error) {
-        res.json({success: false, message: error.message});
+        res.json({ success: false, message: error.message });
     }
 }
 
@@ -255,7 +255,8 @@ export const ngoRegister = async (req, res) => {
 
     res.cookie("token", token)
 
-    res.status(201).json({success: true,
+    res.status(201).json({
+        success: true,
         message: "NGO registered successfully",
         token,
         user: {
@@ -301,7 +302,8 @@ export const ngoLogin = async (req, res) => {
 
     res.cookie("token", token)
 
-    res.status(200).json({success: true,
+    res.status(200).json({
+        success: true,
         message: "NGO logged in successfully",
         token,
         user: {

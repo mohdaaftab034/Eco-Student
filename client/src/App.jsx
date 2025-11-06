@@ -2,12 +2,9 @@ import React, { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { userDataContext } from "./Context/UserContext";
-// import SmoothScroll from "./components/SmoothScroll";
-
 import LandingPage from "./pages/LandingPage";
 import TeacherLogin from "./pages/TeacherLogin";
 import NGOLogin from "./pages/NGOLogin";
-import StudentLogin from "./pages/StudentLogin";
 import StudentDashboard from "./pages/StudentDashboard";
 import NGODashboard from "./pages/NGODashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
@@ -15,6 +12,16 @@ import CreateStudentProfile from "./pages/Student/CreateProfile";
 import AdminDashboard from "./pages/AdminDashboard";
 import AboutPage from "./components/AboutPage";
 import StudentProfile from "./pages/Student/StudentProfile.jsx";
+import CommunityFeed from "./components/community/CommunityFeed.jsx";
+import CreatePost from "./components/community/CreatePost.jsx";
+import WasteLog from "./components/WasteLog.jsx";
+import CollectionCenters from "./components/CollectionCenters.jsx";
+import EcoPoints from "./components/EcoPoints.jsx";
+import Education from "./components/Education.jsx";
+import Sanitization from "./components/Sanitization.jsx";
+import StudentLogin from "./pages/studentLogin.jsx";
+
+
 
 //  Role detection
 const getUserRole = (user) => {
@@ -64,6 +71,7 @@ export const getSelectedRole = () => {
 function App() {
   const { user, isAuthenticated, isCheckingAuth } = useContext(userDataContext);
 
+
   if (isCheckingAuth) {
     return (
       <div className="min-h-screen bg-[#fafaff] flex items-center justify-center">
@@ -79,17 +87,17 @@ function App() {
   if (!isAuthenticated) {
     return (
       <>
-        
-          <Toaster position="top-right" />
-          <Routes>
-            <Route path="/" element={<AboutPage />} />
-            <Route path="/page" element={<LandingPage />} />
-            <Route path="/teacher-login" element={<TeacherLogin />} />
-            <Route path="/ngo-login" element={<NGOLogin />} />
-            <Route path="/student-login" element={<StudentLogin />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-       
+
+        <Toaster position="top-right" />
+        <Routes>
+          <Route path="/" element={<AboutPage />} />
+          <Route path="/page" element={<LandingPage />} />
+          <Route path="/teacher-login" element={<TeacherLogin />} />
+          <Route path="/ngo-login" element={<NGOLogin />} />
+          <Route path="/student-login" element={<StudentLogin />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+
       </>
     );
   }
@@ -98,11 +106,12 @@ function App() {
   const userRole = getSelectedRole() || getUserRole(user);
   console.log(`UserRole ${userRole}, user:`, user);
 
-  return (
-    <>
+  if (user) {
+    return (
+      <>
 
-      <Toaster position="top-right" />
-      
+        <Toaster position="top-right" />
+
         <Routes>
           {/* All role dashboards */}
           <Route path="/student" element={<StudentDashboard />} />
@@ -111,14 +120,24 @@ function App() {
           <Route path="/create-profile" element={<CreateStudentProfile />} />
           <Route path="/profile" element={<StudentProfile />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/feed" element={<CommunityFeed />} />
+          <Route path="create" element={<CreatePost />} />
+
+          <Route path="/waste-log" element={<WasteLog />} />
+          <Route path="/collection-centers" element={<CollectionCenters />} />
+          <Route path="/eco-points" element={<EcoPoints />} />
+          <Route path="/education" element={<Education />} />
+          <Route path="/sanitization" element={<Sanitization />} />
+         
 
           {/* Default redirect based on role */}
           <Route path="/" element={<Navigate to={`/${userRole}`} replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      
-    </>
-  );
+
+      </>
+    );
+  }
 }
 
 export default App;

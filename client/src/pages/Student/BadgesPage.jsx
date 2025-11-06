@@ -192,7 +192,7 @@ const BadgesPage = ({ onBack, newlyEarnedBadges = [], onClearNewBadges }) => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 pointer-events-none"
+                        className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-100 pointer-events-none"
                     >
                         <motion.div
                             initial={{ scale: 0, rotate: -180 }}

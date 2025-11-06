@@ -17,7 +17,7 @@ import chatRouter from './routes/chat.routes.js';
 
 const app = express();
 connectDB();
-
+ 
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     credentials: true

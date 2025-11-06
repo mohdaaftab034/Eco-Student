@@ -104,10 +104,7 @@ const AboutPage = () => {
                     EcoLearn
                 </h1>
             </div>
-
-            <button onClick={() => navigate('/page')} className="fixed top-5 right-5 bg-gradient-to-r cursor-pointer from-emerald-600 to-emerald-600 text-white px-2 z-50 py-2 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center gap-2">
-                Join Our Mission <ArrowRight className="w-5 h-5" />
-            </button>
+            
             {/* Hero Section */}
             <motion.section
                 className="relative py-20 px-4 overflow-hidden"
